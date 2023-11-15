@@ -56,11 +56,11 @@
     <div id="header-inner" class="inner">
       <nav id="main-nav">
         
-          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Accueil</a>
         
           <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
         
-          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> À propos</a>
         
           <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
         
@@ -68,7 +68,7 @@
     </div>
     <div id="search-form">
       <div id="result-mask" class="hide"></div>
-      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Recherche"></label>
       <div id="result-wrap" class="hide">
         <div id="search-result"></div>
       </div>
@@ -134,7 +134,7 @@
     
   
   <i class="fa fa-commt"></i>
-  Guestbook
+  Livre d&#39;or
 </a>
 
 
@@ -563,7 +563,7 @@
             <div id="toc-article">
                 
   <div class="widget-wrap" id="toc-wrap">
-    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contenus</h3>
     <div class="widget">
       <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-rke%E9%83%A8%E7%BD%B2k8s%E9%9B%86%E7%BE%A4"><span class="toc-text">第一章 rke部署k8s集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker"><span class="toc-text">安装docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2k8s%E9%9B%86%E7%BE%A4"><span class="toc-text">部署k8s集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BArke%E7%94%A8%E6%88%B7%E5%B9%B6%E8%AE%BE%E7%BD%AErke%E7%9A%84ssh%E5%85%8D%E5%AF%86"><span class="toc-text">创建rke用户并设置rke的ssh免密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%ADswap%E5%88%86%E5%8C%BA"><span class="toc-text">关闭swap分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86rke%E7%94%A8%E6%88%B7%E5%8A%A0%E5%85%A5%E5%88%B0docker%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">将rke用户加入到docker用户组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDrke%E5%92%8Ckubectl"><span class="toc-text">下载rke和kubectl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%A7%81%E6%9C%89%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93harbor"><span class="toc-text">部署私有容器镜像仓库harbor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9hosts%E6%96%87%E4%BB%B6-%E9%9D%9E%E5%BF%85%E9%A1%BB"><span class="toc-text">修改hosts文件(非必须)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6cluster-yml"><span class="toc-text">编辑集群配置文件cluster.yml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8rke%EF%BC%8C%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4"><span class="toc-text">启动rke，部署集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">移动集群配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4k8s%E9%9B%86%E7%BE%A4"><span class="toc-text">删除k8s集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE"><span class="toc-text">为集群节点创建标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E9%9B%86%E7%BE%A4%E5%88%9B%E5%BB%BAmaven-setting"><span class="toc-text">为集群创建maven-setting</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E9%9B%86%E7%BE%A4%E5%88%9B%E5%BB%BAconfigMap"><span class="toc-text">为集群创建configMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E9%9B%86%E7%BE%A4"><span class="toc-text">调试集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2k8s-dashboard%E9%A1%B5%E9%9D%A2"><span class="toc-text">部署k8s dashboard页面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2dashboard"><span class="toc-text">部署dashboard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEdashboard"><span class="toc-text">访问dashboard</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87window%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD"><span class="toc-text">通过window配置负载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87configMap%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD"><span class="toc-text">通过configMap配置负载</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2k8s-dashboard%E9%A1%B5%E9%9D%A2%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%95%B0%E6%8D%AE"><span class="toc-text">部署k8s dashboard页面图形化数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B%E6%90%AD%E5%BB%BA"><span class="toc-text">第二章 自动化构建部署流程搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2jenkins-master"><span class="toc-text">部署jenkins-master</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2jenkins-slave"><span class="toc-text">部署jenkins-slave</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAjenkins-slave%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F"><span class="toc-text">构建jenkins-slave基础镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E8%BF%9E%E6%8E%A5k8s%E9%9B%86%E7%BE%A4%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6"><span class="toc-text">生成连接k8s集群的客户端证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEjenkins-master%EF%BC%88%E5%8F%82%E8%80%83%EF%BC%89"><span class="toc-text">配置jenkins-master（参考）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEjenkins-master%EF%BC%88%E9%80%89%E7%94%A8%EF%BC%89"><span class="toc-text">配置jenkins-master（选用）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BApipeline%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%BB%BB%E5%8A%A1"><span class="toc-text">新建pipeline流水线任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#demo1"><span class="toc-text">demo1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo2"><span class="toc-text">demo2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#demo3"><span class="toc-text">demo3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jenkins-job%E8%BF%81%E7%A7%BB"><span class="toc-text">jenkins job迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Job-Import-Plugin%E5%AF%BC%E5%85%A5"><span class="toc-text">Job Import Plugin导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jenkins-CLI%E6%96%B9%E5%BC%8F%E5%AF%BC%E5%85%A5"><span class="toc-text">Jenkins CLI方式导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Job-%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4"><span class="toc-text">Job 批量删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEjenkins%E7%9A%84credentialsId"><span class="toc-text">配置jenkins的credentialsId</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8GitLab-webhook%E6%9D%A5%E8%A7%A6%E5%8F%91Jenkins%E6%9E%84%E5%BB%BA"><span class="toc-text">利用GitLab webhook来触发Jenkins构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAGitLab%E6%B5%8B%E8%AF%95%E9%A1%B9%E7%9B%AE"><span class="toc-text">新建GitLab测试项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BAJenkins%E7%9A%84job"><span class="toc-text">新建Jenkins的job</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEGitLab%E7%9A%84webhook"><span class="toc-text">设置GitLab的webhook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E5%85%B6%E5%AE%83%E9%97%AE%E9%A2%98"><span class="toc-text">可能出现的其它问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95-%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">附录 遇到的问题</span></a></li></ol>
     </div>
@@ -574,8 +574,8 @@
         
         
           <blockquote id="copyright">
-              <p>Original link: <a href="https://wangdj104.github.io/2019/12/09/jenkins自动化构建部署/">https://wangdj104.github.io/2019/12/09/jenkins自动化构建部署/</a></p>
-              <p>Copyright Notice: 转载请注明出处.</p>
+              <p>Lien original: <a href="https://wangdj104.github.io/2019/12/09/jenkins自动化构建部署/">https://wangdj104.github.io/2019/12/09/jenkins自动化构建部署/</a></p>
+              <p>Déclaration de droit d&#39;auteur: 转载请注明出处.</p>
           </blockquote>
         
       
@@ -590,7 +590,7 @@
 
           
     <div class="social-share">
-      <span>Share:</span>
+      <span>Partager:</span>
     </div>
 
 
@@ -643,7 +643,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Récent</h3>
     <div class="widget">
       <ul>
         
@@ -675,7 +675,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Nuage de tag</h3>
     <div class="widget tagcloud">
       <a href="/tags/CI-CD/" style="font-size: 10px;">CI/CD</a> <a href="/tags/Gitlab/" style="font-size: 10px;">Gitlab</a> <a href="/tags/Glusterfs/" style="font-size: 10px;">Glusterfs</a> <a href="/tags/Harbor/" style="font-size: 20px;">Harbor</a> <a href="/tags/Idap/" style="font-size: 20px;">Idap</a> <a href="/tags/Jenkins/" style="font-size: 20px;">Jenkins</a> <a href="/tags/LVM/" style="font-size: 10px;">LVM</a> <a href="/tags/Postgresql/" style="font-size: 10px;">Postgresql</a> <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/Ride/" style="font-size: 10px;">Ride</a> <a href="/tags/Rsyncd/" style="font-size: 10px;">Rsyncd</a> <a href="/tags/ceph/" style="font-size: 10px;">ceph</a> <a href="/tags/gitlab/" style="font-size: 20px;">gitlab</a> <a href="/tags/microservice/" style="font-size: 10px;">microservice</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/yum%E6%BA%90/" style="font-size: 10px;">yum源</a>
     </div>
@@ -684,7 +684,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title"><i class="fa fa-classify"></i> Categories</h3>
+    <h3 class="widget-title"><i class="fa fa-classify"></i> Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/">开源项目学习</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">在线考试系统部署文档</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/">技术栈</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/JAVA%E5%9F%BA%E7%A1%80/">JAVA基础</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/">服务配置文档</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Ceph%E6%9C%8D%E5%8A%A1/">Ceph服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Gitlab%E6%9C%8D%E5%8A%A1/">Gitlab服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Glusterfs%E6%9C%8D%E5%8A%A1/">Glusterfs服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Harbor%E6%9C%8D%E5%8A%A1/">Harbor服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Idap%E6%9C%8D%E5%8A%A1/">Idap服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Jenkins%E6%9C%8D%E5%8A%A1/">Jenkins服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Mysql%E6%9C%8D%E5%8A%A1/">Mysql服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Postgresql%E6%9C%8D%E5%8A%A1/">Postgresql服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Redis%E6%9C%8D%E5%8A%A1/">Redis服务</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Rsync%E6%9C%8D%E5%8A%A1/">Rsync服务</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA%E6%96%87%E6%A1%A3/">自动化构建文档</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA%E6%96%87%E6%A1%A3/jenkins%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA%E9%83%A8%E7%BD%B2/">jenkins自动构建部署</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/">随手笔记</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/">LVM磁盘扩容及磁盘挂载</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/My-First-Blog/">My First Blog</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/%E4%BB%A3%E7%A0%81%E5%9B%9E%E9%80%80%E7%9B%B8%E5%85%B3/">代码回退相关</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">自动化测试环境搭建</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0yum%E6%BA%90/">配置本地yum源</a><span class="category-list-count">1</span></li></ul></li></ul>
     </div>
@@ -714,7 +714,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <h3 class="widget-title"><i class="fa fa-link"></i> À suivre</h3>
     <div class="widget">
       <ul>
       
@@ -745,9 +745,9 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       <p>
-        <a href="/sitemap.xml">Site Map</a>
-        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
-        <span> | </span><a href="/about/">Contact the blogger</a>
+        <a href="/sitemap.xml">Plan du site</a>
+        <span> | </span><a href="/atom.xml">Abonnez-vous à ce site</a>
+        <span> | </span><a href="/about/">Contacter le blogueur</a>
       </p>
       
         <p>
