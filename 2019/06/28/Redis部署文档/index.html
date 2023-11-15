@@ -1,37 +1,337 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="下载安装包1wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-4.0.6.tar.gz 上传并解压到&#x2F;home下1tar -xzvf redis-4.0.6.tar.gz 编译安装123cd &#x2F;home&#x2F;redis-4.0.6make MALLOC&#x3D;libcmake install 修改redis配置文件123vim &#x2F;home&#x2F;redis-4.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis安装文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/06/28/Redis%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="下载安装包1wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-4.0.6.tar.gz 上传并解压到&#x2F;home下1tar -xzvf redis-4.0.6.tar.gz 编译安装123cd &#x2F;home&#x2F;redis-4.0.6make MALLOC&#x3D;libcmake install 修改redis配置文件123vim &#x2F;home&#x2F;redis-4.0">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/redis_start.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/redis_service.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/redisd.png">
+<meta property="article:published_time" content="2019-06-28T00:43:55.000Z">
+<meta property="article:modified_time" content="2019-07-10T08:42:44.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/redis_start.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/06/28/Redis%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/06/28/Redis%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/06/28/Redis部署文档/","title":"Redis安装文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis安装文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">下载安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%B9%B6%E8%A7%A3%E5%8E%8B%E5%88%B0-home%E4%B8%8B"><span class="nav-number">2.</span> <span class="nav-text">上传并解压到&#x2F;home下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9redis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">修改redis配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%E6%96%B9%E5%BC%8F%E5%90%AF%E5%8A%A8redis%E5%90%AF%E5%8A%A8"><span class="nav-number">5.</span> <span class="nav-text">以后台进程方式启动redis启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%88%B0%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF-%E5%B0%86redis%E6%B3%A8%E5%86%8C%E6%88%90%E6%9C%8D%E5%8A%A1"><span class="nav-number">6.</span> <span class="nav-text">添加到开机自启(将redis注册成服务)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">可能出现的问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/28/Redis%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis安装文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis安装文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-28 08:43:55" itemprop="dateCreated datePublished" datetime="2019-06-28T08:43:55+08:00">2019-06-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-10 16:42:44" itemprop="dateModified" datetime="2019-07-10T16:42:44+08:00">2019-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Redis%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Redis服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-4.0.6.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="上传并解压到-home下"><a href="#上传并解压到-home下" class="headerlink" title="上传并解压到&#x2F;home下"></a>上传并解压到&#x2F;home下</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf redis-4.0.6.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/redis-4.0.6</span><br><span class="line">make MALLOC=libc</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h3 id="修改redis配置文件"><a href="#修改redis配置文件" class="headerlink" title="修改redis配置文件"></a>修改redis配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /home/redis-4.0.6/redis.conf <span class="comment">#修改配置文件</span></span><br><span class="line">daemonize no 改为 daemonize <span class="built_in">yes</span>   <span class="comment">#后台运行</span></span><br><span class="line"><span class="comment"># requirepass foobared 改为 requirepass 123456 #设置redis密码</span></span><br></pre></td></tr></table></figure>
+<h3 id="以后台进程方式启动redis启动"><a href="#以后台进程方式启动redis启动" class="headerlink" title="以后台进程方式启动redis启动"></a>以后台进程方式启动redis启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/redis-4.0.6/src</span><br><span class="line">./redis-server ../redis.conf</span><br></pre></td></tr></table></figure>
+<p><img src="/img/redis_start.png" alt="image"></p>
+<h3 id="添加到开机自启-将redis注册成服务"><a href="#添加到开机自启-将redis注册成服务" class="headerlink" title="添加到开机自启(将redis注册成服务)"></a>添加到开机自启(将redis注册成服务)</h3><p>.)在&#x2F;etc目录下新建redis目录:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> redis</span><br></pre></td></tr></table></figure>
+<p>..)将&#x2F;home&#x2F;redis-4.0.6&#x2F;redis.conf文件复制一份到&#x2F;etc&#x2F;redis目录下，并命名为6379.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/redis-4.0.6/redis.conf /etc/redis/6379.conf</span><br></pre></td></tr></table></figure>
+<p>..)将redis的启动脚本复制一份放到&#x2F;etc&#x2F;init.d目录下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/redis-4.0.6/utils/redis_init_script /etc/init.d/redisd</span><br></pre></td></tr></table></figure>
+<p>…)先切换到&#x2F;etc&#x2F;init.d目录下,然后执行自启命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig redisd on</span><br></pre></td></tr></table></figure>
+<p>若出现service redisd does not support chkconfig，则证明redisd不支持chkconfig<br>解决方法：使用vim编辑redisd文件，在第二行加入如下两行注释，保存退出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/init.d/redisd</span><br><span class="line"><span class="comment"># chkconfig: 2345 90 10</span></span><br><span class="line"><span class="comment"># description: Redis is a persistent key-value database</span></span><br></pre></td></tr></table></figure>
+<p>注释的意思是，redis服务必须在运行级2，3，4，5下被启动或关闭，启动的优先级是90，关闭的优先级是10。再次执行开机自启命令，成功<br>现在可以直接已服务的形式启动和关闭redis了：service redisd start 或者 service redisd stop<br><img src="/img/redis_service.png" alt="image"></p>
+<h3 id="可能出现的问题"><a href="#可能出现的问题" class="headerlink" title="可能出现的问题"></a>可能出现的问题</h3><p>1）Redis服务器设置密码后，使用service redis stop 会出现以下信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># service redis stop</span></span><br><span class="line">Stopping ...</span><br><span class="line">(error) NOAUTH Authentication required.</span><br><span class="line">Waiting <span class="keyword">for</span> Redis to shutdown ...</span><br><span class="line">Waiting <span class="keyword">for</span> Redis to shutdown ...</span><br><span class="line">Waiting <span class="keyword">for</span> Redis to shutdown ...</span><br><span class="line">Waiting <span class="keyword">for</span> Redis to shutdown ...</span><br><span class="line">Waiting <span class="keyword">for</span> Redis to shutdown ...</span><br></pre></td></tr></table></figure>
+<p>此时就需要修改redisd服务脚本，加入如下所示的红色授权信息即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/init.d/redisd</span><br></pre></td></tr></table></figure>
+<p><img src="/img/redisd.png" alt="image"><br>2）通过redis客户端连接redis服务时,出现无法连接redis服务器的问题<br>redis默认只能localhost登录，所以需要开启远程登录。<br>在redis的配置文件redis.conf中,找到bind 127.0.0.1注释掉<br>cp &#x2F;home&#x2F;redis-4.0.6&#x2F;redis.conf &#x2F;etc&#x2F;redis&#x2F;6379.conf<br><strong>说明</strong><br>注释掉bind localhost 局域网内的所有计算机都能访问。<br>bind localhost   只能本机访问,局域网内计算机不能访问。<br>bind  局域网IP    只能局域网内IP的机器访问, 本机无法访问。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/27/Mysql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="prev" title="Mysql部署文档">
+                  <i class="fa fa-angle-left"></i> Mysql部署文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/09/%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E9%9A%8F%E8%AE%B0/" rel="next" title="代码提交随笔">
+                  代码提交随笔 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

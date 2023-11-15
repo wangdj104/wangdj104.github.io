@@ -1,37 +1,471 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="第一章 LDAP认证在上图中，LDAP Client指各种需要身份认证的软件，例如Apache、Proftpd和Samba等。LDAP Sever指的是实现LDAP协议的软件，例如OpenLDAP等。LDAP Directory Services指的是OpenLDAP的数据存储，如关系型数据库（MySQL）或查询效率更高的嵌入式数据库（BerkeleyDB），甚至是平面文本数据库（—个txt的文本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Idap之二进制安装">
+<meta property="og:url" content="https://wangdj104.github.io/2019/08/29/Idap%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="第一章 LDAP认证在上图中，LDAP Client指各种需要身份认证的软件，例如Apache、Proftpd和Samba等。LDAP Sever指的是实现LDAP协议的软件，例如OpenLDAP等。LDAP Directory Services指的是OpenLDAP的数据存储，如关系型数据库（MySQL）或查询效率更高的嵌入式数据库（BerkeleyDB），甚至是平面文本数据库（—个txt的文本">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_1.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_2.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_3.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_4.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_5.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_6.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_7.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_8.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_9.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_10.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_11.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_12.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_13.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_14.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_15.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_16.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_17.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_18.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_19.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_20.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_21.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_22.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_23.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_24.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_25.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_26.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_27.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_28.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_29.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_30.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_31.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_32.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_33.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_34.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_35.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_36.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_37.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_38.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_39.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_40.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_41.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_42.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_43.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_44.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_45.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_46.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_47.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_48.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/Idap_49.png">
+<meta property="article:published_time" content="2019-08-29T15:14:59.000Z">
+<meta property="article:modified_time" content="2019-12-10T03:04:58.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Idap">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/Idap_1.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/08/29/Idap%E6%9C%8D%E5%8A%A1/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/08/29/Idap%E6%9C%8D%E5%8A%A1/","path":"2019/08/29/Idap服务/","title":"Idap之二进制安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Idap之二进制安装 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-LDAP%E8%AE%A4%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">第一章 LDAP认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-Harbor%E7%94%A8%E6%88%B7%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">第二章 Harbor用户模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">用户模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-number">2.2.</span> <span class="nav-text">用户模型的建立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E7%9A%84%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">用户权限的管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%AE%89%E8%A3%85Berkeley-DB"><span class="nav-number">3.</span> <span class="nav-text">第三章 安装Berkeley DB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-OpenLDAP%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">第四章 OpenLDAP安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Idap%E5%AE%89%E8%A3%85"><span class="nav-number">4.1.</span> <span class="nav-text">Idap安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEIdap"><span class="nav-number">4.2.</span> <span class="nav-text">配置Idap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0-phpLDAPadmin%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">第五章 phpLDAPadmin安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Apache"><span class="nav-number">5.1.</span> <span class="nav-text">安装Apache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85php5"><span class="nav-number">5.2.</span> <span class="nav-text">安装php5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEApache"><span class="nav-number">5.3.</span> <span class="nav-text">配置Apache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95Apche-PHP%E5%AE%89%E8%A3%85%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="nav-number">5.4.</span> <span class="nav-text">测试Apche +PHP安装是否成功</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEphpLDAPadmin"><span class="nav-number">5.5.</span> <span class="nav-text">安装配置phpLDAPadmin</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0-Harbor%E9%9B%86%E6%88%90LDAP"><span class="nav-number">6.</span> <span class="nav-text">第六章 Harbor集成LDAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LDAP%E8%B4%A6%E5%8F%B7%E7%94%9F%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text">LDAP账号生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E8%AE%BE%E7%BD%AE"><span class="nav-number">6.2.</span> <span class="nav-text">权限设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0-Sonarqube%E9%9B%86%E6%88%90ldap"><span class="nav-number">7.</span> <span class="nav-text">第七章 Sonarqube集成ldap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8sonarqube%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.1.</span> <span class="nav-text">安装启动sonarqube服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B1%89%E5%8C%96"><span class="nav-number">7.2.</span> <span class="nav-text">汉化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0-Gitlab%E9%9B%86%E6%88%90ldap"><span class="nav-number">8.</span> <span class="nav-text">第八章 Gitlab集成ldap</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/08/29/Idap%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Idap之二进制安装 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Idap之二进制安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-08-29 23:14:59" itemprop="dateCreated datePublished" datetime="2019-08-29T23:14:59+08:00">2019-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-12-10 11:04:58" itemprop="dateModified" datetime="2019-12-10T11:04:58+08:00">2019-12-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Idap%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Idap服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="第一章-LDAP认证"><a href="#第一章-LDAP认证" class="headerlink" title="第一章 LDAP认证"></a>第一章 LDAP认证</h3><p><img src="/img/Idap_1.png" alt="image"><br>在上图中，LDAP Client指各种需要身份认证的软件，例如Apache、Proftpd和Samba等。LDAP Sever指的是实现LDAP协议的软件，例如OpenLDAP等。LDAP Directory Services指的是OpenLDAP的数据存储，如关系型数据库（MySQL）或查询效率更高的嵌入式数据库（BerkeleyDB），甚至是平面文本数据库（—个txt的文本文件）。可见，OpenLDAP软件只是LDAP协议的一种实现形式，并不包括后台数据库存储。但在很多时候管理员经常将LDAP Server和DataStorage放在同一台服务器，这样就产生了人们通常所说的“LDAP数据库”。虽然后台数据库（backend）可以是多种多样，但LDAP协议还规定了数据的存储方式。LDAP数据库是树状结构的，与DNS类似，如下图所示：<br><img src="/img/Idap_2.png" alt="image"><br>在上图中，以这种方式存储数据最大的一个好处就是查询速度快，LDAP数据库专门对读操作进行了优化， OpenLDAP配合Berkeley DB可使其读操作的效率得到很大提高。LDAP数据库的树状结构的另一个好处是便于分布式的管理。</p>
+<h3 id="第二章-Harbor用户模型"><a href="#第二章-Harbor用户模型" class="headerlink" title="第二章 Harbor用户模型"></a>第二章 Harbor用户模型</h3><h4 id="用户模型"><a href="#用户模型" class="headerlink" title="用户模型"></a>用户模型</h4><p>Harbor登录用户有管理员和普通用户两种类型<br>管理员模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dn: uid=wangdj104,ou=admin,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">cn:: 546L6YGT5rGf                  <span class="comment">#加密后的用户全名  此为王..</span></span><br><span class="line">employeetype: admin               <span class="comment">#标志为管理员</span></span><br><span class="line">mail: 1138523117@qq.com          <span class="comment">#邮箱必填</span></span><br><span class="line">objectclass: inetOrgPerson</span><br><span class="line">objectclass: top</span><br><span class="line">sn:: 546L                          <span class="comment">#加密后的用户姓  此为王</span></span><br><span class="line">uid: wangdj104</span><br><span class="line">userpassword: &#123;MD5&#125;DyoNF/7H+m7ndqjlKtr12w==  <span class="comment">#md5加密后的用户密码 此为111111</span></span><br></pre></td></tr></table></figure>
+
+<p>普通用户模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dn: uid=zhangj1143,ou=<span class="built_in">users</span>,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">cn:: 5byg5Yab                <span class="comment">#加密后的用户全名  此为张..</span></span><br><span class="line">employeetype: user           <span class="comment">#标志为普通用户</span></span><br><span class="line">mail: 23659874@qq.com       <span class="comment">#邮箱必填</span></span><br><span class="line">objectclass: inetOrgPerson</span><br><span class="line">objectclass: top</span><br><span class="line">sn:: 5byg                    <span class="comment">#加密后的用户姓  此为张</span></span><br><span class="line">uid: zhangj1143</span><br><span class="line">userpassword: &#123;MD5&#125;DyoNF/7H+m7ndqjlKtr12w==  <span class="comment">#md5加密后的用户密码 此为111111</span></span><br></pre></td></tr></table></figure>
+<h4 id="用户模型的建立"><a href="#用户模型的建立" class="headerlink" title="用户模型的建立"></a>用户模型的建立</h4><p>ldap环境搭建好后，登录界面化管理工具phpldapadmin后，显示如下。然后开始导入用户组和用户。<br><img src="/img/Idap_3.png" alt="image"><br>1）增加基础dn（相当于集团）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dn: dc=jichen,dc=chinaunicom</span><br><span class="line">dc: jichen</span><br><span class="line">o: jichen                 <span class="comment">#以上三项需和上图保持一致</span></span><br><span class="line">objectclass: dcObject</span><br><span class="line">objectclass: organization</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_4.png" alt="image"><br>2）导入组（cn,相当于分公司）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dn: cn=devops-dev- gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">cn: devops-dev-gitlab             <span class="comment">#设置的组名称</span></span><br><span class="line">gidnumber: 500                  <span class="comment">#可设其它值</span></span><br><span class="line">objectclass: posixGroup</span><br><span class="line">objectclass: top</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_5.png" alt="image"><br><img src="/img/Idap_6.png" alt="image"><br>3）导入组织单元（ou,相当于部门）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dn: ou=admin,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">objectclass: organizationalUnit</span><br><span class="line">objectclass: top</span><br><span class="line">ou: admin                       <span class="comment">#管理部门</span></span><br><span class="line"></span><br><span class="line">dn: ou=<span class="built_in">users</span>,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">objectclass: organizationalUnit</span><br><span class="line">objectclass: top</span><br><span class="line">ou: <span class="built_in">users</span>                   <span class="comment">#普通用户</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_7.png" alt="image"><br><img src="/img/Idap_8.png" alt="image"><br>4）导入员工</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dn: uid=wangdj104,ou=admin,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">cn:: 546L6YGT5rGf                  <span class="comment">#加密后的用户全名  此为王道江</span></span><br><span class="line">employeetype: admin               <span class="comment">#标志为管理员</span></span><br><span class="line">mail: 1138523117@qq.com          <span class="comment">#邮箱必填</span></span><br><span class="line">objectclass: inetOrgPerson</span><br><span class="line">objectclass: top</span><br><span class="line">sn:: 546L                          <span class="comment">#加密后的用户姓  此为王</span></span><br><span class="line">uid: wangdj104</span><br><span class="line">userpassword: &#123;MD5&#125;DyoNF/7H+m7ndqjlKtr12w==  <span class="comment">#md5加密后的用户密码 此为111111</span></span><br><span class="line"></span><br><span class="line">dn: uid=zhangj1143,ou=<span class="built_in">users</span>,cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom</span><br><span class="line">cn:: 5byg5Yab                <span class="comment">#加密后的用户全名  此为王道江</span></span><br><span class="line">employeetype: user           <span class="comment">#标志为普通用户</span></span><br><span class="line">mail: 23659874@qq.com       <span class="comment">#邮箱必填</span></span><br><span class="line">objectclass: inetOrgPerson</span><br><span class="line">objectclass: top</span><br><span class="line">sn:: 5byg                    <span class="comment">#加密后的用户姓  此为张</span></span><br><span class="line">uid: zhangj1143</span><br><span class="line">userpassword: &#123;MD5&#125;DyoNF/7H+m7ndqjlKtr12w==  <span class="comment">#md5加密后的用户密码 此为111111</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_9.png" alt="image"><br><img src="/img/Idap_10.png" alt="image"></p>
+<h4 id="用户权限的管理"><a href="#用户权限的管理" class="headerlink" title="用户权限的管理"></a>用户权限的管理</h4><p>使用上述建立的用户登录harbor,页面如下：<br><img src="/img/Idap_11.png" alt="image"><br><img src="/img/Idap_12.png" alt="image"><br><img src="/img/Idap_13.png" alt="image"><br>修改其权限为管理员，使用admin账号登录harbor<br><img src="/img/Idap_14.png" alt="image"><br><img src="/img/Idap_15.png" alt="image"><br>再次登录wangdj104账户，可以有更多的权限<br><img src="/img/Idap_16.png" alt="image"></p>
+<h3 id="第三章-安装Berkeley-DB"><a href="#第三章-安装Berkeley-DB" class="headerlink" title="第三章 安装Berkeley DB"></a>第三章 安装Berkeley DB</h3><p>Berkeley DB(BDB)是OpenLDAP后台数据库的默认配置，因此在安装OpenLDAP之前应先安装BDB<br>安装包下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/12TvaQRXADay2OvtiVOcLBg">https://pan.baidu.com/s/12TvaQRXADay2OvtiVOcLBg</a> 提取码: khgw<br><img src="/img/Idap_17.png" alt="image"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> db-5.3.28/build_unix/</span><br><span class="line">../dist/configure -prefix=/usr/local/BerkeleyDB(最好是装在此目录下，否则安装ldap时会报lib是一个目录的错误)</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<h3 id="第四章-OpenLDAP安装"><a href="#第四章-OpenLDAP安装" class="headerlink" title="第四章 OpenLDAP安装"></a>第四章 OpenLDAP安装</h3><p>linux搭建开源ldap服务器方法参考博文：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010783533/article/details/88572697">https://blog.csdn.net/u010783533/article/details/88572697</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/developerinit/article/details/77170569">https://blog.csdn.net/developerinit/article/details/77170569</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/muriyue6/article/details/82845523">https://blog.csdn.net/muriyue6/article/details/82845523</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MYSQLZOUQI/p/4840965.html">https://www.cnblogs.com/MYSQLZOUQI/p/4840965.html</a></p>
+<h4 id="Idap安装"><a href="#Idap安装" class="headerlink" title="Idap安装"></a>Idap安装</h4><p>ldap是统一认证服务，它的优点是存储用户认证等不经常改变的信息，有清晰的组织结构。本文使用的是openldap-2.4.47.tgz。<br>安装包下载链接：<a href="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release">ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release</a><br>（1）开始前需设置编译参数，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> CPPFLAGS=<span class="string">&quot;-I/usr/local/BerkeleyDB/include&quot;</span></span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">&quot;-L/usr/local/BerkeleyDB/lib&quot;</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="string">&quot;/usr/local/BerkeleyDB/lib&quot;</span></span><br></pre></td></tr></table></figure>
+<p>（2）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/home/deployer/idap/ldap</span><br></pre></td></tr></table></figure>
+<p>（3）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make depend</span><br></pre></td></tr></table></figure>
+<p>   Make depend是一种makefile的规则，通过扫描各个目录下的所有C&#x2F;C++ 代码，从而判断出文件之间的依赖关系，如a.cc文件中调用了b.h(如以形势include&lt;b.h&gt;)，如果之后a.cc文件被改动，那 么只需要重新编译a.cc文件，不需要编译b.h文件。否则所有的文件都需要重新编译<br>（4）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make <span class="built_in">test</span>（需要一段时间，可选操作）</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>安装完成后：etc目录显示的是配置文件，bin目录显示的ldap的客户端工具，sbin目录显示的是服务器相关执行文件，libexec下是ldap服务启动程序，.ldif是ldap特定的文件格式，这种格式的文件用于ldap数据的添加。<br><img src="/img/Idap_18.png" alt="image"></p>
+<h4 id="配置Idap"><a href="#配置Idap" class="headerlink" title="配置Idap"></a>配置Idap</h4><p>（1）设置LDAP使用的Schema<br>编辑slapd.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/deployer/idap/ldap/etc/openldap</span><br></pre></td></tr></table></figure>
+<p>在文件中找到如下语句。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include  /home/deployer/idap/ldap/etc/schema/core.schema</span><br></pre></td></tr></table></figure>
+<p>在该语句的后面添加以下语句。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/corba.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/cosine.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/dyngroup.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/inetorgperson.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/java.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/misc.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/nis.schema</span><br><span class="line">include /home/deployer/idap/ldap/etc/openldap/schema/openldap.schema</span><br></pre></td></tr></table></figure>
+<p>(2)为目录树设置后缀<br>在slapd.conf文件中找到如下语句:<br>suffix “dc&#x3D;my-domain, dc&#x3D;com”<br>将其改为如下内容。<br>suffix “dc&#x3D;my-test, dc&#x3D;chinaunicom”</p>
+<p>(3)为LDAP服务器管理员设置DN<br>在slapd.conf文件中找到如下语句:<br>rootdn “cn&#x3D;Manager, dc&#x3D;my-domain, dc &#x3D; com”<br>将其改为如下内容。<br>rootdn “cn&#x3D;Manager, dc&#x3D;my-test, dc &#x3D; chinaunicom”</p>
+<p>(4)为LDAP服务器管理员设置口令<br> 1）生成加密密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/deployer/idap/ldap/sbin</span><br><span class="line">[root@localhost sbin] <span class="comment"># ./slappasswd</span></span><br><span class="line">New password:</span><br><span class="line">Re-enter new password:</span><br><span class="line">&#123;SSHA&#125;YARtaZb0fjq3B2gJuflulDS7vezL7O1p</span><br></pre></td></tr></table></figure>
+<p> 2)设置管理员密码<br>在slapd.conf文件中找到如下语句：<br>rootpw secret<br>将其改为如下内容。<br>rootpw {SSHA}YARtaZb0fjq3B2gJuflulDS7vezL7O1p<br>(5)初始化OpenLDAP（可选）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@instance-0pk09gjj /]<span class="comment"># cd /home/deployer/idap/ldap/var/openldap-data/</span></span><br><span class="line">[root@instance-0pk09gjj openldap-data]<span class="comment"># cp DB_CONFIG.example DB_CONFIG</span></span><br></pre></td></tr></table></figure>
+
+<p>(6)启动LDAP服务器<br>要启动LDAP服务器，只需执行以下命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">nohup</span> /home/deployer/idap/ldap/libexec/slapd -f /home/deployer/idap/ldap/etc/openldap/slapd.conf -d 255 &amp;</span><br></pre></td></tr></table></figure>
+<p>然后执行以下命令确保sland进程启动成功。执行结果如下所示，显示“|-slapd”表示LDAP服务器已经成功启动。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># pstree|grep &quot;slapd&quot;</span></span><br><span class="line">                  |-slapd -----&#123;slapd&#125;/</span><br></pre></td></tr></table></figure>
+<p>(7)创建一个ldif文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># cd /home/deployer/idap/ldap/etc/openldap</span></span><br><span class="line">[root@localhost bin]<span class="comment"># vim /home/deployer/idap/ldap/etc/openldap/example.ldif</span></span><br><span class="line">[root@localhost bin]<span class="comment"># cat /home/deployer/idap/ldap/etc/openldap/example.ldif</span></span><br><span class="line">dn:dc=my-test,dc=chinaunicom</span><br><span class="line">objectclass:dcObject</span><br><span class="line">objectclass:organization</span><br><span class="line">dc:my-test</span><br><span class="line">o:my-test,Inc.</span><br><span class="line"></span><br><span class="line">dn:ou=Harbor,dc=my-test,dc=chinaunicom</span><br><span class="line">objectclass:organizationalUnit</span><br><span class="line">ou:Harbor</span><br></pre></td></tr></table></figure>
+
+<p>(8) 添加添加ldif文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/deployer/idap/ldap/bin/ldapadd -x -D <span class="string">&#x27;cn=Manager,dc=my-test,dc=chinaunicom&#x27;</span> -W -f /home/deployer/idap/ldap/etc/openldap/example.ldif</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_19.png" alt="image"><br><img src="/img/Idap_20.png" alt="image"></p>
+<h3 id="第五章-phpLDAPadmin安装配置"><a href="#第五章-phpLDAPadmin安装配置" class="headerlink" title="第五章 phpLDAPadmin安装配置"></a>第五章 phpLDAPadmin安装配置</h3><p>安装博客：<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_681e31a20102vqdc.html">http://blog.sina.com.cn/s/blog_681e31a20102vqdc.html</a><br>安装包下载链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1fEu-CENRJ5ja8knHQzyuZw">https://pan.baidu.com/s/1fEu-CENRJ5ja8knHQzyuZw</a> 提取码: fgij<br><img src="/img/Idap_21.png" alt="image"></p>
+<h4 id="安装Apache"><a href="#安装Apache" class="headerlink" title="安装Apache"></a>安装Apache</h4><p> 下载apache版本httpd-2.2.26.tar.gz，并下载相关的支持组件包 apr-1.5.0.tar.gz, apr-util-1.5.3.tar.gz<br>（1）解压apache及相关组件包源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar -zxvf  httpd-2.2.26.tar.gz</span></span><br><span class="line"><span class="comment"># tar -zxvf  apr-1.5.0.tar.gz</span></span><br><span class="line"><span class="comment"># tar -zxvf  apr-util-1.5.3.tar.gz</span></span><br></pre></td></tr></table></figure>
+<p>（2）安装apr</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd  apr-1.5.0</span></span><br><span class="line"><span class="comment"># ./configure --prefix=/usr/local/apr</span></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># make install</span></span><br></pre></td></tr></table></figure>
+<p>（3）安装apr-util</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd apr-util-1.5.3</span></span><br><span class="line"><span class="comment"># ./configure --prefix=/usr/local/apr-util   --with-apr=/usr/local/apr</span></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># make install</span></span><br></pre></td></tr></table></figure>
+<p>（4）安装apache</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cd  httpd-2.2.26</span></span><br><span class="line"><span class="comment"># ./configure --prefix=/usr/local/apache --enable-so  --enable-rewrite --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util</span></span><br><span class="line">//安装到指定目录，so开启动态模块支持，rewrite开启地址重写。</span><br><span class="line"><span class="comment"># make;</span></span><br><span class="line"><span class="comment">#make install</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="安装php5"><a href="#安装php5" class="headerlink" title="安装php5"></a>安装php5</h4><p>(1) 安装libxml2<br>获取php支持组件libxml2-2.7.8.tar.gz<br>安装如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tar -zxvf  libxml2-2.7.8.tar.gz</span></span><br><span class="line"><span class="comment">#cd libxml2-2.7.8</span></span><br><span class="line"><span class="comment">#./configure --prefix=/usr/local/libxml2</span></span><br><span class="line"><span class="comment">#make</span></span><br><span class="line"><span class="comment">#make install</span></span><br></pre></td></tr></table></figure>
+<p>   安装成功以后，在&#x2F;usr&#x2F;local&#x2F;libxml2&#x2F;目录下将生成bin、include、lib、man和share五个目录。在后面安装PHP5源代码包的配置时，会通过在configure命令的选项中加上”–with-libxml-dir&#x3D;&#x2F;usr&#x2F; local&#x2F;libxml2”选项，用于指定安装libxml2库文件的位置。<br>(2) 安装php5</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tar -zxvf  php-5.6.0.tar.gz</span></span><br><span class="line"><span class="comment"># cd  php-5.6.0</span></span><br><span class="line"><span class="comment">#  ./configure  --prefix=/usr/local/php5  \</span></span><br><span class="line">                --with-apxs2=/usr/local/apache/bin/apxs   \</span><br><span class="line">                --with-ldap=/home/deployer/idap/ldap  \</span><br><span class="line">                --with-config-file-path=/usr/local/php5  \</span><br><span class="line">                --with-libxml-dir=/usr/local/libxml2    \</span><br><span class="line">                --with-gettext</span><br></pre></td></tr></table></figure>
+<p>&#x2F;&#x2F;指定安装目录，跟apache融合，指定配置文件位置，启用ldap支持（必须的），启用 gettext支持（必须要启用的支持）<br>注：出现以下信息则配置环境成功（.&#x2F;configure），才可继续输入安装命令make和make install。<br><img src="/img/Idap_22.png" alt="image"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   make</span><br><span class="line">   make install</span><br><span class="line">   <span class="built_in">cp</span> php.ini-development     /usr/local/php5/php.ini</span><br><span class="line">//把配置文件拷贝过去,编辑它，在适当位置添加include_path = /usr/local/php5/lib/php</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置Apache"><a href="#配置Apache" class="headerlink" title="配置Apache"></a>配置Apache</h4><p>(1) 配置apache主文件httpd.conf<br>有三个地方需要修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/apache/conf/httpd.conf</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_23.png" alt="image"><br><img src="/img/Idap_24.png" alt="image"><br><img src="/img/Idap_25.png" alt="image"></p>
+<p>(2) 配置apache支持php</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/apache/conf/httpd.conf</span><br></pre></td></tr></table></figure>
+<p>在AddType application&#x2F;x-gzip .gz .tgz 下添加如下内容<br><img src="/img/Idap_26.png" alt="image"><br>在DirectoryIndex index.html 后添加如下内容<br><img src="/img/Idap_27.png" alt="image"></p>
+<h4 id="测试Apche-PHP安装是否成功"><a href="#测试Apche-PHP安装是否成功" class="headerlink" title="测试Apche +PHP安装是否成功"></a>测试Apche +PHP安装是否成功</h4><p>启动apache，命令行输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/apache/bin</span><br><span class="line">./apachectl start</span><br></pre></td></tr></table></figure>
+<p>在浏览器输入IP ： <a target="_blank" rel="noopener" href="http://192.168.117.132,显示如下则成功安装apache/">http://192.168.117.132，显示如下则成功安装apache</a><br><img src="/img/Idap_28.png" alt="image"></p>
+<h4 id="安装配置phpLDAPadmin"><a href="#安装配置phpLDAPadmin" class="headerlink" title="安装配置phpLDAPadmin"></a>安装配置phpLDAPadmin</h4><p>(1)安装phpldapadmin</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf phpldapadmin-1.2.3.tgz</span><br><span class="line"><span class="built_in">mv</span>  phpldapadmin-1.2.3   /usr/local/phpldapadmin</span><br><span class="line"><span class="built_in">cd</span>  /usr/local/phpldapadmin/config</span><br><span class="line"><span class="built_in">cp</span>  config.php.example  config.php</span><br></pre></td></tr></table></figure>
+<p>openldapadmin的安装很简单，只需要解压，然后移动到相应的目录就可以了。默认情况下phpldapadmin自带了一个示例配置文件config.php.example，对该文件稍做修改，就可以使用了。<br>（2）配置config.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  config.php</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Idap_29.png" alt="image"><br>注：上面的array（’’）里面需要跟之前oepnldap的配置文件slapd.conf里的suffix的值一致<br><img src="/img/Idap_30.png" alt="image"><br>注：登陆的账号和密码设置为空，则网页弹出需要手动输入（账号为slapd.conf的rootdn，密码是rootpw）；若想绑定账号，则绑定密码项绑定与否都可以<br>(3)建立phpldapadmin虚拟目录及设置用户认证。<br>在httpd.conf文件末添加下图所示内容，建立虚拟目录<br><img src="/img/Idap_31.png" alt="image"><br>设置admin密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">mkdir</span> -p /etc/apach2</span><br><span class="line"> <span class="built_in">cd</span> /etc/apach2</span><br><span class="line">/usr/local/apache/bin/htpasswd  -c php_ldap_admin_pwd   admin</span><br></pre></td></tr></table></figure>
+<p>(4)配置phpLDAPadmin使用中文<br>1)编辑文件&#x2F;usr&#x2F;local&#x2F;phpldapadmin&#x2F;config&#x2F;config.php，修改语句：<br>&#x2F;&#x2F; $config-&gt;custom-&gt;appearance[‘language’] &#x3D; ‘auto’;<br>将“&#x2F;&#x2F;”注释符号去处，并将语句改为：<br>$config-&gt; custom-&gt;appearance[‘language’] &#x3D; ‘zh_CN’;<br>2)使用下列的命令转换phpLDAPadmin语言文件的编码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iconv -f gbk -t utf8 /usr/local/phpldapadmin/locale/zh_CN/LC_MESSAGES/messages.mo &gt; /usr/local/phpldapadmin/locale/zh_CN/LC_MESSAGES/messages.new.po</span><br><span class="line">msgfmt -o /usr/local/phpldapadmin/locale/zh_CN/LC_MESSAGES/messages.mo /usr/ <span class="built_in">local</span>/phpldapadmin/locale/zh_CN/LC_MESSAGES/messages.new.po</span><br></pre></td></tr></table></figure>
+<p>(5)启动phpldapadmin<br>保存上述httpd.conf文件，重启Apache服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/apache/bin</span><br><span class="line">./apachectl  restart</span><br></pre></td></tr></table></figure>
+<p>浏览器输入：<a target="_blank" rel="noopener" href="http://192.21.11.132/phpldapadmin/%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE%E3%80%82%E5%A6%82%E4%B8%8B%E5%9B%BE">http://192.21.11.132/phpldapadmin/进行访问。如下图</a><br><img src="/img/Idap_32.png" alt="image"><br><img src="/img/Idap_33.png" alt="image"><br>注：在建立phpldapadmin虚拟目录及设置用户认证后，在浏览器打开phpldapadmin出现下图错误，phpldapadmin&#x2F;lib&#x2F;functions.php 是下载安装包的文件，不应有错。在官网查了下（<a target="_blank" rel="noopener" href="http://sourceforge.net/u/nihilisticz/phpldapadmin/ci/7e53dab990748c546b79f0610c3a7a58431e9ebc/">http://sourceforge.net/u/nihilisticz/phpldapadmin/ci/7e53dab990748c546b79f0610c3a7a58431e9ebc/</a> ），原来是软件版本更新，几个文件都需要修改，照着上面依次修改了lib&#x2F;PageRender.php、lib&#x2F;ds_ldap.php、 lib&#x2F;ds_ldap.php 、lib&#x2F;functions.php 、lib\TemplateRender.php 里面的函数及相应代码，最后运行成功。<br><img src="/img/Idap_34.png" alt="image"></p>
+<h3 id="第六章-Harbor集成LDAP"><a href="#第六章-Harbor集成LDAP" class="headerlink" title="第六章 Harbor集成LDAP"></a>第六章 Harbor集成LDAP</h3><p>默认配置文件在harbor.cfg，我们可以先不添加配置，直接在harbor web界面进行配置，也可两者同时设置。</p>
+<h4 id="LDAP账号生成"><a href="#LDAP账号生成" class="headerlink" title="LDAP账号生成"></a>LDAP账号生成</h4><p>Openldap是一个统一的账户管理工具，只进行用户的管理，不进行权限的管理，权限管理在各自的组件中进行。<br>搭建phpldapadmin界面化管理工具，创建组、组织单元、账户：<br>1）	创建一个组<br>点击dc&#x3D;my-test,dc&#x3D;chinaunicom-》创建一个子条目-》默认-》posixGroup-》RDN选择cn,cn框填写组名-》创建对象，本例为devops-dev-harbor;<br>2）	创建一个组织单元ou<br>点击cn&#x3D;devops-dev-harbor-》创建一个子条目-》默认-》organizationalUnit-》RDN选择ou,ou框填写单元名-》创建对象<br>3）	创建一个用户<br>点击ou&#x3D;users-》创建一个子条目-》默认-》inetOrgPerson-》RDN选择User Name(uid)-》cn框填写用户名，sn框填写中文名，设置密码，User Name<br><img src="/img/Idap_35.png" alt="image"><br>vim harbor.cfg<br><img src="/img/Idap_36.png" alt="image"><br>再harbor界面设置认证方式为ldap<br><img src="/img/Idap_37.png" alt="image"><br>另外，harbor1.6版本，还可以进行组的管理。<br><img src="/img/Idap_38.png" alt="image"><br>然后点击组管理。新增组<br><img src="/img/Idap_39.png" alt="image"><br><img src="/img/Idap_40.png" alt="image"><br>配置完成后，即可使用创建的账户登录harbor<br><img src="/img/Idap_41.png" alt="image"><br>注意：初次使用ldap的账户登录harbor后，认证模式就不可更改了。并且在用户管理中，可以看到刚刚登录的ldap用户（admin用户下）</p>
+<h4 id="权限设置"><a href="#权限设置" class="headerlink" title="权限设置"></a>权限设置</h4><p>Openldap创建的用户是普通的用户，若想将该用户设置成管理员，需要登录harbor的超级管理员（admin）进行设置。<br><img src="/img/Idap_42.png" alt="image"><br>普通用户的页面如下：<br><img src="/img/Idap_43.png" alt="image"></p>
+<h3 id="第七章-Sonarqube集成ldap"><a href="#第七章-Sonarqube集成ldap" class="headerlink" title="第七章 Sonarqube集成ldap"></a>第七章 Sonarqube集成ldap</h3><p>参考博客<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/neufeng2010/article/details/99655942">https://blog.csdn.net/neufeng2010/article/details/99655942</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/BeauXie/article/details/81157330">https://blog.csdn.net/BeauXie/article/details/81157330</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21816375/article/details/80787993">https://blog.csdn.net/qq_21816375/article/details/80787993</a></p>
+<h4 id="安装启动sonarqube服务"><a href="#安装启动sonarqube服务" class="headerlink" title="安装启动sonarqube服务"></a>安装启动sonarqube服务</h4><p>安装包下载地址：<a target="_blank" rel="noopener" href="https://www.sonarqube.org/downloads/%E3%80%82">https://www.sonarqube.org/downloads/。</a><br>版本要求7.2.1以上</p>
+<p>修改sonar配置文件sonar.properties</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /home/deployer/sonarqube-7.2.1/conf/sonar.properties</span><br></pre></td></tr></table></figure>
+<p>修改如下(请将具体信息按照自己的LDAP服务器信息进行修改):</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># LDAP CONFIGURATION</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable the LDAP feature</span></span><br><span class="line">sonar.security.realm=LDAP           //取消注释</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set to true when connecting to a LDAP server using a case-insensitive setup.</span></span><br><span class="line"><span class="comment"># sonar.authenticator.downcase=true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># URL of the LDAP server. Note that if you are using ldaps, then you should install the server certificate into the Java truststore.</span></span><br><span class="line">ldap.url=ldap://192.168.117.132:389     //取消注释，填写实际ldap服务器地址</span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind DN is the username of an LDAP user to connect (or bind) with. Leave this blank for anonymous access to the LDAP directory (optional)</span></span><br><span class="line">ldap.bindDn=cn=Manager,dc=my-test,dc=chinaunicom   //取消注释，填写实际ldap服务器基础DN</span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind Password is the password of the user to connect with. Leave this blank for anonymous access to the LDAP directory (optional)</span></span><br><span class="line">ldap.bindPassword=111111   //取消注释，填写实际ldap服务器基础DN密码</span><br><span class="line"></span><br><span class="line"><span class="comment"># Possible values: simple | CRAM-MD5 | DIGEST-MD5 | GSSAPI See http://java.sun.com/products/jndi/tutorial/ldap/security/auth.html (default: simple)</span></span><br><span class="line">ldap.authentication=simple     //取消注释</span><br></pre></td></tr></table></figure>
+
+<p>启动并查看启动日志<br>.&#x2F;sonar.sh console（可以实时查看sonarqube的启动日志）<br>如果报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Running SonarQube...</span><br><span class="line">wrapper  | --&gt; Wrapper Started as Console</span><br><span class="line">wrapper  | Launching a JVM...</span><br><span class="line">jvm 1    | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org</span><br><span class="line">jvm 1    |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.</span><br><span class="line">jvm 1    |</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.s.a.AppFileSystem] Cleaning or creating temp directory /home/deployer/sonarqube-7.2.1/temp</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.s.a.es.EsSettings] Elasticsearch listening on /192.168.117.130:44172</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.s.a.p.ProcessLauncherImpl] Launch process[[key=<span class="string">&#x27;es&#x27;</span>, ipcIndex=1, logFilenamePrefix=es]] from [/home/deployer/sonarqube-7.2.1/elasticsearch]: /home/deployer/sonarqube-7.2.1/elasticsearch/bin/elasticsearch -Epath.conf=/home/deployer/sonarqube-7.2.1/temp/conf/es</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.s.a.SchedulerImpl] Waiting <span class="keyword">for</span> Elasticsearch to be up and running</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.e.p.PluginsService] no modules loaded</span><br><span class="line">jvm 1    | 2019.08.19 07:44:17 INFO  app[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.transport.Netty4Plugin]</span><br><span class="line">jvm 1    | 2019.08.19 07:44:19 WARN  app[][o.s.a.p.AbstractProcessMonitor] Process exited with <span class="built_in">exit</span> value [es]: 1</span><br><span class="line">jvm 1    | 2019.08.19 07:44:19 INFO  app[][o.s.a.SchedulerImpl] Process [es] is stopped</span><br><span class="line">jvm 1    | 2019.08.19 07:44:19 INFO  app[][o.s.a.SchedulerImpl] SonarQube is stopped</span><br></pre></td></tr></table></figure>
+<p>出现上述错误原因是不能用root用户启动es<br>创建sonarUser用户并赋权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@i-vzdytl5t linux-x86-64]<span class="comment"># adduser sonarUser</span></span><br><span class="line">[root@i-vzdytl5t linux-x86-64]<span class="comment"># passwd sonarUser</span></span><br><span class="line">Changing password <span class="keyword">for</span> user sonarUser.</span><br><span class="line">New password:</span><br><span class="line">BAD PASSWORD: The password is shorter than 8 characters</span><br><span class="line">Retype new password:</span><br><span class="line">passwd: all authentication tokens updated successfully.</span><br><span class="line">[root@i-vzdytl5t linux-x86-64]<span class="comment"># chown -R sonarUser:sonarUser sonarqube-7.2.1</span></span><br></pre></td></tr></table></figure>
+<p>再次启动sonarqube，若出现下图错误<br><img src="/img/Idap_44.png" alt="image"><br>删除sonarqube-7.2.1&#x2F;temp目录下的所有文件即可<br>如果出现下述错误<br><img src="/img/Idap_45.png" alt="image"><br>切换到root用户，编辑limits.conf添加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/security/limits.conf</span><br><span class="line">* soft nofile 65536</span><br><span class="line">* hard nofile 65536</span><br></pre></td></tr></table></figure>
+<p>切换到root用户，编辑sysctl.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br><span class="line">在文件最后添加一行</span><br><span class="line">vm.max_map_count=262144</span><br></pre></td></tr></table></figure>
+<p>重新启动即可，出现下图即为成功安装了集成LDAP的sonarqube<br><img src="/img/Idap_46.png" alt="image"><br>打开sonar网址，输入LDAP中的用户名和密码后点击登录</p>
+<h4 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h4><p>点击界面上的Adminstration,然后选择Marketplace，在Plugins一栏，搜索Chinese Pack，然后点击insatll进行安装，如下所示:<br><img src="/img/Idap_47.png" alt="image"><br>安裝完成以后，点击页面上Restart按钮，重启服务器，如下图所示:<br><img src="/img/Idap_48.png" alt="image"><br>等待一会儿，重启完毕以后，会自动跳转到登录界面。输入admin&#x2F;admin登录以后，便会看到汉化成功:<br><img src="/img/Idap_49.png" alt="image"><br>至此，SonarQube整合LDAP完成</p>
+<h3 id="第八章-Gitlab集成ldap"><a href="#第八章-Gitlab集成ldap" class="headerlink" title="第八章 Gitlab集成ldap"></a>第八章 Gitlab集成ldap</h3><p>修改gitlab.rb文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">gitlab_rails[<span class="string">&#x27;ldap_enabled&#x27;</span>] = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###! **remember to close this block with &#x27;EOS&#x27; below**</span></span><br><span class="line">gitlab_rails[<span class="string">&#x27;ldap_servers&#x27;</span>] = YAML.load &lt;&lt;-<span class="string">&#x27;EOS&#x27;</span></span><br><span class="line">  main: <span class="comment"># &#x27;main&#x27; is the GitLab &#x27;provider ID&#x27; of this LDAP server</span></span><br><span class="line">    label: <span class="string">&#x27;LDAP&#x27;</span></span><br><span class="line">    host: <span class="string">&#x27;_your_ldap_server&#x27;</span></span><br><span class="line">     port: 389</span><br><span class="line">     uid: <span class="string">&#x27;uid&#x27;</span></span><br><span class="line">     bind_dn: <span class="string">&#x27;cn=Manager,dc=jichen,dc=chinaunicom&#x27;</span></span><br><span class="line">     password: <span class="string">&#x27;111111&#x27;</span></span><br><span class="line">     encryption: <span class="string">&#x27;plain&#x27;</span></span><br><span class="line"><span class="comment"># &quot;start_tls&quot; or &quot;simple_tls&quot; or &quot;plain&quot;</span></span><br><span class="line"><span class="comment">#     verify_certificates: true</span></span><br><span class="line"><span class="comment">#     active_directory: true</span></span><br><span class="line">     allow_username_or_email_login: <span class="literal">false</span></span><br><span class="line"><span class="comment">#     lowercase_usernames: false</span></span><br><span class="line"><span class="comment">#     block_auto_created_users: false</span></span><br><span class="line">     base: <span class="string">&#x27;cn=devops-dev-gitlab,dc=jichen,dc=chinaunicom&#x27;</span></span><br><span class="line"><span class="comment">#     user_filter: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     ## EE only</span></span><br><span class="line"><span class="comment">#     group_base: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     admin_group: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     sync_ssh_keys: false</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#   secondary: # &#x27;secondary&#x27; is the GitLab &#x27;provider ID&#x27; of second LDAP server</span></span><br><span class="line"><span class="comment">#     label: &#x27;LDAP&#x27;</span></span><br><span class="line"><span class="comment">#     host: &#x27;_your_ldap_server&#x27;</span></span><br><span class="line"><span class="comment">#     port: 389</span></span><br><span class="line"><span class="comment">#     uid: &#x27;sAMAccountName&#x27;</span></span><br><span class="line"><span class="comment">#     bind_dn: &#x27;_the_full_dn_of_the_user_you_will_bind_with&#x27;</span></span><br><span class="line"><span class="comment">#     password: &#x27;_the_password_of_the_bind_user&#x27;</span></span><br><span class="line"><span class="comment">#     encryption: &#x27;plain&#x27; # &quot;start_tls&quot; or &quot;simple_tls&quot; or &quot;plain&quot;</span></span><br><span class="line"><span class="comment">#     verify_certificates: true</span></span><br><span class="line"><span class="comment">#     active_directory: true</span></span><br><span class="line"><span class="comment">#     allow_username_or_email_login: false</span></span><br><span class="line"><span class="comment">#     lowercase_usernames: false</span></span><br><span class="line"><span class="comment">#     block_auto_created_users: false</span></span><br><span class="line"><span class="comment">#     base: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     user_filter: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     ## EE only</span></span><br><span class="line"><span class="comment">#     group_base: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     admin_group: &#x27;&#x27;</span></span><br><span class="line"><span class="comment">#     sync_ssh_keys: false</span></span><br><span class="line"> EOS</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Idap/" rel="tag"># Idap</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/07/Pipeline-script-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE/" rel="prev" title="Pipeline script 自动化测试流程配置">
+                  <i class="fa fa-angle-left"></i> Pipeline script 自动化测试流程配置
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/03/%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0yum%E6%BA%90/" rel="next" title="配置本地yum源">
+                  配置本地yum源 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

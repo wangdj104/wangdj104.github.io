@@ -1,37 +1,361 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="由于Redhat或CentOS等发行版本自带postgresql数据库版本为9.2，由于gitlab 9+版本以上需要 postgresq 9.6版本，因此本文档安装(postgresql-10.1)。PostgreSQL是一个功能强大,开源对象关系型数据库系统。配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Postgresql高可用部署文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/10/Postgresql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="由于Redhat或CentOS等发行版本自带postgresql数据库版本为9.2，由于gitlab 9+版本以上需要 postgresq 9.6版本，因此本文档安装(postgresql-10.1)。PostgreSQL是一个功能强大,开源对象关系型数据库系统。配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131）">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_5.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_6.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_7.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_8.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_9.png">
+<meta property="article:published_time" content="2019-07-10T12:29:25.000Z">
+<meta property="article:modified_time" content="2019-07-11T16:31:34.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Postgresql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/postgresql_5.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/10/Postgresql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/10/Postgresql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/07/10/Postgresql高可用部署文档/","title":"Postgresql高可用部署文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Postgresql高可用部署文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E8%BF%99%E4%B8%89%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%E5%88%86%E5%88%AB%E5%AE%89%E8%A3%85Postgresql"><span class="nav-number">1.</span> <span class="nav-text">在这三台机器上分别安装Postgresql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEPostgreSQL-Master%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">配置PostgreSQL Master节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEPostgreSQL-Slave%E8%8A%82%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">配置PostgreSQL Slave节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8Fservice%E5%92%8Csystemctl%E6%AF%94%E8%BE%83"><span class="nav-number">5.</span> <span class="nav-text">Linux 服务管理两种方式service和systemctl比较</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/10/Postgresql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Postgresql高可用部署文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Postgresql高可用部署文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-07-10 20:29:25" itemprop="dateCreated datePublished" datetime="2019-07-10T20:29:25+08:00">2019-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-12 00:31:34" itemprop="dateModified" datetime="2019-07-12T00:31:34+08:00">2019-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Postgresql%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Postgresql服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>由于Redhat或CentOS等发行版本自带postgresql数据库版本为9.2，由于gitlab 9+版本以上需要 postgresq 9.6版本，因此本文档安装(postgresql-10.1)。PostgreSQL是一个功能强大,开源对象关系型数据库系统。<br>配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131）</p>
+<h3 id="在这三台机器上分别安装Postgresql"><a href="#在这三台机器上分别安装Postgresql" class="headerlink" title="在这三台机器上分别安装Postgresql"></a>在这三台机器上分别安装Postgresql</h3><p>按照Postgresql部署文档在这三台机器上安装Postgresql</p>
+<h3 id="配置PostgreSQL-Master节点"><a href="#配置PostgreSQL-Master节点" class="headerlink" title="配置PostgreSQL Master节点"></a>配置PostgreSQL Master节点</h3><p>i)设置replication用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line"><span class="built_in">cd</span> /usr/local/pgsql/bin</span><br><span class="line">./psql</span><br><span class="line">CREATE ROLE repluser WITH REPLICATION PASSWORD <span class="string">&#x27;postgres&#x27;</span> LOGIN;</span><br><span class="line">\q</span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<p>ii)停止postgresql服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop postgresql</span><br></pre></td></tr></table></figure>
+<p>iii)修改postgresql配置，内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/postgresql.conf</span><br><span class="line">wal_level = hot_standby</span><br><span class="line">max_wal_senders = 5</span><br><span class="line">wal_keep_segments = 32</span><br><span class="line">archive_mode = on</span><br><span class="line">archive_command = <span class="string">&#x27;cp %p /usr/local/pgsql/archive/%f&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>iv)创建归档目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /usr/local/pgsql/archive</span><br><span class="line"><span class="built_in">chown</span> -R postgres:postgres /usr/local/pgsql/archive</span><br></pre></td></tr></table></figure>
+<p>v)允许replication连接数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/pg_hba.conf</span><br></pre></td></tr></table></figure>
+<p>  添加如下内容:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">host    replication     repluser        192.168.117.0/24        md5</span><br><span class="line">host    all             repluser        192.168.117.0/24        trust</span><br><span class="line">host    all             all             0.0.0.0/0               md5</span><br></pre></td></tr></table></figure>
+<p>vi)启动postgresql数据库服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start postgresql</span><br></pre></td></tr></table></figure>
+<h3 id="配置PostgreSQL-Slave节点"><a href="#配置PostgreSQL-Slave节点" class="headerlink" title="配置PostgreSQL Slave节点"></a>配置PostgreSQL Slave节点</h3><p>i)停止postgresql数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop postgresql</span><br></pre></td></tr></table></figure>
+<p>ii)清空数据目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /usr/local/pgsql/data/*</span><br></pre></td></tr></table></figure>
+<p>iii)初始化备分数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/pgsql/bin/pg_basebackup -h 192.168.117.129 -D /usr/local/pgsql/data -P -U repluser -X stream</span><br></pre></td></tr></table></figure>
+<p>iv)修改配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/postgresql.conf</span><br></pre></td></tr></table></figure>
+<p>修改项为：hot_standby &#x3D; on<br>v)创建恢复配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">cp</span> /usr/local/pgsql/share/recovery.conf.sample /usr/local/pgsql/data/recovery.conf</span><br><span class="line">  vim /usr/local/pgsql/data/recovery.conf</span><br><span class="line">  standby_mode = <span class="string">&#x27;on&#x27;</span></span><br><span class="line">primary_conninfo = <span class="string">&#x27;host=92.168.117.129 port=5432 user=repluser password=postgres&#x27;</span></span><br><span class="line">  trigger_file = <span class="string">&#x27;/usr/local/pgsql/trigger&#x27;</span></span><br><span class="line">  restore_command = <span class="string">&#x27;cp /usr/local/pgsql/archive/%f %p&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>vi)启动数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart postgresql</span><br></pre></td></tr></table></figure>
+<p>若果用上述命令,不报错,但查不到postgresql的进程,则试着使用下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service postgresql start</span><br></pre></td></tr></table></figure>
+<p>若出现下述问题<br><img src="/img/postgresql_5.png" alt="image"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R postgres:postgres /usr/local/pgsql/data/</span><br></pre></td></tr></table></figure>
+<p>重新执行即可查看到postgresql进程（ps:不知道为什么systemctl start postgresql和service postgresql start不能起到相同的效果）</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>–主库查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line"><span class="built_in">cd</span> /usr/local/pgsql/bin</span><br><span class="line">./psql</span><br><span class="line"><span class="keyword">select</span> client_addr,sync_state from pg_stat_replication;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_6.png" alt="image"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postgres=<span class="comment"># select * from pg_stat_replication;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_7.png" alt="image"><br>–主库创建一个数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">postgres=<span class="comment"># create database test;</span></span><br><span class="line">CREATE DATABASE</span><br><span class="line">postgres=<span class="comment"># \l     //  查看当前所有数据库</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_8.png" alt="image"></p>
+<p>–查看从库中是否已经同步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line"><span class="built_in">cd</span> /usr/local/pgsql/bin</span><br><span class="line">./psql</span><br><span class="line">postgres=<span class="comment"># \l</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_9.png" alt="image"></p>
+<h3 id="Linux-服务管理两种方式service和systemctl比较"><a href="#Linux-服务管理两种方式service和systemctl比较" class="headerlink" title="Linux 服务管理两种方式service和systemctl比较"></a>Linux 服务管理两种方式service和systemctl比较</h3><p>i)service命令<br>service命令其实是去&#x2F;etc&#x2F;init.d目录下，去执行相关程序。其中脚本需要我们自己编写。<br>ii)systemctl命令<br>systemd是Linux系统最新的初始化系统(init),作用是提高系统的启动速度，尽可能启动较少的进程，尽可能更多进程并发启动。<br>systemd对应的进程管理命令是systemctl<br>1)systemctl命令兼容了service<br>即systemctl也会去&#x2F;etc&#x2F;init.d目录下，查看，执行相关程序<br>2)systemctl命令管理systemd的资源Unit<br>systemd的Unit放在目录&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system(Centos)或&#x2F;etc&#x2F;systemd&#x2F;system(Ubuntu)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Postgresql/" rel="tag"># Postgresql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/10/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="prev" title="Redis高可用部署文档">
+                  <i class="fa fa-angle-left"></i> Redis高可用部署文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/10/Gitlab%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="next" title="Gitlab高可用部署文档">
+                  Gitlab高可用部署文档 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

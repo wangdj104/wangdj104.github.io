@@ -1,37 +1,385 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="安装包下载链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1-HLP6AbAdsy5-v82CBZNIQ 提取码: pkde本文部署glusterfs集群在四台机器192.168.117.129  gfs129192.168.117.130  gfs130192.168.117.131  gfs131192.168.117.132  gfs132 GlusterFs离线安装(需在四台机器上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Glusterfs服务">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/21/Glusterfs%E6%9C%8D%E5%8A%A1/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="安装包下载链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1-HLP6AbAdsy5-v82CBZNIQ 提取码: pkde本文部署glusterfs集群在四台机器192.168.117.129  gfs129192.168.117.130  gfs130192.168.117.131  gfs131192.168.117.132  gfs132 GlusterFs离线安装(需在四台机器上">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_1.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_2.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_3.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_4.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_5.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_6.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_10.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_8.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_9.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_11.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/glusterfs_7.png">
+<meta property="article:published_time" content="2019-07-21T14:33:12.000Z">
+<meta property="article:modified_time" content="2019-08-30T07:16:56.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Glusterfs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/glusterfs_1.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/21/Glusterfs%E6%9C%8D%E5%8A%A1/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/21/Glusterfs%E6%9C%8D%E5%8A%A1/","path":"2019/07/21/Glusterfs服务/","title":"Glusterfs服务"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Glusterfs服务 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#GlusterFs%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85-%E9%9C%80%E5%9C%A8%E5%9B%9B%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">GlusterFs离线安装(需在四台机器上操作)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Glusterfs"><span class="nav-number">2.</span> <span class="nav-text">启动 Glusterfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0hosts%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">添加hosts文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0GlusterFS%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">添加GlusterFS集群节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BGlusterFS%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81%EF%BC%88%E4%BB%BB%E6%84%8F%E8%8A%82%E7%82%B9%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">查看GlusterFS集群状态（任意节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BGlusterFS-volume"><span class="nav-number">6.</span> <span class="nav-text">查看GlusterFS volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAGlusterfs%E6%89%80%E9%9C%80%E7%A3%81%E7%9B%98"><span class="nav-number">7.</span> <span class="nav-text">创建Glusterfs所需磁盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAGlusterFS-volume%EF%BC%88master%E8%8A%82%E7%82%B9%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">创建GlusterFS volume（master节点）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8BGlusterFS-volume-%E4%BB%BB%E6%84%8F%E8%8A%82%E7%82%B9"><span class="nav-number">9.</span> <span class="nav-text">查看GlusterFS volume(任意节点)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8GlusterFS-volume"><span class="nav-number">10.</span> <span class="nav-text">启动GlusterFS volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%8D%E6%AC%A1%E6%9F%A5%E7%9C%8BGlusterFS-volume-%E4%BB%BB%E6%84%8F%E8%8A%82%E7%82%B9"><span class="nav-number">11.</span> <span class="nav-text">再次查看GlusterFS volume(任意节点)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8C%82%E8%BD%BDGlusterFS"><span class="nav-number">12.</span> <span class="nav-text">客户端挂载GlusterFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="nav-number">13.</span> <span class="nav-text">设置开机自动挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Glusterfs%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">14.</span> <span class="nav-text">Glusterfs的常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%8A%82%E7%82%B9"><span class="nav-number">14.1.</span> <span class="nav-text">服务器节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#glusterd%E6%9C%8D%E5%8A%A1"><span class="nav-number">14.2.</span> <span class="nav-text">glusterd服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%8D%B7"><span class="nav-number">14.3.</span> <span class="nav-text">创建卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%8D%B7"><span class="nav-number">14.4.</span> <span class="nav-text">启动卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E5%8D%B7"><span class="nav-number">14.5.</span> <span class="nav-text">停止卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%8D%B7"><span class="nav-number">14.6.</span> <span class="nav-text">删除卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8D%B7"><span class="nav-number">14.7.</span> <span class="nav-text">查看卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8D%B7"><span class="nav-number">14.8.</span> <span class="nav-text">配置卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%8D%B7"><span class="nav-number">14.9.</span> <span class="nav-text">扩展卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B6%E7%BC%A9%E5%8D%B7"><span class="nav-number">14.10.</span> <span class="nav-text">收缩卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%8D%B7"><span class="nav-number">14.11.</span> <span class="nav-text">迁移卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E5%9D%87%E8%A1%A1%E5%8D%B7"><span class="nav-number">14.12.</span> <span class="nav-text">重新均衡卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0Brick"><span class="nav-number">14.13.</span> <span class="nav-text">添加Brick</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4Brick"><span class="nav-number">14.14.</span> <span class="nav-text">删除Brick</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2Brick"><span class="nav-number">14.15.</span> <span class="nav-text">替换Brick</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%89%A9%E5%B1%95%E5%B1%9E%E6%80%A7"><span class="nav-number">14.16.</span> <span class="nav-text">文件系统扩展属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%B7%AF%E5%BE%84"><span class="nav-number">15.</span> <span class="nav-text">日志文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Glusterfs%E5%AE%B9%E7%81%BE%E8%83%BD%E5%8A%9B%E7%A0%94%E7%A9%B6"><span class="nav-number">16.</span> <span class="nav-text">Glusterfs容灾能力研究</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#glusterfs%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9%E5%85%B3%E6%9C%BA%E9%87%8D%E5%90%AF-%E5%8D%95%E8%8A%82%E7%82%B9"><span class="nav-number">16.1.</span> <span class="nav-text">glusterfs集群节点关机重启(单节点)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#glusterfs%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9%E5%85%B3%E6%9C%BA%E9%87%8D%E5%90%AF-%E4%B8%80%E4%B8%AA%E5%89%AF%E6%9C%AC%E9%9B%86%E4%B8%8B%E7%9A%84%E5%8F%8C%E8%8A%82%E7%82%B9"><span class="nav-number">16.2.</span> <span class="nav-text">glusterfs集群节点关机重启(一个副本集下的双节点)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#glusterfs%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81%E6%A3%80%E6%9F%A5"><span class="nav-number">16.3.</span> <span class="nav-text">glusterfs集群状态检查</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/21/Glusterfs%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Glusterfs服务 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Glusterfs服务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-07-21 22:33:12" itemprop="dateCreated datePublished" datetime="2019-07-21T22:33:12+08:00">2019-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-08-30 15:16:56" itemprop="dateModified" datetime="2019-08-30T15:16:56+08:00">2019-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Glusterfs%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Glusterfs服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>安装包下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1-HLP6AbAdsy5-v82CBZNIQ">https://pan.baidu.com/s/1-HLP6AbAdsy5-v82CBZNIQ</a> 提取码: pkde<br>本文部署glusterfs集群在四台机器<br>192.168.117.129  gfs129<br>192.168.117.130  gfs130<br>192.168.117.131  gfs131<br>192.168.117.132  gfs132</p>
+<h3 id="GlusterFs离线安装-需在四台机器上操作"><a href="#GlusterFs离线安装-需在四台机器上操作" class="headerlink" title="GlusterFs离线安装(需在四台机器上操作)"></a>GlusterFs离线安装(需在四台机器上操作)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh xz-libs-5.2.2-1.el7.x86_64.rpm xz-5.2.2-1.el7.x86_64.rpm xz-libs-5.2.2-1.el7.i686.rpm --force --nodeps</span><br><span class="line">rpm -ihv glusterfs-4.0.2-1.el7.x86_64.rpm glusterfs-libs-4.0.2-1.el7.x86_64.rpm --force --nodeps</span><br><span class="line">rpm -ihv glusterfs-fuse-4.0.2-1.el7.x86_64.rpm glusterfs-client-xlators-4.0.2-1.el7.x86_64.rpm glusterfs-cli-4.0.2-1.el7.x86_64.rpm --force --nodeps</span><br><span class="line">rpm -ihv userspace-rcu-0.10.0-3.el7.x86_64.rpm --force --nodeps</span><br><span class="line">rpm -ivh rpcbind-0.2.0-44.el7.x86_64.rpm libtirpc-0.2.4-0.10.el7.x86_64.rpm --force --nodeps</span><br><span class="line">rpm -ihv glusterfs-server-4.0.2-1.el7.x86_64.rpm glusterfs-api-4.0.2-1.el7.x86_64.rpm --force --nodeps</span><br></pre></td></tr></table></figure>
+<h3 id="启动-Glusterfs"><a href="#启动-Glusterfs" class="headerlink" title="启动 Glusterfs"></a>启动 Glusterfs</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start glusterd.service</span><br><span class="line">systemctl <span class="built_in">enable</span> glusterd.service</span><br></pre></td></tr></table></figure>
+<h3 id="添加hosts文件"><a href="#添加hosts文件" class="headerlink" title="添加hosts文件"></a>添加hosts文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/hosts</span></span><br><span class="line">192.168.117.129  gfs129</span><br><span class="line">192.168.117.130  gfs130</span><br><span class="line">192.168.117.131  gfs131</span><br><span class="line">192.168.117.132  gfs132</span><br></pre></td></tr></table></figure>
+<p>【说明】添加hosts文件这一步不是必需。如果使用IP地址，之后添加节点时也必需使用IP地址。如果使用hosts文件，则4个节点都必需要添加相同的hosts文件</p>
+<h3 id="添加GlusterFS集群节点"><a href="#添加GlusterFS集群节点" class="headerlink" title="添加GlusterFS集群节点"></a>添加GlusterFS集群节点</h3><p>【说明】本小节操作在任意节点操作即可,且进行操作前要先检查每台机器的防火墙是否关闭。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 ~]<span class="comment"># gluster peer probe gfs129</span></span><br><span class="line">peer probe: success. Probe on localhost not needed</span><br><span class="line">[root@gfs129 ~]<span class="comment"># gluster peer probe gfs130</span></span><br><span class="line">peer probe: success.</span><br><span class="line">[root@gfs129 ~]<span class="comment"># gluster peer probe gfs131</span></span><br><span class="line">peer probe: success.</span><br><span class="line">[root@gfs129 ~]<span class="comment"># gluster peer probe gfs132</span></span><br><span class="line">peer probe: success.</span><br></pre></td></tr></table></figure>
+<p>【说明】移除节点gluster peer detach gfs132</p>
+<h3 id="查看GlusterFS集群状态（任意节点）"><a href="#查看GlusterFS集群状态（任意节点）" class="headerlink" title="查看GlusterFS集群状态（任意节点）"></a>查看GlusterFS集群状态（任意节点）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 ~]<span class="comment"># gluster peer status</span></span><br><span class="line">Number of Peers: 3</span><br><span class="line"></span><br><span class="line">Hostname: gfs130</span><br><span class="line">Uuid: f5af69ef-545a-4e34-be4a-4b3ab10b7caa</span><br><span class="line">State: Peer <span class="keyword">in</span> Cluster (Connected)</span><br><span class="line"></span><br><span class="line">Hostname: gfs131</span><br><span class="line">Uuid: 239e6236-ec2f-4b75-a39e-57eb8bd7144e</span><br><span class="line">State: Peer <span class="keyword">in</span> Cluster (Connected)</span><br><span class="line"></span><br><span class="line">Hostname: gfs132</span><br><span class="line">Uuid: 631f8255-06d7-45f3-ade3-da6eef88c908</span><br><span class="line">State: Peer <span class="keyword">in</span> Cluster (Connected)</span><br></pre></td></tr></table></figure>
+<h3 id="查看GlusterFS-volume"><a href="#查看GlusterFS-volume" class="headerlink" title="查看GlusterFS volume"></a>查看GlusterFS volume</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 ~]<span class="comment"># gluster volume info</span></span><br><span class="line">No volumes present</span><br></pre></td></tr></table></figure>
+<h3 id="创建Glusterfs所需磁盘"><a href="#创建Glusterfs所需磁盘" class="headerlink" title="创建Glusterfs所需磁盘"></a>创建Glusterfs所需磁盘</h3><p>（1）查看磁盘情况<br>fdisk -l<br>（2）添加sdb磁盘<br>关机，菜单栏找到虚拟机—设置，点击硬盘—添加，按步骤走，重新开机就有sdb了<br><img src="/img/glusterfs_1.png" alt="image"><br><img src="/img/glusterfs_2.png" alt="image"> <img src="/img/glusterfs_3.png" alt="image"><br><img src="/img/glusterfs_4.png" alt="image"><br>（3）新建分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 ~]<span class="comment"># fdisk /dev/sdb</span></span><br><span class="line">Welcome to fdisk (util-linux 2.23.2).</span><br><span class="line"></span><br><span class="line">Changes will remain <span class="keyword">in</span> memory only, <span class="keyword">until</span> you decide to write them.</span><br><span class="line">Be careful before using the write <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">Device does not contain a recognized partition table</span><br><span class="line">Building a new DOS disklabel with disk identifier 0x51a8f067.</span><br><span class="line"></span><br><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>):      <span class="comment">#输入n回车,n是“new”新建分区的意思</span></span><br><span class="line">Partition <span class="built_in">type</span>:</span><br><span class="line">   p   primary (0 primary, 0 extended, 4 free)</span><br><span class="line">   e   extended</span><br><span class="line">Select (default p):              <span class="comment">#默认值</span></span><br><span class="line">Using default response p</span><br><span class="line">Partition number (1-4, default 1):    <span class="comment">#默认值</span></span><br><span class="line">First sector (2048-8388607, default 2048):    <span class="comment">#默认值</span></span><br><span class="line">Using default value 2048</span><br><span class="line">Last sector, +sectors or +size&#123;K,M,G&#125; (2048-8388607, default 8388607):   <span class="comment">#默认值</span></span><br><span class="line">Using default value 8388607</span><br><span class="line">Partition 1 of <span class="built_in">type</span> Linux and of size 4 GiB is <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): w         <span class="comment"># &quot;write&quot;并回车，意思是对刚才的结果进行保存</span></span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line">Syncing disks.</span><br></pre></td></tr></table></figure>
+<p>执行完后，效果如下图：<br><img src="/img/glusterfs_5.png" alt="image"><br>（4）格式化分区为XFS</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.xfs -i size=512 /dev/sdb1</span><br></pre></td></tr></table></figure>
+<p>（5）挂载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /glusterfs-data/data01/</span><br><span class="line">mount /dev/sdb1 /glusterfs-data/data01/</span><br><span class="line"></span><br><span class="line">   vim /etc/fstab</span><br><span class="line">   /dev/sdb1       /glusterfs-data/data01   xfs    defaults        0 0</span><br></pre></td></tr></table></figure>
+<p>注意：所有节点都需创建Glusterfs所需磁盘及glusterfs-data数据目录</p>
+<h3 id="创建GlusterFS-volume（master节点）"><a href="#创建GlusterFS-volume（master节点）" class="headerlink" title="创建GlusterFS volume（master节点）"></a>创建GlusterFS volume（master节点）</h3><p>分布式复制模式（组合型）, 最少需要4台服务器才能创建。创建分布式复制卷需指定卷类型为replica（复制卷）（否则默认为分布式卷），卷类型后边参数是副本数量。Transport指定传输类型为tcp。传输类型后的brick server数量需是副本数量的倍数，且&gt;&#x3D;2倍。当副本数量与brick server数量不等且符合倍数关系时，即是分布式复制卷</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 glusterfs-data]<span class="comment"># gluster volume create devops-volume replica 2 transport tcp gfs129:/glusterfs-data/data01/ gfs130:/glusterfs-data/data01/ gfs131:/glusterfs-data/data01/ gfs132:/glusterfs-data/data01/ force</span></span><br><span class="line">volume create: devops-volume: success: please start the volume to access data</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看GlusterFS-volume-任意节点"><a href="#查看GlusterFS-volume-任意节点" class="headerlink" title="查看GlusterFS volume(任意节点)"></a>查看GlusterFS volume(任意节点)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs130 ~]<span class="comment"># gluster volume info</span></span><br><span class="line"></span><br><span class="line">Volume Name: devops-volume</span><br><span class="line">Type: Distributed-Replicate</span><br><span class="line">Volume ID: 14573cf5-bd1d-4ce0-82b9-b44f13db60b3</span><br><span class="line">Status: Created</span><br><span class="line">Snapshot Count: 0</span><br><span class="line">Number of Bricks: 2 x 2 = 4</span><br><span class="line">Transport-<span class="built_in">type</span>: tcp</span><br><span class="line">Bricks:</span><br><span class="line">Brick1: gfs129:/glusterfs-data/data01</span><br><span class="line">Brick2: gfs130:/glusterfs-data/data01</span><br><span class="line">Brick3: gfs131:/glusterfs-data/data01</span><br><span class="line">Brick4: gfs132:/glusterfs-data/data01</span><br><span class="line">Options Reconfigured:</span><br><span class="line">transport.address-family: inet</span><br><span class="line">nfs.disable: on</span><br><span class="line">performance.client-io-threads: off</span><br></pre></td></tr></table></figure>
+<h3 id="启动GlusterFS-volume"><a href="#启动GlusterFS-volume" class="headerlink" title="启动GlusterFS volume"></a>启动GlusterFS volume</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs129 glusterfs-data]<span class="comment"># gluster volume start devops-volume</span></span><br><span class="line">volume start: devops-volume: success</span><br></pre></td></tr></table></figure>
+<h3 id="再次查看GlusterFS-volume-任意节点"><a href="#再次查看GlusterFS-volume-任意节点" class="headerlink" title="再次查看GlusterFS volume(任意节点)"></a>再次查看GlusterFS volume(任意节点)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@gfs130 /]<span class="comment"># gluster volume info</span></span><br><span class="line"></span><br><span class="line">Volume Name: devops-volume</span><br><span class="line">Type: Distributed-Replicate</span><br><span class="line">Volume ID: 14573cf5-bd1d-4ce0-82b9-b44f13db60b3</span><br><span class="line">Status: Started          <span class="comment">#与前一次查看，状态有所改变</span></span><br><span class="line">Snapshot Count: 0</span><br><span class="line">Number of Bricks: 2 x 2 = 4</span><br><span class="line">Transport-<span class="built_in">type</span>: tcp</span><br><span class="line">Bricks:</span><br><span class="line">Brick1: gfs129:/glusterfs-data/data01</span><br><span class="line">Brick2: gfs130:/glusterfs-data/data01</span><br><span class="line">Brick3: gfs131:/glusterfs-data/data01</span><br><span class="line">Brick4: gfs132:/glusterfs-data/data01</span><br><span class="line">Options Reconfigured:</span><br><span class="line">transport.address-family: inet</span><br><span class="line">nfs.disable: on</span><br><span class="line">performance.client-io-threads: off</span><br></pre></td></tr></table></figure>
+<h3 id="客户端挂载GlusterFS"><a href="#客户端挂载GlusterFS" class="headerlink" title="客户端挂载GlusterFS"></a>客户端挂载GlusterFS</h3><p>如果GlusterFS集群初始化使用了主机&#x2F;etc&#x2F;hosts中的信息，请在客户端也添加对应的信息。否则挂载过程会报错。这里就是需要在harbor所在的服务器上把hosts文件添加成跟glusterfs上一致，并且也需要在这台服务器上装一个glusterfs的客户端。安装方式同1中Glusterfs离线安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost /]<span class="comment"># mkdir -p /gfsdata01volume</span></span><br><span class="line">[root@localhost /]<span class="comment"># mount -t glusterfs gfs130:devops-volume /gfsdata01volume</span></span><br><span class="line">注意：gfs130:devops-volume中也可为129,131,132</span><br></pre></td></tr></table></figure>
+<p>挂载成功后，效果如下：<br><img src="/img/glusterfs_6.png" alt="image"></p>
+<h3 id="设置开机自动挂载"><a href="#设置开机自动挂载" class="headerlink" title="设置开机自动挂载"></a>设置开机自动挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost harbor]<span class="comment">#  vim /etc/fstab</span></span><br><span class="line">gfs129:devops-volume                      /gfsdata01volume        glusterfs  defaults     0 0</span><br></pre></td></tr></table></figure>
+<h3 id="Glusterfs的常用命令"><a href="#Glusterfs的常用命令" class="headerlink" title="Glusterfs的常用命令"></a>Glusterfs的常用命令</h3><p>参考自 <a target="_blank" rel="noopener" href="https://blog.csdn.net/lincoln_2012/article/details/52201227">https://blog.csdn.net/lincoln_2012/article/details/52201227</a></p>
+<h4 id="服务器节点"><a href="#服务器节点" class="headerlink" title="服务器节点"></a>服务器节点</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gluster peer status                          //查看所有节点信息，显示时不包括本节点</span><br><span class="line">gluster peer probe   NODE-NAME               //添加节点</span><br><span class="line">gluster peer detach  NODE-NAME               //移除节点，需要提前将该节点上的brick移除</span><br></pre></td></tr></table></figure>
+<h4 id="glusterd服务"><a href="#glusterd服务" class="headerlink" title="glusterd服务"></a>glusterd服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/glusterd start      //启动glusterd服务</span><br><span class="line">/etc/init.d/glusterd stop      //关闭glusterd服务</span><br><span class="line">/etc/init.d/glusterd status   //查看glusterd服务</span><br></pre></td></tr></table></figure>
+<h4 id="创建卷"><a href="#创建卷" class="headerlink" title="创建卷"></a>创建卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;1&gt;复制卷</span><br><span class="line"></span><br><span class="line">语法：  gluster volume create NEW-VOLNAME [replica COUNT] [transport tcp | rdma | tcp, rdma] NEW-BRICK</span><br><span class="line"></span><br><span class="line">示例1：gluster volume create test-volume replica 2 transport tcp server1:/exp1/brick server2:/exp2/brick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;2&gt;条带卷</span><br><span class="line"></span><br><span class="line">语法：gluster volume create NEW-VOLNAME [stripe COUNT] [transport tcp | rdma | tcp, rdma] NEW-BRICK...</span><br><span class="line"></span><br><span class="line">示例：gluster volume create test-volume stripe 2 transport tcp server1:/exp1/brick server2:/exp2/brick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;3&gt;分布式卷</span><br><span class="line"></span><br><span class="line">语法：  gluster volume create NEW-VOLNAME [transport tcp | rdma | tcp, rdma] NEW-BRICK</span><br><span class="line"></span><br><span class="line">示例1：gluster volume create test-volume server1:/exp1/brick server2:/exp2/brick</span><br><span class="line">示例2：gluster volume create test-volume transport rdma server1:/exp1/brick server2:/exp2/brick server3:/exp3/brick server4:/exp4/brick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;4&gt;分布式复制卷</span><br><span class="line"></span><br><span class="line">语法： gluster volume create NEW-VOLNAME [replica COUNT] [transport tcp | rdma | tcp, rdma] NEW-BRICK...</span><br><span class="line">示例： gluster volume create test-volume replica 2 transport tcp server1:/exp1/brick server2:/exp2/brick server3:/exp3/brick server4:/exp4/brick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;5&gt;分布式条带卷</span><br><span class="line"></span><br><span class="line">语法：gluster volume create NEW-VOLNAME [stripe COUNT] [transport tcp | rdma | tcp, rdma] NEW-BRICK...</span><br><span class="line"></span><br><span class="line">示例：gluster volume create test-volume stripe 2 transport tcp server1:/exp1/brick server2:/exp2/brick server3:/exp3/brick server4:/exp4/brick</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;6&gt;条带复制卷</span><br><span class="line"></span><br><span class="line">语法：gluster volume create NEW-VOLNAME [stripe COUNT] [replica COUNT] [transport tcp | rdma | tcp, rdma] NEW-BRICK...</span><br><span class="line"></span><br><span class="line">示例：gluster volume create test-volume stripe 2 replica 2 transport tcp server1:/exp1/brick server2:/exp2/brick server3:/exp3/brick server4:/exp4/brick</span><br></pre></td></tr></table></figure>
+<h4 id="启动卷"><a href="#启动卷" class="headerlink" title="启动卷"></a>启动卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluster volume start test-volume</span><br></pre></td></tr></table></figure>
+<h4 id="停止卷"><a href="#停止卷" class="headerlink" title="停止卷"></a>停止卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluster volume stop test-volume</span><br></pre></td></tr></table></figure>
+<h4 id="删除卷"><a href="#删除卷" class="headerlink" title="删除卷"></a>删除卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluster volume delete test-volume  //先停止卷后才能删除</span><br></pre></td></tr></table></figure>
+<h4 id="查看卷"><a href="#查看卷" class="headerlink" title="查看卷"></a>查看卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gluster volume list              /*列出集群中的所有卷*/</span><br><span class="line">gluster volume info [all]      /*查看集群中的卷信息*/</span><br><span class="line">gluster volume status [all]  /*查看集群中的卷状态*/</span><br><span class="line">gluster volume status  [detail| clients | mem | inode | fd]</span><br></pre></td></tr></table></figure>
+<h4 id="配置卷"><a href="#配置卷" class="headerlink" title="配置卷"></a>配置卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluster volume <span class="built_in">set</span> &lt;VOLNAME&gt; &lt;OPTION&gt; &lt;PARAMETER&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="扩展卷"><a href="#扩展卷" class="headerlink" title="扩展卷"></a>扩展卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluster volume add-brick &lt;VOLNAME&gt; &lt;NEW-BRICK&gt;</span><br></pre></td></tr></table></figure>
+<p>注意，如果是复制卷或者条带卷，则每次添加的Brick数必须是replica或者stripe的整数倍。</p>
+<h4 id="收缩卷"><a href="#收缩卷" class="headerlink" title="收缩卷"></a>收缩卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">先将数据迁移到其它可用的Brick，迁移结束后才将该Brick移除：</span><br><span class="line"><span class="comment"># gluster volume remove-brick  start</span></span><br><span class="line">在执行了start之后，可以使用status命令查看移除进度：</span><br><span class="line"><span class="comment"># gluster volume remove-brick  status</span></span><br><span class="line">不进行数据迁移，直接删除该Brick：</span><br><span class="line"><span class="comment"># gluster volume remove-brick  commit</span></span><br></pre></td></tr></table></figure>
+<p>注意，如果是复制卷或者条带卷，则每次移除的Brick数必须是replica或者stripe的整数倍。</p>
+<h4 id="迁移卷"><a href="#迁移卷" class="headerlink" title="迁移卷"></a>迁移卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">使用start命令开始进行迁移：</span><br><span class="line"><span class="comment"># gluster volume replace-brick  start</span></span><br><span class="line">在数据迁移过程中，可以使用pause命令暂停迁移：</span><br><span class="line"><span class="comment"># gluster volume replace-brick  pause</span></span><br><span class="line">在数据迁移过程中，可以使用abort命令终止迁移：</span><br><span class="line"><span class="comment"># gluster volume replace-brick  abort</span></span><br><span class="line">在数据迁移过程中，可以使用status命令查看迁移进度：</span><br><span class="line"><span class="comment"># gluster volume replace-brick  status</span></span><br><span class="line">在数据迁移结束后，执行commit命令来进行Brick替换：</span><br><span class="line"><span class="comment"># gluster volume replace-brick  commit</span></span><br></pre></td></tr></table></figure>
+<h4 id="重新均衡卷"><a href="#重新均衡卷" class="headerlink" title="重新均衡卷"></a>重新均衡卷</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不迁移数据：</span><br><span class="line"><span class="comment"># gluster volume rebalance  lay-outstart</span></span><br><span class="line"><span class="comment"># gluster volume rebalance  start</span></span><br><span class="line"><span class="comment"># gluster volume rebalance  startforce</span></span><br><span class="line"><span class="comment"># gluster volume rebalance  status</span></span><br><span class="line"><span class="comment"># gluster volume rebalance  stop</span></span><br></pre></td></tr></table></figure>
+<h4 id="添加Brick"><a href="#添加Brick" class="headerlink" title="添加Brick"></a>添加Brick</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gluster volume add-brick test-volume 192.168.1.&#123;151,152&#125;:/mnt/brick2</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除Brick"><a href="#删除Brick" class="headerlink" title="删除Brick"></a>删除Brick</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">若是副本卷，则移除的Bricks数是replica的整数倍</span><br><span class="line"><span class="comment">#gluster volume remove-brick test-volume 192.168.1.&#123;151,152&#125;:/mnt/brick2 start</span></span><br><span class="line">在执行开始移除之后，可以使用status命令进行移除状态查看。</span><br><span class="line"><span class="comment">#gluster volume remove-brick test-volume 192.168.1.&#123;151,152&#125;:/mnt/brick2 status</span></span><br><span class="line"></span><br><span class="line">使用commit命令执行Brick移除，则不会进行数据迁移而直接删除Brick，符合不需要数据迁移的用户需求。</span><br><span class="line"><span class="comment">#gluster volume remove-brick test-volume 192.168.1.&#123;151,152&#125;:/mnt/brick2 commit</span></span><br></pre></td></tr></table></figure>
+<h4 id="替换Brick"><a href="#替换Brick" class="headerlink" title="替换Brick"></a>替换Brick</h4><p>任务：把192.168.1.151:&#x2F;mnt&#x2F;brick0 替换为192.168.1.151:&#x2F;mnt&#x2F;brick2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;1&gt;开始替换</span><br><span class="line"><span class="comment">#gluster volume replace-brick test-volume 192.168.1.:/mnt/brick0 ..152:/mnt/brick2 start</span></span><br><span class="line">异常信息：volume replace-brick: failed: /data/share2 or a prefix of it is already part of a volume</span><br><span class="line"></span><br><span class="line">说明 /mnt/brick2 曾经是一个Brick。具体解决方法</span><br><span class="line"><span class="comment"># rm -rf /mnt/brick2/.glusterfs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># setfattr -x trusted.glusterfs.volume-id /mnt/brick2</span></span><br><span class="line"><span class="comment"># setfattr -x trusted.gfid  /mnt/brick2</span></span><br><span class="line"></span><br><span class="line">//如上，执行replcace-brick卷替换启动命令，使用start启动命令后，开始将原始Brick的数据迁移到即将需要替换的Brick上。</span><br><span class="line"></span><br><span class="line">&lt;2&gt;查看是否替换完</span><br><span class="line"></span><br><span class="line"><span class="comment">#gluster volume replace-brick test-volume 192.168.1.151:/mnt/brick0 ..152:/mnt/brick2 status</span></span><br><span class="line">&lt;3&gt;在数据迁移的过程中，可以执行abort命令终止Brick替换。</span><br><span class="line"><span class="comment">#gluster volume replace-brick test-volume 192.168.1.151:/mnt/brick0 ..152:/mnt/brick2 abort</span></span><br><span class="line"></span><br><span class="line">&lt;4&gt;在数据迁移结束之后，执行commit命令结束任务，则进行Brick替换。使用volume info命令可以查看到Brick已经被替换。</span><br><span class="line"></span><br><span class="line"><span class="comment">#gluster volume replace-brick test-volume 192.168.1.151:/mnt/brick0 .152:/mnt/brick2 commit</span></span><br><span class="line"><span class="comment"># 此时我们再往 /sf/data/vs/gfs/rep2上添加数据的话，数据会同步到 192.168.1.152:/mnt/brick0和192.168.1.152:/mnt/brick2上。而不会同步到</span></span><br><span class="line">192.168.1.151:/mnt/brick0 上。</span><br></pre></td></tr></table></figure>
+<h4 id="文件系统扩展属性"><a href="#文件系统扩展属性" class="headerlink" title="文件系统扩展属性"></a>文件系统扩展属性</h4><p>获取文件扩展属性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">getfattr -d -m . -e hex filename</span><br><span class="line">getfattr -d -m <span class="string">&quot;trusted.afr.*&quot;</span> -e hex filename</span><br></pre></td></tr></table></figure>
+<h3 id="日志文件路径"><a href="#日志文件路径" class="headerlink" title="日志文件路径"></a>日志文件路径</h3><p>相关日志，在客户端机器的&#x2F;var&#x2F;log&#x2F;glusterfs&#x2F;目录下，可根据需要查看；<br>如&#x2F;var&#x2F;log&#x2F;glusterfs&#x2F;brick&#x2F;下是各brick创建的日志；<br>如&#x2F;var&#x2F;log&#x2F;glusterfs&#x2F;cmd_history.log是命令执行记录日志；<br>如&#x2F;var&#x2F;log&#x2F;glusterfs&#x2F;glusterd.log是glusterd守护进程日志。</p>
+<h3 id="Glusterfs容灾能力研究"><a href="#Glusterfs容灾能力研究" class="headerlink" title="Glusterfs容灾能力研究"></a>Glusterfs容灾能力研究</h3><h4 id="glusterfs集群节点关机重启-单节点"><a href="#glusterfs集群节点关机重启-单节点" class="headerlink" title="glusterfs集群节点关机重启(单节点)"></a>glusterfs集群节点关机重启(单节点)</h4><p>关机的机器没有设置开机自动挂载,关机重启后，挂载点消失 需手动重新挂载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sdb1 /glusterfs-data/data01/</span><br></pre></td></tr></table></figure>
+
+<p>若重新挂载后,出现关机重启后的机器的brick不正常，则在glusterfs集群节点重启数据卷即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gluster volume stop devops-volume</span><br><span class="line">gluster volume start devops-volume</span><br></pre></td></tr></table></figure>
+<p><img src="/img/glusterfs_10.png" alt="image"></p>
+<p>然后重新进入glusterfs目录，发现在关机期间，客户端新建的文件也同步过来了，但是和同一个副本集下的另一个副本的文件扩展属性有差别，如下（关机重启的是gfs131机器）：<br><img src="/img/glusterfs_8.png" alt="image"><br><img src="/img/glusterfs_9.png" alt="image"><br>如果属性值如上，则可用gfs132的bcv2.txt文件去恢复gfs131的bcv2.txt文件。</p>
+<p>【说明】<br>如果gfs131和gfs132都正常的情况下，客户端新往这两台机器写入数据（bcv3.txt），那么bcv3.txt的扩展属性都与上图1类似，没有trusted.afr.dirty属性值，两台机器重启时扩展属性值不变。证明此种情况下，两台机器的bcv3.txt数据是正常的。</p>
+<p>如果gfs131正常，gfs132离线，客户端新往这两台机器写入数据（bcv4.txt），那么，重启gfs132后，该文件的扩展属性与上图1类似，没有trusted.afr.dirty属性值。bcv4.txt的扩展属性在gfs131中与上图2类似，有trusted.afr.dirty属性值且为0x000000000000。 证明此种情况下，gfs131机器的bcv4.txt数据是正常的，gfs132机器的bcv4.txt数据可能是不可靠的。</p>
+<h4 id="glusterfs集群节点关机重启-一个副本集下的双节点"><a href="#glusterfs集群节点关机重启-一个副本集下的双节点" class="headerlink" title="glusterfs集群节点关机重启(一个副本集下的双节点)"></a>glusterfs集群节点关机重启(一个副本集下的双节点)</h4><p>测试关闭了gfs131和gfs132，然后在客户端创建文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> distributed-replica&#123;1..6&#125;.txt</span><br></pre></td></tr></table></figure>
+<p>出现下述问题：<br><img src="/img/glusterfs_11.png" alt="image"><br> 此时，数据就会丢失且无法恢复，应尽量避免此情况发生。</p>
+<h4 id="glusterfs集群状态检查"><a href="#glusterfs集群状态检查" class="headerlink" title="glusterfs集群状态检查"></a>glusterfs集群状态检查</h4><p>可以通过下述命令，对glusterfs集群进行健康状态的检查:<br>gluster volume status devops-volume<br>gluster volume info<br>下图即为正常<br><img src="/img/glusterfs_7.png" alt="image"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Glusterfs/" rel="tag"># Glusterfs</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/17/Rsyncd%E6%9C%8D%E5%8A%A1/" rel="prev" title="Rsyncd服务">
+                  <i class="fa fa-angle-left"></i> Rsyncd服务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/" rel="next" title="LVM磁盘扩容及磁盘挂载">
+                  LVM磁盘扩容及磁盘挂载 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,37 +1,323 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="主要介绍如何自签https访问需要的ssl证书 环境准备 openssl-utils centos7  创建SSL证书 TLS &#x2F; SSL通过使用公共证书和私钥的组合来工作。SSL密钥在服务器上保密。它用于加密发送给客户端的内容。SSL证书与请求内容的任何人公开共享。它可用于解密由关联的SSL密钥签名的内容。 我们可以在一个命令中使用OpenSSL创建自签名密钥和证书对：   1&#96;ope">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建SSL证书">
+<meta property="og:url" content="https://wangdj104.github.io/2023/05/31/%E8%87%AA%E7%AD%BEnginx%E7%9A%84https%E8%AE%BF%E9%97%AE%E8%AF%81%E4%B9%A6/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="主要介绍如何自签https访问需要的ssl证书 环境准备 openssl-utils centos7  创建SSL证书 TLS &#x2F; SSL通过使用公共证书和私钥的组合来工作。SSL密钥在服务器上保密。它用于加密发送给客户端的内容。SSL证书与请求内容的任何人公开共享。它可用于解密由关联的SSL密钥签名的内容。 我们可以在一个命令中使用OpenSSL创建自签名密钥和证书对：   1&#96;ope">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/ssl01.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/ssl02.png">
+<meta property="article:published_time" content="2023-05-31T09:03:40.000Z">
+<meta property="article:modified_time" content="2023-05-31T09:03:14.000Z">
+<meta property="article:author" content="wangdj">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/ssl01.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2023/05/31/%E8%87%AA%E7%AD%BEnginx%E7%9A%84https%E8%AE%BF%E9%97%AE%E8%AF%81%E4%B9%A6/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2023/05/31/%E8%87%AA%E7%AD%BEnginx%E7%9A%84https%E8%AE%BF%E9%97%AE%E8%AF%81%E4%B9%A6/","path":"2023/05/31/自签nginx的https访问证书/","title":"创建SSL证书"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>创建SSL证书 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BASSL%E8%AF%81%E4%B9%A6"><span class="nav-number">2.</span> <span class="nav-text">创建SSL证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEnginx"><span class="nav-number">3.</span> <span class="nav-text">配置nginx</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2023/05/31/%E8%87%AA%E7%AD%BEnginx%E7%9A%84https%E8%AE%BF%E9%97%AE%E8%AF%81%E4%B9%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="创建SSL证书 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          创建SSL证书
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+      
+
+      <time title="أُنشأ: 2023-05-31 17:03:40 / عُدل: 17:03:14" itemprop="dateCreated datePublished" datetime="2023-05-31T17:03:40+08:00">2023-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">随手笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>主要介绍如何自签https访问需要的ssl证书</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><ul>
+<li>openssl-utils</li>
+<li>centos7</li>
+</ul>
+<h4 id="创建SSL证书"><a href="#创建SSL证书" class="headerlink" title="创建SSL证书"></a>创建SSL证书</h4><ol>
+<li><p>TLS &#x2F; SSL通过使用公共证书和私钥的组合来工作。SSL密钥在服务器上保密。它用于加密发送给客户端的内容。SSL证书与请求内容的任何人公开共享。它可用于解密由关联的SSL密钥签名的内容。</p>
+<p>我们可以在一个命令中使用OpenSSL创建自签名密钥和证书对：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt`</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>openssl</strong>：这是用于创建和管理OpenSSL证书，密钥和其他文件的基本命令行工具。</li>
+<li><strong>req</strong>：此子命令指定我们要使用X.509证书签名请求（CSR）管理。“X.509”是SSL和TLS为其密钥和证书管理所遵循的公钥基础结构标准。我们想要创建一个新的X.509证书，所以我们使用这个子命令。</li>
+<li><strong>-x509</strong>：通过告诉实用程序我们要创建自签名证书而不是生成证书签名请求（通常会发生）来进一步修改上一个子命令。</li>
+<li><strong>-nodes</strong>：这告诉OpenSSL跳过用密码保护我们的证书的选项。当服务器启动时，我们需要Nginx能够在没有用户干预的情况下读取文件。密码短语会阻止这种情况发生，因为我们必须在每次重启后输入密码。</li>
+<li><strong>-days 365</strong>：此选项设置证书被视为有效的时间长度。我们在这里设置了一年。</li>
+<li><strong>-newkey rsa：2048</strong>：这指定我们要同时生成新证书和新密钥。我们没有创建在上一步中签署证书所需的密钥，因此我们需要将其与证书一起创建。该<code>rsa:2048</code>部分告诉它制作一个2048位长的RSA密钥。</li>
+<li><strong>-keyout</strong>：这一行告诉OpenSSL在哪里放置我们正在创建的生成的私钥文件。</li>
+<li><strong>-out</strong>：这告诉OpenSSL在哪里放置我们正在创建的证书。</li>
+</ul>
+<p>如上所述，这些选项将创建密钥文件和证书。我们将询问有关我们服务器的一些问题，以便将信息正确地嵌入到证书中。</p>
+<p><img src="/img/ssl01.png" alt="image"></p>
+<h4 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">` vim /data/nginx_anzhuang/nginx/conf/nginx.conf`</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ssl02.png" alt="image"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/05/Java%E5%9F%BA%E7%A1%80/" rel="prev" title="JAVA基础">
+                  <i class="fa fa-angle-left"></i> JAVA基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

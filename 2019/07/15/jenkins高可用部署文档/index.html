@@ -1,37 +1,344 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文目标:配置jenkins的一主一从（ 192.168.117.129 MASTER (jenkins master),192.168.117.130 BACKUP (jenkins master),192.168.117.131 (jenkins slave) )。 部署jenkin在三台机器上按照jenkins部署文档，部署jenkins。 安装keepalived服务Jenkins-mas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins高可用部署文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/15/jenkins%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="本文目标:配置jenkins的一主一从（ 192.168.117.129 MASTER (jenkins master),192.168.117.130 BACKUP (jenkins master),192.168.117.131 (jenkins slave) )。 部署jenkin在三台机器上按照jenkins部署文档，部署jenkins。 安装keepalived服务Jenkins-mas">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-07-15T02:49:04.000Z">
+<meta property="article:modified_time" content="2019-07-17T15:41:58.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Jenkins">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/15/jenkins%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/15/jenkins%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/07/15/jenkins高可用部署文档/","title":"jenkins高可用部署文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>jenkins高可用部署文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2jenkin"><span class="nav-number">1.</span> <span class="nav-text">部署jenkin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85keepalived%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">安装keepalived服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85rsync"><span class="nav-number">3.</span> <span class="nav-text">安装rsync</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/15/jenkins%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="jenkins高可用部署文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jenkins高可用部署文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-07-15 10:49:04" itemprop="dateCreated datePublished" datetime="2019-07-15T10:49:04+08:00">2019-07-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-17 23:41:58" itemprop="dateModified" datetime="2019-07-17T23:41:58+08:00">2019-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Jenkins%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Jenkins服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文目标:配置jenkins的一主一从（ 192.168.117.129 MASTER (jenkins master),192.168.117.130 BACKUP (jenkins master),192.168.117.131 (jenkins slave) )。</p>
+<h3 id="部署jenkin"><a href="#部署jenkin" class="headerlink" title="部署jenkin"></a>部署jenkin</h3><p>在三台机器上按照jenkins部署文档，部署jenkins。</p>
+<h3 id="安装keepalived服务"><a href="#安装keepalived服务" class="headerlink" title="安装keepalived服务"></a>安装keepalived服务</h3><p>Jenkins-master</p>
+<p>(1)为keepalived开启转发</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/sysctl.conf</span></span><br><span class="line"> net.ipv4.ip_forward = 1</span><br><span class="line"> net.ipv4.ip_nonlocal_bind = 1</span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl restart keepalived</span></span><br></pre></td></tr></table></figure>
+<p>(2)修改keepalived的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/keepalived.conf</span><br><span class="line"></span><br><span class="line">vrrp_script chk_apiserver &#123;</span><br><span class="line">    script <span class="string">&quot;/usr/bin/curl -k http://192.168.117.129:8088 --connect-timeout 3&quot;</span></span><br><span class="line">    interval 10</span><br><span class="line">    weight -10</span><br><span class="line">    fall 3</span><br><span class="line">    rise 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">        state MASTER</span><br><span class="line">        interface ens33</span><br><span class="line">        virtual_router_id 51</span><br><span class="line">        mcast_src_ip 192.168.117.129</span><br><span class="line">        priority 101</span><br><span class="line">        authentication &#123;</span><br><span class="line">            auth_type PASS</span><br><span class="line">            auth_pass gitlab</span><br><span class="line">        &#125;</span><br><span class="line">        track_script &#123;</span><br><span class="line">            chk_apiserver</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;</span><br><span class="line">            192.168.117.208</span><br><span class="line">        &#125;</span><br><span class="line">      notify_master <span class="string">&quot;/home/jenkins/start.sh&quot;</span></span><br><span class="line">      notify_backup <span class="string">&quot;/home/jenkins/stop.sh&quot;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(3)重启keepalived</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart keepalived</span><br></pre></td></tr></table></figure>
+<p>Jenkins-slave按照上述步骤配置keepalived,只需要把其中的ip换成slave机器的ip,priority值要比master小。</p>
+<h3 id="安装rsync"><a href="#安装rsync" class="headerlink" title="安装rsync"></a>安装rsync</h3><p>安装包下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1s1nPjzM9w9M8e0V4EqcZog">https://pan.baidu.com/s/1s1nPjzM9w9M8e0V4EqcZog</a> 提取码: gv5w</p>
+<p>master-129<br>（1）安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum localinstall *.rpm</span><br></pre></td></tr></table></figure>
+<p>（2）)创建用户名和密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd forjenkins</span><br><span class="line">passwd forjenkins  给已创建的用户forjenkins设置密码为pass123</span><br></pre></td></tr></table></figure>
+<p>（3）修改配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rsyncd.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置rsync运行权限为root</span></span><br><span class="line">uid=root</span><br><span class="line"><span class="comment">#设置rsync运行权限为root</span></span><br><span class="line">gid=root</span><br><span class="line"><span class="comment">#最大连接数</span></span><br><span class="line">max connections=3</span><br><span class="line"><span class="comment">#默认为true，修改为no，增加对目录文件软连接的备份</span></span><br><span class="line">use <span class="built_in">chroot</span>=no</span><br><span class="line"><span class="comment">#日志文件位置，启动rsync后自动产生这个文件，无需提前创建</span></span><br><span class="line"><span class="built_in">log</span> file=/var/log/rsyncd.log</span><br><span class="line"><span class="comment">#pid文件的存放位置</span></span><br><span class="line">pid file=/var/run/rsyncd.pid</span><br><span class="line"><span class="comment">#支持max connections参数的锁文件</span></span><br><span class="line">lock file=/var/run/rsyncd.lock</span><br><span class="line"><span class="comment">#用户认证配置文件，里面保存用户名称和密码 需要创建（可选）</span></span><br><span class="line">secrets file=/etc/rsync.pass</span><br><span class="line"><span class="comment">#允许进行数据同步的客户端IP地址，可以设置多个，用英文状态下逗号隔开,可设置所有</span></span><br><span class="line">hosts allow= *</span><br><span class="line"><span class="comment">#设置rsync服务端文件为读写权限</span></span><br><span class="line"><span class="built_in">read</span> only = no</span><br><span class="line"><span class="comment">#不显示rsync服务端资源列表</span></span><br><span class="line">list = no</span><br><span class="line"></span><br><span class="line">[forjenkins]</span><br><span class="line"><span class="comment">#需要备份的源主机数据目录路径</span></span><br><span class="line">path = /home/jenkins/work</span><br><span class="line"><span class="comment">#执行数据同步的用户名，可以设置多个，用英文状态下逗号隔开 可选配置</span></span><br><span class="line">auth <span class="built_in">users</span> = forjenkins</span><br></pre></td></tr></table></figure>
+<p>(4)创建认证文件<br>如果在rsyncd服务中定义了可选配置，则需创建认证文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/rsync.pass</span></span><br><span class="line">forjenkins:pass123</span><br><span class="line"><span class="built_in">chmod</span> 600 /etc/rsync.pass</span><br></pre></td></tr></table></figure>
+<p>(5)启动Rsyncd服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl start rsyncd</span></span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl enable rsyncd</span></span><br></pre></td></tr></table></figure>
+<p>(6)开启rsyncd服务端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd --permanent --add-port=873/tcp</span></span><br><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd --permanent --add-port=873/udp</span></span><br><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd --reload</span></span><br></pre></td></tr></table></figure>
+
+<p>master-130  master备节点<br>（1）安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum localinstall *.rpm</span><br></pre></td></tr></table></figure>
+<p>(2)创建认证文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/rsync.pass</span></span><br><span class="line">pass123</span><br><span class="line"><span class="built_in">chmod</span> 600 /etc/rsync.pass</span><br></pre></td></tr></table></figure>
+<p>(3)手动测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># rsync -vzrtp --progress --delete --password-file=/etc/rsync.pass forjenkins@192.168.117.129::forjenkins /home/jenkins/work</span></span><br></pre></td></tr></table></figure>
+<p>(4)自动执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># crontab -e</span></span><br><span class="line">*/5 * * * * rsync -avzrtlp --progress --delete --password-file=/etc/rsync.pass forjenkins@192.168.117.129::forjenkins /home/jenkins/work</span><br></pre></td></tr></table></figure>
+<p>【说明1】每5分钟同步一次。<br>【说明2】如果出现目录可以同步，文本文件类型的文件不能同步,请检查SELinux是否关闭<br>1、临时关闭：输入命令setenforce 0，重启系统后还会开启。<br>2、永久关闭：输入命令vi &#x2F;etc&#x2F;selinux&#x2F;config，将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled，然后保存退出。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/15/jenkins%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="prev" title="jenkins部署文档">
+                  <i class="fa fa-angle-left"></i> jenkins部署文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/17/Rsyncd%E6%9C%8D%E5%8A%A1/" rel="next" title="Rsyncd服务">
+                  Rsyncd服务 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

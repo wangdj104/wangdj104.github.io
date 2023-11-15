@@ -1,37 +1,339 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1)disable iptables&amp;selinux 12345678910111213echo -n &quot;正在配置iptables防火墙……&quot;systemctl stop firewalld &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1systemctl disable firewalld  &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1if [ $? -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceph文件系统">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/30/Ceph%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="1)disable iptables&amp;selinux 12345678910111213echo -n &quot;正在配置iptables防火墙……&quot;systemctl stop firewalld &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1systemctl disable firewalld  &gt; &#x2F;dev&#x2F;null 2&gt;&amp;1if [ $? -">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-07-29T16:00:13.000Z">
+<meta property="article:modified_time" content="2019-07-29T16:07:06.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="ceph">
+<meta name="twitter:card" content="summary">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/30/Ceph%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/30/Ceph%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/","path":"2019/07/30/Ceph文件系统/","title":"Ceph文件系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ceph文件系统 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/30/Ceph%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ceph文件系统 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ceph文件系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+      
+
+      <time title="أُنشأ: 2019-07-30 00:00:13 / عُدل: 00:07:06" itemprop="dateCreated datePublished" datetime="2019-07-30T00:00:13+08:00">2019-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Ceph%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Ceph服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>1)disable iptables&amp;selinux</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;正在配置iptables防火墙……&quot;</span></span><br><span class="line">systemctl stop firewalld &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld  &gt; /dev/null 2&gt;&amp;1</span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ];<span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;Iptables防火墙初始化完毕！&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;正在关闭SELinux……&quot;</span></span><br><span class="line">setenforce 0 &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">sed -i <span class="string">&#x27;/^SELINUX=/s/=.*/=disabled/&#x27;</span> /etc/selinux/config</span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ];<span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> -n <span class="string">&quot;SELinux初始化完毕！&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>set hostname as ceph<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HOSTNAME=ceph</span><br><span class="line">hostnamectl set-hostname ceph</span><br><span class="line">IP=`ip route |grep src|grep metric|awk -F<span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123; print $9 &#125;&#x27;</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$IP</span> <span class="variable">$HOSTNAME</span>&quot;</span> &gt;&gt;/etc/hosts</span><br></pre></td></tr></table></figure></li>
+<li>install epel.repo<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release</span><br><span class="line"><span class="built_in">cat</span> &lt;&lt;<span class="string">EOF &gt; /etc/yum.repos.d/ceph.repo</span></span><br><span class="line"><span class="string">[Ceph]</span></span><br><span class="line"><span class="string">name=Ceph packages for $basearch</span></span><br><span class="line"><span class="string">baseurl=http://mirrors.163.com/ceph/rpm-jewel/el7/x86_64</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=1</span></span><br><span class="line"><span class="string">type=rpm-md</span></span><br><span class="line"><span class="string">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</span></span><br><span class="line"><span class="string">priority=1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Ceph-noarch]</span></span><br><span class="line"><span class="string">name=Ceph noarch packages</span></span><br><span class="line"><span class="string">baseurl=http://mirrors.163.com/ceph/rpm-jewel/el7/noarch</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=1</span></span><br><span class="line"><span class="string">type=rpm-md</span></span><br><span class="line"><span class="string">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</span></span><br><span class="line"><span class="string">priority=1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[ceph-source]</span></span><br><span class="line"><span class="string">name=Ceph source packages</span></span><br><span class="line"><span class="string">baseurl=http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=1</span></span><br><span class="line"><span class="string">type=rpm-md</span></span><br><span class="line"><span class="string">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</span></span><br><span class="line"><span class="string">priority=1</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+4)update system &amp; install ceph-deploy<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update -y &amp;&amp;yum clean all &amp;&amp;yum -y install ceph-deploy</span><br></pre></td></tr></table></figure></li>
+<li>设置本机密匙<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  ssh-keygen -t rsa -P <span class="string">&quot;&quot;</span> -f ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+6)ceph服务初始化<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum clean all &amp;&amp;yum -y install ceph-deploy</span><br><span class="line"><span class="built_in">mkdir</span> /etc/ceph &amp;&amp;<span class="built_in">cd</span> /etc/ceph</span><br><span class="line">ceph-deploy new ceph</span><br></pre></td></tr></table></figure>
+7)修改配置文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> ceph.conf ceph.conf.bak</span><br><span class="line">sed -i <span class="string">&#x27;s@^$@osd_pool_default_size = 1@g&#x27;</span> ceph.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;mon_pg_warn_max_per_osd = 1000&quot;</span> &gt;&gt; /etc/ceph/ceph.conf</span><br></pre></td></tr></table></figure>
+8)安装ceph<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy install ceph</span><br></pre></td></tr></table></figure>
+9)创建monitor服务<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy mon create ceph</span><br><span class="line">ceph-deploy  gatherkeys ceph</span><br></pre></td></tr></table></figure></li>
+<li>准备osd<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkfs.xfs  /dev/sdb</span><br><span class="line"><span class="built_in">mkdir</span> -p /var/local/osd</span><br><span class="line">mount /dev/sdb  /var/local/osd/</span><br><span class="line"><span class="built_in">chown</span> -R ceph:ceph /var/local/osd*      <span class="comment">#创建osd</span></span><br><span class="line">ceph-deploy osd prepare ceph:/var/local/osd  <span class="comment">#激活osd</span></span><br><span class="line">ceph-deploy osd activate ceph:/var/local/osd</span><br><span class="line"><span class="built_in">chown</span> -R ceph:ceph /var/local/osd*   <span class="comment">#有些同学可能会忘记配置目录权限引起激活osd失败 </span></span><br><span class="line"><span class="comment">#查看状态：###</span></span><br><span class="line">ceph-deploy osd list ceph</span><br></pre></td></tr></table></figure>
+11）修改配置文件权限<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy admin ceph</span><br><span class="line"><span class="built_in">chmod</span> +r /etc/ceph/*</span><br></pre></td></tr></table></figure>
+12）部署mds服务<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy mds create ceph</span><br><span class="line">ceph mds <span class="built_in">stat</span></span><br></pre></td></tr></table></figure>
+13）创建ceph文件系统<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ceph fs <span class="built_in">ls</span></span><br><span class="line">ceph osd pool create cephfs_data 128</span><br><span class="line">ceph osd pool create cephfs_metadata 128</span><br><span class="line">ceph fs new cephfs cephfs_metadata cephfs_data</span><br><span class="line">ceph fs <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+14）挂载Ceph文件系统<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /ceph</span><br><span class="line">yum install -y ceph-fuse</span><br><span class="line">IP=`ip route |grep src|grep metric|awk -F<span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123; print $9 &#125;&#x27;</span>`</span><br><span class="line">ceph-fuse -m <span class="variable">$IP</span>:7480/ /ceph</span><br><span class="line"><span class="comment">#ceph-fuse -m $IP:6789/ /ceph</span></span><br><span class="line"><span class="built_in">df</span> -Th</span><br></pre></td></tr></table></figure>
+15）查看ceph状态<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ceph mon <span class="built_in">stat</span></span><br><span class="line">ceph osd <span class="built_in">stat</span></span><br><span class="line">ceph osd tree  <span class="comment">#显示crush图</span></span><br><span class="line">ceph pg <span class="built_in">stat</span></span><br><span class="line"><span class="built_in">set</span> password <span class="keyword">for</span> root@localhost = password(<span class="string">&#x27;S@Aj#XrpS114y!9$&#x27;</span>);  <span class="comment">#设置mysql密码</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>##部署ceph对象存储-bucket<br>1)安装ceph-radosgw</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ceph-radosgw</span><br></pre></td></tr></table></figure>
+<p>2)部署rgw</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy rgw create ceph  <span class="comment">#需在/etc/ceph目录下执行</span></span><br></pre></td></tr></table></figure>
+<p>3)如果要修改为80端口，可修改配置文件  重启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> vim /etc/ceph/ceph.conf</span><br><span class="line"> [client.rgw.ceph-node1]</span><br><span class="line">rgw_frontends = <span class="string">&quot;civetweb port=80&quot;</span></span><br><span class="line">sudo systemctl restart ceph-radosgw@rgw.ceph.service</span><br><span class="line">netstat -tnlp |grep 7480</span><br></pre></td></tr></table></figure>
+<p>4)创建池</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/aishangwei/ceph-demo/master/ceph-deploy/rgw/pool</span><br><span class="line">wget  https://raw.githubusercontent.com/aishangwei/ceph-demo/master/ceph-deploy/rgw/create_pool.sh</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> create_pool.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PG_NUM=250</span><br><span class="line">PGP_NUM=250</span><br><span class="line">SIZE=3</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `<span class="built_in">cat</span> /etc/ceph/pool`</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        ceph osd pool create <span class="variable">$i</span> <span class="variable">$PG_NUM</span></span><br><span class="line">        ceph osd pool <span class="built_in">set</span> <span class="variable">$i</span> size <span class="variable">$SIZE</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `<span class="built_in">cat</span> /etc/ceph/pool`</span><br><span class="line">        <span class="keyword">do</span></span><br><span class="line">        ceph osd pool <span class="built_in">set</span> <span class="variable">$i</span> pgp_num <span class="variable">$PGP_NUM</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x create_pool.sh</span><br><span class="line">./create_pool.sh</span><br></pre></td></tr></table></figure>
+<p>5)测试是否能访问ceph集群</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l /var/lib/ceph/</span><br><span class="line"><span class="built_in">cp</span> /var/lib/ceph/radosgw/ceph-rgw.ceph/keyring ./</span><br><span class="line">ceph -s -k keyring --name client.rgw.ceph</span><br></pre></td></tr></table></figure>
+<p>6)使用S3 API访问ceph对象存储<br>创建radosgw用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">radosgw-admin user create --uid=radosgw --display-name=<span class="string">&quot;radosgw&quot;</span></span><br></pre></td></tr></table></figure>
+<p>7)安装s3cmd客户端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install -y s3cmd</span><br><span class="line">s3cmd --configure  //注意该Access Key填写radosgw的access_key  Secret Key同样</span><br><span class="line">编辑s3配置文件：<span class="built_in">cat</span> .s3cfg</span><br><span class="line">创建桶并放入文件</span><br><span class="line">s3cmd mb s3://devops</span><br><span class="line">s3cmd <span class="built_in">ls</span></span><br><span class="line">s3cmd put /etc/hosts s3://devops</span><br></pre></td></tr></table></figure>
+<p>8)使用Swift API访问ceph对象存储</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">radosgw-admin subuser create --uid=radosgw --subuser=radosgw:swift --access=full</span><br><span class="line">yum install python-pip -y</span><br><span class="line">pip install --upgrade python-swiftclient</span><br><span class="line">swift -A http://ceph:7480/auth/1.0 -U radosgw:swift -K 6Dz8f8ubJDNhr57jV5tM0xeFSzBxXN1MzK59qdMh list</span><br><span class="line">swift -A http://ceph:7480/auth/1.0 -U radosgw:swift -K 6Dz8f8ubJDNhr57jV5tM0xeFSzBxXN1MzK59qdMh list</span><br><span class="line">swift -A http://ceph:7480/auth/1.0 -U radosgw:swift -K 6Dz8f8ubJDNhr57jV5tM0xeFSzBxXN1MzK59qdMh post second-bucket</span><br><span class="line">swift -A http://ceph:7480/auth/1.0 -U radosgw:swift -K 6Dz8f8ubJDNhr57jV5tM0xeFSzBxXN1MzK59qdMh list</span><br></pre></td></tr></table></figure>
+<p>9)最后验证</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s3cmd <span class="built_in">ls</span></span><br><span class="line">2019-02-15 07:45  s3://devops</span><br><span class="line">2019-02-15 08:18  s3://second-bucket</span><br><span class="line">s3cmd <span class="built_in">ls</span> s3://devops/20190619/</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ceph/" rel="tag"># ceph</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/" rel="prev" title="LVM磁盘扩容及磁盘挂载">
+                  <i class="fa fa-angle-left"></i> LVM磁盘扩容及磁盘挂载
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/07/Pipeline-script-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B%E9%85%8D%E7%BD%AE/" rel="next" title="Pipeline script 自动化测试流程配置">
+                  Pipeline script 自动化测试流程配置 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

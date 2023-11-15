@@ -1,37 +1,382 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="PostgreSQL安装包官网下载地址：https:&#x2F;&#x2F;www.postgresql.org&#x2F;ftp&#x2F;source&#x2F;v10.1&#x2F; (一) 安装 1）上传、解压 12将postgresql-10.1.tar.gz上传到&#x2F;home下运行解压命令 tar -zxvf postgresql-10.1.tar.gz 2）检查当前系统环境能否安装PG 12 cd &#x2F;home&#x2F;postgresql-10.1&#x2F;.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Postgresql安装文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="PostgreSQL安装包官网下载地址：https:&#x2F;&#x2F;www.postgresql.org&#x2F;ftp&#x2F;source&#x2F;v10.1&#x2F; (一) 安装 1）上传、解压 12将postgresql-10.1.tar.gz上传到&#x2F;home下运行解压命令 tar -zxvf postgresql-10.1.tar.gz 2）检查当前系统环境能否安装PG 12 cd &#x2F;home&#x2F;postgresql-10.1&#x2F;.">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_1.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_2.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_3.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/postgresql_4.png">
+<meta property="article:published_time" content="2019-06-26T08:47:58.000Z">
+<meta property="article:modified_time" content="2019-07-15T17:34:22.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="postgresql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/postgresql_1.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/06/26/Postgresql部署文档/","title":"Postgresql安装文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Postgresql安装文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Postgresql安装文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Postgresql安装文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-26 16:47:58" itemprop="dateCreated datePublished" datetime="2019-06-26T16:47:58+08:00">2019-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-16 01:34:22" itemprop="dateModified" datetime="2019-07-16T01:34:22+08:00">2019-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Postgresql%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Postgresql服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>PostgreSQL安装包官网下载地址：<a target="_blank" rel="noopener" href="https://www.postgresql.org/ftp/source/v10.1/">https://www.postgresql.org/ftp/source/v10.1/</a></p>
+<p>(一) 安装</p>
+<p>1）上传、解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将postgresql-10.1.tar.gz上传到/home下</span><br><span class="line">运行解压命令 tar -zxvf postgresql-10.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>2）检查当前系统环境能否安装PG</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">cd</span> /home/postgresql-10.1/</span><br><span class="line">./configure  --prefix=/usr/local/pgsql/</span><br></pre></td></tr></table></figure>
+<p>若出现下述错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">configure: error: readline library not found</span><br><span class="line">If you have readline already installed, see config.log <span class="keyword">for</span> details on the</span><br><span class="line">failure.  It is possible the compiler isn<span class="string">&#x27;t looking in the proper directory.</span></span><br><span class="line"><span class="string">Use --without-readline to disable readline support.</span></span><br></pre></td></tr></table></figure>
+<p>执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install -y readline-devel</span><br></pre></td></tr></table></figure>
+<p>若再次运行.&#x2F;configure命令，出现下述问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">configure: error: zlib library not found</span><br><span class="line">If you have zlib already installed, see config.log <span class="keyword">for</span> details on the</span><br><span class="line">failure.  It is possible the compiler isn<span class="string">&#x27;t looking in the proper directory.</span></span><br><span class="line"><span class="string">Use --without-zlib to disable zlib support.</span></span><br></pre></td></tr></table></figure>
+<p>执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install zlib-devel</span><br></pre></td></tr></table></figure>
+<p>3）编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>4)创建postgresql专有用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adduser postgres</span><br></pre></td></tr></table></figure>
+<p>5)创建postgresql数据目录，并赋予权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /usr/local/pgsql/data</span><br><span class="line"><span class="built_in">chown</span> -R postgres:postgres /usr/local/pgsql/</span><br></pre></td></tr></table></figure>
+<p>(二)启动</p>
+<p>1)切换用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br></pre></td></tr></table></figure>
+<p>2)进入bin目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/pgsql/bin/</span><br></pre></td></tr></table></figure>
+<p>3)初始化postgresql数据目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./initdb -D /usr/local/pgsql/data</span><br></pre></td></tr></table></figure>
+<p>4)启动数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./pg_ctl start -D /usr/local/pgsql/data</span><br></pre></td></tr></table></figure>
+
+<p>(三)新建数据库、登录数据库的用户和用户密码</p>
+<p> 1)创建数据库，在&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;目录下执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./createdb mydb</span><br></pre></td></tr></table></figure>
+<p> 2）创建用户（如用户名为lin，密码为LinBug）有两种方式：<br> 方式一：通过默认数据库创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先进入默认的 postgres 数据库: ./psql   默认数据库为postgres</span><br><span class="line">CREATE USER lin WITH PASSWORD <span class="string">&#x27;LinBug&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p> 方式二：直接执行命令，交互式创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./createuser -P lin</span><br></pre></td></tr></table></figure>
+<p>   这会提示你输入新建用户的密码，重复输入密码后，创建成功</p>
+<p>(四)访问数据库(以下操作确保是在&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;目录下)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">以默认用户名访问默认数据库（默认的用户名和数据库名都是postgres）：./psql</span><br><span class="line">以名为lin的角色登录名为mydb的数据库：./psql mydb -U lin</span><br></pre></td></tr></table></figure>
+<p>(五)远程访问数据库设置</p>
+<p>远程访问数据库的认证方式主要有很多方式，我只设置基于TCP&#x2F;IP连接的trust认证方式,需设置两个配置文件，<br>(1)修改配置文件postgresql.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/postgresql.conf</span><br></pre></td></tr></table></figure>
+<p>   修改监听地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#listen_addresses=’localhost’ 改为 listen_addresses=’*’</span></span><br></pre></td></tr></table></figure>
+<p>(2)修改配置文件pg_hba.conf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/pg_hba.conf</span><br></pre></td></tr></table></figure>
+<p>添加一条IP授权记录（如192.168.2.23），可以对一个网段授权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 myhost connections:</span></span><br><span class="line">host    all         all         192.168.117.0/24          trust</span><br></pre></td></tr></table></figure>
+<p>当然，可以设置所有网段IP可以访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 remote address connections:</span></span><br><span class="line">host    all         all         0.0.0.0/0                 trust</span><br></pre></td></tr></table></figure>
+<p>(六)设置postgresql数据库开机自启动</p>
+<p>PostgreSQL的开机自启动脚本位于PostgreSQL源码目录的contrib&#x2F;start-scripts路径下，linux文件即为linux系统上的启动脚本。<br><img src="/img/postgresql_1.png" alt="image"><br>(1)将Linux文件复制到 &#x2F;etc&#x2F;init.d 目录下，并且将其重名为postgresql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/postgresql-10.1/contrib/start-scripts/linux /etc/init.d/postgresql</span><br></pre></td></tr></table></figure>
+<p>(2)进入&#x2F;etc&#x2F;init.d 目录下，修改postgresql文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/init.d/</span><br><span class="line">vim postgresql</span><br></pre></td></tr></table></figure>
+<p>然后做以下修改：<br>将prefix设置为postgresql的安装路径：&#x2F;usr&#x2F;local&#x2F;postgresql<br>将PGDATA设置为postgresql的数据目录路径：&#x2F;usr&#x2F;local&#x2F;postgresql&#x2F;data<br>将PGUSER设置为postgresql的用户：admin<br>将PGLOG 设置为 postgresql 的数据目录的日志文件夹下：$PGDATA&#x2F;pg_log&#x2F;serverlog<br><img src="/img/postgresql_2.png" alt="image"><br>(3)添加到开机启动<br>修改文件属性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> a+x postgresql</span><br></pre></td></tr></table></figure>
+<p>添加开机启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add postgresql</span><br></pre></td></tr></table></figure>
+<p>(4)测试postgresql的启停</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start postgresql</span><br><span class="line">systemctl status postgresql</span><br><span class="line">systemctl stop postgresql</span><br><span class="line">systemctl status postgresql</span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_3.png" alt="image"><br>(5)远程Navicat连接测试<br><img src="/img/postgresql_4.png" alt="image"><br>(七)若要使用postgresql作为gitlab的外挂数据库，还需要安装postgresql的扩展插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进入目录：/home/deployer/postgresql-10.1/contrib</span><br><span class="line">make &amp;&amp; make  install</span><br></pre></td></tr></table></figure>
+<p>注意：若出现下述问题，请检查防火墙是否开放5432端口权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Unable to connect to server:</span><br><span class="line">could not connect to server: Connection timed out (0x0000274C/10060)</span><br><span class="line">Is the server running on host <span class="string">&quot;192.168.1.205&quot;</span> and accepting</span><br><span class="line">TCP/IP connections on port 5432</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/postgresql/" rel="tag"># postgresql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/25/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-angle-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/26/Gitlab%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="next" title="Gitlab安装文档">
+                  Gitlab安装文档 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

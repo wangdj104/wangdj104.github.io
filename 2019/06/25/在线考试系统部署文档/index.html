@@ -1,37 +1,393 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="主要介绍如何在本地运行项目，包括下载、导入、修改配置、运行项目 环境准备开发环境：  jdk：1.8 MySQL：5.7+ redis rabbitMq node.js consul fastDfs（推荐基于docker安装，安装步骤网上很多）  开发工具：IntelliJ IDEA、WebStorm 项目下载 git clone下载spring-microservice-exam、spring-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在线考试系统部署文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="主要介绍如何在本地运行项目，包括下载、导入、修改配置、运行项目 环境准备开发环境：  jdk：1.8 MySQL：5.7+ redis rabbitMq node.js consul fastDfs（推荐基于docker安装，安装步骤网上很多）  开发工具：IntelliJ IDEA、WebStorm 项目下载 git clone下载spring-microservice-exam、spring-">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/config.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/config_redis.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/config_fdfs.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/config_xml.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/npm_install.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/npm_run.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/import_exam_ui.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/import_exam_ui_run.png">
+<meta property="article:published_time" content="2019-06-25T07:03:40.000Z">
+<meta property="article:modified_time" content="2019-07-17T15:24:06.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="microservice">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/config.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/06/25/在线考试系统部署文档/","title":"在线考试系统部署文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在线考试系统部署文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">项目下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%90%8E%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="nav-number">4.</span> <span class="nav-text">启动后端项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">启动前端项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7"><span class="nav-number">6.</span> <span class="nav-text">监控</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在线考试系统部署文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在线考试系统部署文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-25 15:03:40" itemprop="dateCreated datePublished" datetime="2019-06-25T15:03:40+08:00">2019-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-17 23:24:06" itemprop="dateModified" datetime="2019-07-17T23:24:06+08:00">2019-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">开源项目学习</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">在线考试系统部署文档</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>主要介绍如何在本地运行项目，包括下载、导入、修改配置、运行项目</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>开发环境：</p>
+<ul>
+<li>jdk：1.8</li>
+<li>MySQL：5.7+</li>
+<li>redis</li>
+<li>rabbitMq</li>
+<li>node.js</li>
+<li>consul</li>
+<li>fastDfs（推荐基于docker安装，安装步骤网上很多）</li>
+</ul>
+<p>开发工具：<code>IntelliJ IDEA</code>、<code>WebStorm</code></p>
+<h4 id="项目下载"><a href="#项目下载" class="headerlink" title="项目下载"></a>项目下载</h4><ol>
+<li><code>git clone</code>下载<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam.git">spring-microservice-exam</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-ui.git">spring-microservice-exam-ui</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam.git`</span><br><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam-ui.git`</span><br><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam-web.git`</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h4><ol>
+<li>修改spring-microservice-exam的config-service的&#x2F;config文件夹下各服务的配置，主要是数据库、redis和fastDfs，其它配置基本不用动</li>
+</ol>
+<p><img src="/img/config.png" alt="image"></p>
+<p>redis的IP和端口号:</p>
+<p><img src="/img/config_redis.png" alt="image"></p>
+<p>fastDfs的IP和端口号：</p>
+<p><img src="/img/config_fdfs.png" alt="image"></p>
+<ol start="2">
+<li>运行数据库初始化脚本：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">`/doc/deploy/mysql/microservice-user.sql`</span><br><span class="line">`/doc/deploy/mysql/microservice-exam.sql`</span><br><span class="line">`/doc/deploy/mysql/microservice-auth.sql`</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="启动后端项目"><a href="#启动后端项目" class="headerlink" title="启动后端项目"></a>启动后端项目</h4><p>启动项目前要<strong>先确认consul、MySQL、redis、rabbitMq是否已经启动</strong></p>
+<p>按顺序启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. config-service</span><br><span class="line">2. auth-service</span><br><span class="line">3. user-service</span><br><span class="line">4. exam-service</span><br><span class="line">5. gateway-service</span><br><span class="line">6. monitor-service 需要监控功能再启动：</span><br></pre></td></tr></table></figure>
+<p>内存不足的可以限制每个服务的内存：<code>config-service</code>可以分配64M（-Xmx64m -Xms64m）、其它服务分配128M（-Xmx128m -Xms128m）<br><img src="/img/config_xml.png" alt="image"></p>
+<h4 id="启动前端项目"><a href="#启动前端项目" class="headerlink" title="启动前端项目"></a>启动前端项目</h4><p>分别在<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-ui.git">spring-microservice-exam-ui</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>目录下，命令行运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p><img src="/img/npm_install.png" alt="image"></p>
+<p><img src="/img/npm_run.png" alt="image"><br><code>WebStorm</code>导入项目：</p>
+<p><img src="/img/import_exam_ui.png" alt="image"></p>
+<p>运行：</p>
+<p><img src="/img/import_exam_ui_run.png" alt="image"></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>项目WebStorm导入操作类似</p>
+<p>启动成功后访问：</p>
+<pre><code>前台：localhost:8080
+
+后台：localhost:9527
+</code></pre>
+<p>默认账号：</p>
+<ol>
+<li><p>管理员：admin&#x2F;123456</p>
+</li>
+<li><p>学生：student&#x2F;123456</p>
+</li>
+<li><p>教师：teacher&#x2F;123456</p>
+</li>
+</ol>
+<h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rabbitMq监控</td>
+<td>localhost:15672</td>
+</tr>
+<tr>
+<td>spring boot admin服务监控</td>
+<td>localhost:8085</td>
+</tr>
+<tr>
+<td>zipkin链路跟踪</td>
+<td>localhost:9411</td>
+</tr>
+<tr>
+<td>consul</td>
+<td>localhost:8500</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/microservice/" rel="tag"># microservice</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/25/hello-world/" rel="next" title="Hello World">
+                  Hello World <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

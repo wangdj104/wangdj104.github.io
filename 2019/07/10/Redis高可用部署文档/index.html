@@ -1,37 +1,383 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131） 在三台机器上分别安装redisi)下载安装包 1wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-4.0.6.tar.gz ii)上传并解压到&#x2F;home下 1tar -xzvf redis-4.0.6.tar.g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis高可用部署文档">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/10/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131） 在三台机器上分别安装redisi)下载安装包 1wget http:&#x2F;&#x2F;download.redis.io&#x2F;releases&#x2F;redis-4.0.6.tar.gz ii)上传并解压到&#x2F;home下 1tar -xzvf redis-4.0.6.tar.g">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/redis_master.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/redis_slave.png">
+<meta property="article:published_time" content="2019-07-10T12:28:39.000Z">
+<meta property="article:modified_time" content="2023-11-15T03:12:20.625Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/redis_master.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/10/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/10/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/","path":"2019/07/10/Redis高可用部署文档/","title":"Redis高可用部署文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis高可用部署文档 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E4%B8%89%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%E5%88%86%E5%88%AB%E5%AE%89%E8%A3%85redis"><span class="nav-number">1.</span> <span class="nav-text">在三台机器上分别安装redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85keepalived%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">安装keepalived服务</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/10/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis高可用部署文档 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis高可用部署文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-07-10 20:28:39" itemprop="dateCreated datePublished" datetime="2019-07-10T20:28:39+08:00">2019-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2023-11-15 11:12:20" itemprop="dateModified" datetime="2023-11-15T11:12:20+08:00">2023-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Redis%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Redis服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>配置一主二从（master 192.168.117.129,slave 192.168.117.130,192.168.117.131）</p>
+<h3 id="在三台机器上分别安装redis"><a href="#在三台机器上分别安装redis" class="headerlink" title="在三台机器上分别安装redis"></a>在三台机器上分别安装redis</h3><p>i)下载安装包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-4.0.6.tar.gz</span><br></pre></td></tr></table></figure>
+<p>ii)上传并解压到&#x2F;home下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf redis-4.0.6.tar.gz</span><br></pre></td></tr></table></figure>
+<p>iii)编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/redis-4.0.6</span><br><span class="line">make MALLOC=libc</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>iv)修改redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&quot;</span>&gt;redis.conf</span><br><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+<p>master(192.168.117.129)修改如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bind 0.0.0.0</span></span><br><span class="line">protected-mode <span class="built_in">yes</span></span><br><span class="line">port 6379</span><br><span class="line">tcp-backlog 511</span><br><span class="line"><span class="built_in">timeout</span> 0</span><br><span class="line">tcp-keepalive 300</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">supervised systemd</span><br><span class="line">pidfile <span class="string">&quot;/var/run/redis_6379.pid&quot;</span></span><br><span class="line">loglevel noticelogfile <span class="string">&quot;/home/redis-4.0.6/redis-master.log&quot;</span></span><br><span class="line">databases 16</span><br><span class="line">save 900 1</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br><span class="line">stop-writes-on-bgsave-error <span class="built_in">yes</span></span><br><span class="line">rdbcompression <span class="built_in">yes</span></span><br><span class="line">rdbchecksum <span class="built_in">yes</span></span><br><span class="line">dbfilename <span class="string">&quot;dump.rdb&quot;</span></span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/home/redis-4.0.6&quot;</span></span><br><span class="line">masterauth <span class="string">&quot;redis-2019&quot;</span></span><br><span class="line">slave-serve-stale-data <span class="built_in">yes</span></span><br><span class="line">slave-read-only no</span><br><span class="line">repl-diskless-sync no</span><br><span class="line">repl-diskless-sync-delay 5</span><br><span class="line">repl-disable-tcp-nodelay no</span><br><span class="line">slave-priority 100</span><br><span class="line">requirepass redis-2019</span><br><span class="line">appendonly no</span><br><span class="line">appendfilename <span class="string">&quot;appendonly.aof&quot;</span></span><br><span class="line">appendfsync everysec</span><br><span class="line">no-appendfsync-on-rewrite no</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">aof-load-truncated <span class="built_in">yes</span></span><br><span class="line">lua-time-limit 5000</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line">slowlog-max-len 128</span><br><span class="line">latency-monitor-threshold 0</span><br><span class="line">notify-keyspace-events <span class="string">&quot;&quot;</span></span><br><span class="line">hash-max-ziplist-entries 512</span><br><span class="line">hash-max-ziplist-value 64</span><br><span class="line">list-max-ziplist-size -2</span><br><span class="line">list-compress-depth 0</span><br><span class="line">set-max-intset-entries 512</span><br><span class="line">zset-max-ziplist-entries 128</span><br><span class="line">zset-max-ziplist-value 64</span><br><span class="line">hll-sparse-max-bytes 3000</span><br><span class="line">activerehashing <span class="built_in">yes</span></span><br><span class="line">client-output-buffer-limit normal 0 0 0</span><br><span class="line">client-output-buffer-limit slave 256mb 64mb 60</span><br><span class="line">client-output-buffer-limit pubsub 32mb 8mb 60</span><br><span class="line">hz 10</span><br><span class="line">aof-rewrite-incremental-fsync <span class="built_in">yes</span></span><br><span class="line">maxclients 2000</span><br></pre></td></tr></table></figure>
+
+<p>slave(192.168.117.130,192.168.117.131)修改如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bind 0.0.0.0</span></span><br><span class="line">protected-mode <span class="built_in">yes</span></span><br><span class="line">port 6379</span><br><span class="line">tcp-backlog 511</span><br><span class="line"><span class="built_in">timeout</span> 0</span><br><span class="line">tcp-keepalive 300</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">supervised systemd</span><br><span class="line">pidfile /var/run/redis_6379.pid</span><br><span class="line">loglevel notice</span><br><span class="line">logfile <span class="string">&quot;/home/redis-4.0.6/redis-slave.log&quot;</span></span><br><span class="line">databases 16</span><br><span class="line">save 900 1</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br><span class="line">stop-writes-on-bgsave-error <span class="built_in">yes</span></span><br><span class="line">rdbcompression <span class="built_in">yes</span></span><br><span class="line">rdbchecksum <span class="built_in">yes</span></span><br><span class="line">dbfilename dump.rdb</span><br><span class="line"><span class="built_in">dir</span> /home/redis-4.0.6/</span><br><span class="line">slaveof 192.168.117.129 6379      <span class="comment">#主数据库ip和端口</span></span><br><span class="line">masterauth redis-2019          <span class="comment">#主数据库密码</span></span><br><span class="line">slave-serve-stale-data <span class="built_in">yes</span></span><br><span class="line">slave-read-only <span class="built_in">yes</span></span><br><span class="line">repl-diskless-sync no</span><br><span class="line">repl-diskless-sync-delay 5</span><br><span class="line">repl-disable-tcp-nodelay no</span><br><span class="line">slave-priority 100</span><br><span class="line">requirepass redis-2019</span><br><span class="line">appendonly no</span><br><span class="line">appendfilename <span class="string">&quot;appendonly.aof&quot;</span></span><br><span class="line">appendfsync everysec</span><br><span class="line">no-appendfsync-on-rewrite no</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">aof-load-truncated <span class="built_in">yes</span></span><br><span class="line">lua-time-limit 5000</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line">slowlog-max-len 128</span><br><span class="line">latency-monitor-threshold 0</span><br><span class="line">notify-keyspace-events <span class="string">&quot;&quot;</span></span><br><span class="line">hash-max-ziplist-entries 512</span><br><span class="line">hash-max-ziplist-value 64</span><br><span class="line">list-max-ziplist-size -2</span><br><span class="line">list-compress-depth 0</span><br><span class="line">set-max-intset-entries 512</span><br><span class="line">zset-max-ziplist-entries 128</span><br><span class="line">zset-max-ziplist-value 64</span><br><span class="line">hll-sparse-max-bytes 3000</span><br><span class="line">activerehashing <span class="built_in">yes</span></span><br><span class="line">client-output-buffer-limit normal 0 0 0</span><br><span class="line">client-output-buffer-limit slave 256mb 64mb 60</span><br><span class="line">client-output-buffer-limit pubsub 32mb 8mb 60</span><br><span class="line">hz 10</span><br><span class="line">aof-rewrite-incremental-fsync <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>v)创建redis用户组和用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">groupadd redis</span><br><span class="line">useradd -r -g redis redis</span><br><span class="line"><span class="built_in">chown</span> -R redis:redis /home/redis-4.0.6</span><br><span class="line"><span class="built_in">chmod</span> -R 770 /home/redis-4.0.6</span><br></pre></td></tr></table></figure>
+
+<p>vi)配置Redis的systemd服务,同时在master和slave配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/redis.service</span><br><span class="line"></span><br><span class="line">[Unit]</span><br><span class="line"></span><br><span class="line">Description=Redis In-Memory Data Store</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"></span><br><span class="line">User=redis</span><br><span class="line">Group=redis</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/home/redis-4.0.6/src/redis-server /home/redis-4.0.6/redis.conf</span><br><span class="line">ExecStop=/home/redis-4.0.6/src/redis-cli -h 127.0.0.1 -p 6379 shutdown</span><br><span class="line">Restart=always</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>vii)启动redis服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> redis.service</span><br><span class="line">systemctl start redis.service</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>viii)配置防火墙redis端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --add-port=6739/tcp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装keepalived服务"><a href="#安装keepalived服务" class="headerlink" title="安装keepalived服务"></a>安装keepalived服务</h3><p>1)安装keepalived服务的主机都需要配置端口转发</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#  echo &quot;net.ipv4.ip_forward = 1&quot; &gt;&gt; /etc/sysctl.conf</span></span><br><span class="line">[root@localhost ~]<span class="comment">#  sysctl -p</span></span><br><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+<p>2)Redis-Master节点安装keepalived服务<br>i)keepalived安装包下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/13kW_Bz6RGSo4ewZ68BwCVA">https://pan.baidu.com/s/13kW_Bz6RGSo4ewZ68BwCVA</a> 提取码: 6ktn<br>ii)修改keepalived的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum localinstall *.rpm或rpm -ivh *.rpm --nodeps --force</span><br><span class="line">vim /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>添加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">        script <span class="string">&quot;/etc/keepalived/redis_check.sh&quot;</span></span><br><span class="line">        interval 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    priority 100</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.117.208/32</span><br><span class="line">    &#125;</span><br><span class="line">    notify_master <span class="string">&quot;/etc/keepalived/redis_master.sh 192.168.117.129 6379&quot;</span></span><br><span class="line">    notify_backup <span class="string">&quot;/etc/keepalived/redis_backup.sh 192.168.117.129 6379&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>iii)增加redis_master.sh文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/redis_master.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">REDISCLI=<span class="string">&quot;/home/redis-4.0.6/src/redis-cli -a redis-2019&quot;</span></span><br><span class="line">LOGFILE=<span class="string">&quot;/etc/keepalived/keepalived-redis-state.log&quot;</span></span><br><span class="line">pid=$$</span><br><span class="line">host=<span class="variable">$1</span></span><br><span class="line">port=<span class="variable">$2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver]&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] Run &#x27;SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&#x27;&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&gt;&gt; <span class="variable">$LOGFILE</span>  2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] wait 10 sec for data sync from old master&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">sleep</span> 10</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] data rsync from old mater ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] Run slaveof no one,close master/slave&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF NO ONE &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] wait other slave connect....&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>iv)增加redis_backup.sh文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/redis_backup.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">REDISCLI=<span class="string">&quot;/home/redis-4.0.6/src/redis-cli -a redis-2019&quot;</span></span><br><span class="line">LOGFILE=<span class="string">&quot;/etc/keepalived/keepalived-redis-state.log&quot;</span></span><br><span class="line">pid=$$</span><br><span class="line">host=<span class="variable">$1</span></span><br><span class="line">port=<span class="variable">$2</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] Being slave state...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] wait 10 sec for data sync from old master&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">sleep</span> 10</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] data rsync from old mater ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] Run &#x27;SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&#x27;&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span> &gt;&gt; <span class="variable">$LOGFILE</span>  2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] slave connect to <span class="variable">$host</span> ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>3)Redis-Slave节点安装keepalived服务<br>i)修改keepalived的配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum localinstall *.rpm或rpm -ivh *.rpm --nodeps --force</span><br><span class="line">vim /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+<p>添加如下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_redis &#123;</span><br><span class="line">     script <span class="string">&quot;/etc/keepalived/redis_check.sh&quot;</span></span><br><span class="line">     interval 5</span><br><span class="line">     <span class="built_in">timeout</span> 2</span><br><span class="line">     fall 3</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface ens33</span><br><span class="line">    virtual_router_id 52</span><br><span class="line">    priority 90</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.117.209/32</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify_master <span class="string">&quot;/etc/keepalived/redis_master.sh 192.168.117.130 6379&quot;</span></span><br><span class="line">    notify_backup <span class="string">&quot;/etc/keepalived/redis_backup.sh 192.168.117.130 6379&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>iii)增加redis_master.sh文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/redis_master.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">REDISCLI=<span class="string">&quot;/home/redis-4.0.6/src/redis-cli -a redis-2019&quot;</span></span><br><span class="line">LOGFILE=<span class="string">&quot;/etc/keepalived/keepalived-redis-state.log&quot;</span></span><br><span class="line">pid=$$</span><br><span class="line">host=<span class="variable">$1</span></span><br><span class="line">port=<span class="variable">$2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver]&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] Run &#x27;SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&#x27;&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&gt;&gt; <span class="variable">$LOGFILE</span>  2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] wait 10 sec for data sync from old master&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">sleep</span> 10</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] data rsync from old mater ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] Run slaveof no one,close master/slave&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF NO ONE &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] wait other slave connect....&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>iv)增加redis_backup.sh文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/keepalived/redis_backup.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">REDISCLI=<span class="string">&quot;/home/redis-4.0.6/src/redis-cli -a redis-2019&quot;</span></span><br><span class="line">LOGFILE=<span class="string">&quot;/etc/keepalived/keepalived-redis-state.log&quot;</span></span><br><span class="line">pid=$$</span><br><span class="line">host=<span class="variable">$1</span></span><br><span class="line">port=<span class="variable">$2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] Being slave state...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] wait 10 sec for data sync from old master&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">sleep</span> 10</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[master] data rsync from old mater ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] Run &#x27;SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span>&#x27;&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br><span class="line"><span class="variable">$REDISCLI</span> SLAVEOF <span class="variable">$host</span> <span class="variable">$port</span> &gt;&gt; <span class="variable">$LOGFILE</span>  2&gt;&amp;1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;`date +&#x27;%Y-%m-%d %H:%M:%S&#x27;`|<span class="variable">$pid</span>|state:[slaver] slave connect to <span class="variable">$host</span> ok...&quot;</span> &gt;&gt; <span class="variable">$LOGFILE</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>4）验证<br>i)使用redis-cli连接主数据库并输入密码登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@Master bin]<span class="comment"># /home/redis-4.0.6/src/redis-cli -p 6379</span></span><br><span class="line">127.0.0.1:6379&gt; auth redis-2019</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>查看主数据库info属性:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+<p><img src="/img/redis_master.png" alt="image"></p>
+<p>ii)使用redis-cli连接从数据库并输入密码登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@Master bin]<span class="comment"># /home/redis-4.0.6/src/redis-cli -p 6379</span></span><br><span class="line">127.0.0.1:6379&gt; auth redis-2019</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>查看从数据库info属性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+<p><img src="/img/redis_slave.png" alt="image"><br>iii)测试<br>如果上述两步都成功，在主数据库录入一条数据，在从库中查询<br>主库插入数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> num 13</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
+<p>从库中查询</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get num</span><br><span class="line"><span class="string">&quot;13&quot;</span></span><br></pre></td></tr></table></figure>
+<p>同步成功<br>5)配置防火墙上vrrp协议</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd --direct --permanent --add-rule ipv4 filter INPUT 0 \</span></span><br><span class="line">  --in-interface enp0s8 --destination 224.0.0.18 --protocol vrrp -j ACCEPT</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd --direct --permanent --add-rule ipv4 filter OUTPUT 0 \</span></span><br><span class="line">  --out-interface enp0s8 --destination 224.0.0.18 --protocol vrrp -j ACCEPT</span><br><span class="line"></span><br><span class="line">[root@localhost ~]<span class="comment"># firewall-cmd –reload</span></span><br></pre></td></tr></table></figure>
+<p>6)Redis运维(主备切换)</p>
+<p>Redis主备服务切换是自动完成。切换至redis slave时，redis进入只读模式。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/09/Mysql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="prev" title="mysql高可用部署文档">
+                  <i class="fa fa-angle-left"></i> mysql高可用部署文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/10/Postgresql%E9%AB%98%E5%8F%AF%E7%94%A8%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" rel="next" title="Postgresql高可用部署文档">
+                  Postgresql高可用部署文档 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

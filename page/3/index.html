@@ -1,23 +1,997 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="记录生活中的点点滴滴">
+<meta property="og:type" content="website">
+<meta property="og:title" content="wdj&#39;s blog">
+<meta property="og:url" content="https://wangdj104.github.io/page/3/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="记录生活中的点点滴滴">
+<meta property="og:locale">
+<meta property="article:author" content="wangdj">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wangdj104.github.io/page/3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-Hans","comments":"","permalink":"","path":"page/3/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wdj's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/27/Mysql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/27/Mysql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">Mysql部署文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-27 23:29:47" itemprop="dateCreated datePublished" datetime="2019-06-27T23:29:47+08:00">2019-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2020-08-14 16:49:22" itemprop="dateModified" datetime="2020-08-14T16:49:22+08:00">2020-08-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Mysql%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Mysql服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="安装mysql服务"><a href="#安装mysql服务" class="headerlink" title="安装mysql服务"></a>安装mysql服务</h3><p>mysql数据库安装包下载链接：链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1OqSnqRXJ951V6Gn7P-IFQQ">https://pan.baidu.com/s/1OqSnqRXJ951V6Gn7P-IFQQ</a> 提取码: wini<br>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/javabg/p/9951852.html">https://www.cnblogs.com/javabg/p/9951852.html</a><br>1)上传二进制包到&#x2F;home 解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf mysql-5.7.23-linux-glibc2.12-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<p>2)更改解压缩后的文件夹名称</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> mysql-5.7.23-linux-glibc2.12-x86_64/  /home/mysql</span><br></pre></td></tr></table></figure>
+<p>3)创建存放数据库数据的文件夹&#x2F;home&#x2F;mysql&#x2F;data</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /home/mysql/data</span><br></pre></td></tr></table></figure>
+<p>4)创建mysql用户组和mysql用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd mysql</span><br><span class="line">useradd -r -g mysql mysql</span><br></pre></td></tr></table></figure>
+<p>5)mysql目录授权给mysql组和mysql用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home</span><br><span class="line"><span class="built_in">chown</span> -R mysql:mysql mysql</span><br><span class="line"><span class="built_in">chmod</span> -R 750 mysql</span><br></pre></td></tr></table></figure>
+<p>6)修改配置文件：vim &#x2F;etc&#x2F;my.cnf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">basedir=/home/mysql</span><br><span class="line">datadir=/home/mysql/data</span><br><span class="line">port = 3306</span><br><span class="line">socket=/tmp/mysql.sock</span><br><span class="line"></span><br><span class="line">symbolic-links=0</span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/tmp/mysqld/mysqld.pid    sql_mode=<span class="string">&#x27;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&#x27;</span></span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">default-character-set=utf8</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">log-bin=mysql-bin</span><br><span class="line">binlog-format=ROW</span><br><span class="line">server_id=1</span><br><span class="line">max_connections=1000</span><br><span class="line"></span><br><span class="line">init_connect=<span class="string">&#x27;SET collation_connection = utf8_unicode_ci&#x27;</span></span><br><span class="line">init_connect=<span class="string">&#x27;SET NAMES utf8&#x27;</span></span><br><span class="line">character-set-server=utf8</span><br><span class="line">collation-server=utf8_unicode_ci</span><br><span class="line">skip-character-set-client-handshake</span><br></pre></td></tr></table></figure>
+<p>7)创建文件&#x2F;tmp&#x2F;mysql.sock：设置用户组及用户，授权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line"><span class="built_in">touch</span> mysql.sock</span><br><span class="line"><span class="built_in">chown</span> mysql:mysql mysql.sock</span><br><span class="line"><span class="built_in">chmod</span> 755 mysql.sock</span><br></pre></td></tr></table></figure>
+<p>8)创建文件&#x2F;tmp&#x2F;mysqld&#x2F;mysqld.pid</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> mysqld</span><br><span class="line"><span class="built_in">cd</span> mysqld</span><br><span class="line"><span class="built_in">touch</span> mysqld.pid</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"><span class="built_in">chown</span> -R mysql:mysql mysqld</span><br><span class="line"><span class="built_in">cd</span> mysqld</span><br><span class="line"><span class="built_in">chmod</span> 755 mysqld.pid</span><br></pre></td></tr></table></figure>
+<p>9）创建文件&#x2F;var&#x2F;log&#x2F;mysqld.log</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> /var/log/mysqld.log</span><br><span class="line"><span class="built_in">chown</span> -R mysql:mysql /var/log/mysqld.log</span><br><span class="line"><span class="built_in">cd</span> /var/log</span><br><span class="line"><span class="built_in">chmod</span> 755 mysqld.log</span><br></pre></td></tr></table></figure>
+<p>10)初始化和安全启动数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/mysql/bin</span><br><span class="line">./mysqld --user=mysql --basedir=/home/mysql  \</span><br><span class="line">--datadir=/home/mysql/data --initialize</span><br><span class="line"><span class="built_in">nohup</span> ./mysqld_safe --user=mysql &amp;</span><br></pre></td></tr></table></figure>
+<p>11)修改数据库初始默认密码<br>a)默认密码在mysqld.log日志里, 找到后保存到安全的地方:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /var/log/mysqld.log</span><br><span class="line">或 grep <span class="string">&#x27;temporary password&#x27;</span> /var/log/mysqld.log</span><br></pre></td></tr></table></figure>
+<p><img src="/img/mysql_password.png" alt="image"><br>b)登录mysql:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/mysql/bin/</span><br><span class="line">./mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>拷贝或者输入mysqld.log中获得的默认密码，即可进入mysql命令客户端<br>c)假设密码修改为123456</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> password=password(<span class="string">&quot;123456&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>12)设置远程登录权限（进入数据库后操作）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on *.* to <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified by <span class="string">&#x27;123456&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>13)设置开机自启动<br>.)把support-files&#x2F;mysql.server 拷贝为&#x2F;etc&#x2F;init.d&#x2F;mysql：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> -a /home/mysql/support-files/mysql.server /etc/init.d/mysql</span><br></pre></td></tr></table></figure>
+<p>..)查看是否拷贝成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/init.d/</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+<p>…)查看mysql服务是否在服务配置中,若没有，则把mysql注册为开机启动的服务，然后在进行查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list mysql</span><br><span class="line">chkconfig --add mysql</span><br><span class="line">chkconfig --list mysql</span><br></pre></td></tr></table></figure>
+<p>….)验证是否注册成服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service mysql start</span><br><span class="line">service mysql stop</span><br></pre></td></tr></table></figure>
+<p>…..)创建快捷方式,服务启动后，直接运行mysql -u root -p即可登录，不需要进入到对应的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ln</span> -s /home/mysql/bin/mysql /usr/bin</span><br></pre></td></tr></table></figure>
+<ol start="14">
+<li>配置防火墙MySQL端口<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --add-service=mysql --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/27/Harbor%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/27/Harbor%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">Harbor部署文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-27 20:30:05" itemprop="dateCreated datePublished" datetime="2019-06-27T20:30:05+08:00">2019-06-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2023-11-15 11:00:06" itemprop="dateModified" datetime="2023-11-15T11:00:06+08:00">2023-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Harbor%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Harbor服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p>a)docker17.12.0-ce下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1oxAwdjcLxt91Fh2YdZB5dQ">https://pan.baidu.com/s/1oxAwdjcLxt91Fh2YdZB5dQ</a> 提取码: 34d1<br>包含下述相关依赖包rpm包：<br><img src="/img/docker_rpm.png" alt="image"><br>b)启动docker所需的docker-compose下载链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1WBMMLn2g15daXE0JDr0wMg">https://pan.baidu.com/s/1WBMMLn2g15daXE0JDr0wMg</a> 提取码: 6rz3<br>1)进入a)所下的rpm包文件夹中，执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh *.rpm --nodeps --force</span><br></pre></td></tr></table></figure>
+<p>–nodeps就是安装时不检查依赖关系，比如你这个rpm需要A，但是你没装A，这样你的包就装不上，用了–nodeps你就能装上了。–force就是强制安装，比如你装过这个rpm的版本1，如果你想装这个rpm的版本2，就需要用–force强制安装<br>2)修改docker-compose权限,并移动到&#x2F;usr&#x2F;bin目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x docker-compose</span><br><span class="line"><span class="built_in">mv</span> docker-compose /usr/bin</span><br></pre></td></tr></table></figure>
+<p>3)在&#x2F;etc目录下创建docker文件夹，并在docker文件夹下编写daemon.json文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /etc/docker</span><br><span class="line">vim /etc/docker/daemon.json</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/docker/daemon.json</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>:[<span class="string">&quot;https://registry.docker-cn.com&quot;</span>],</span><br><span class="line">  <span class="string">&quot;insecure-registries&quot;</span>:[<span class="string">&quot;0.0.0.0/0&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4)启动docker,并设置开机自启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+<p>5)验证,输入docker info,若出现下图所示,则安装成功<br><img src="/img/docker_info.png" alt="image"></p>
+<h2 id="安装harbor"><a href="#安装harbor" class="headerlink" title="安装harbor"></a>安装harbor</h2><p>安装包下载链接： <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1HSgc0gaK_40LBhouERC3cg">https://pan.baidu.com/s/1HSgc0gaK_40LBhouERC3cg</a>  提取码: gftp<br>1)解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf harbor-offline-installer-v1.4.0.tgz</span><br></pre></td></tr></table></figure>
+<p>解压后的文件夹里包含下图所示文件<br><img src="/img/harbor_install.png" alt="image"><br>2)修改harbor配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim harbor.cfg</span><br></pre></td></tr></table></figure>
+<p><img src="/img/harbor_cfg.png" alt="image"><br>3)启动harbor</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./prepare 更新一下配置文件</span><br><span class="line">./install</span><br></pre></td></tr></table></figure>
+<p>4)验证<br>查看启动的容器的健康状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<p> <img src="/img/harbor_success1.png" alt="image"><br>本机登录harbor仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker login harbor仓库IP</span><br></pre></td></tr></table></figure>
+<p><img src="/img/harbor_success2.png" alt="image"></p>
+<h2 id="harbor外挂mysql、redis数据库"><a href="#harbor外挂mysql、redis数据库" class="headerlink" title="harbor外挂mysql、redis数据库"></a>harbor外挂mysql、redis数据库</h2><p>1)首先需要在mysql客户端新建一个registry数据库,并执行下述sql语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br></pre></td><td class="code"><pre><span class="line">create table access (</span><br><span class="line">  access_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  access_code char(1),</span><br><span class="line">  comment varchar (30),</span><br><span class="line">  primary key (access_id)</span><br><span class="line">);</span><br><span class="line">insert into access (access_code, comment) values</span><br><span class="line">(<span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;Management access for project&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;Read access for project&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;Write access for project&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;Delete access for project&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;Search access for project&#x27;</span>);</span><br><span class="line"></span><br><span class="line">create table role (</span><br><span class="line">  role_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  role_mask int DEFAULT 0 NOT NULL,</span><br><span class="line">  role_code varchar(20),</span><br><span class="line">  name varchar (20),</span><br><span class="line">  primary key (role_id)</span><br><span class="line">  );</span><br><span class="line">insert into role (role_code, name) values</span><br><span class="line">  (<span class="string">&#x27;MDRWS&#x27;</span>, <span class="string">&#x27;projectAdmin&#x27;</span>),</span><br><span class="line">  (<span class="string">&#x27;RWS&#x27;</span>, <span class="string">&#x27;developer&#x27;</span>),</span><br><span class="line">  (<span class="string">&#x27;RS&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>);</span><br><span class="line"></span><br><span class="line">create table user (</span><br><span class="line">  user_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  username varchar(255),</span><br><span class="line">  email varchar(255),</span><br><span class="line">  password varchar(40) NOT NULL,</span><br><span class="line">  realname varchar (255) NOT NULL,</span><br><span class="line">  comment varchar (30),</span><br><span class="line">  deleted tinyint (1) DEFAULT 0 NOT NULL,</span><br><span class="line">  reset_uuid varchar(40) DEFAULT NULL,</span><br><span class="line">  salt varchar(40) DEFAULT NULL,</span><br><span class="line">  sysadmin_flag tinyint (1),</span><br><span class="line">  creation_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">  primary key (user_id),</span><br><span class="line">  UNIQUE (username),</span><br><span class="line">  UNIQUE (email)</span><br><span class="line"> );</span><br><span class="line"> insert into user (username, email, password, realname, comment, deleted, sysadmin_flag, creation_time, update_time) values (<span class="string">&#x27;admin&#x27;</span>, <span class="string">&#x27;admin@example.com&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;system admin&#x27;</span>, <span class="string">&#x27;admin user&#x27;</span>,0, 1, NOW(), NOW()),(<span class="string">&#x27;anonymous&#x27;</span>,<span class="string">&#x27;anonymous@example.com&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="string">&#x27;anonymous user&#x27;</span>, <span class="string">&#x27;anonymous user&#x27;</span>, 1, 0, NOW(), NOW());</span><br><span class="line"></span><br><span class="line">create table project (</span><br><span class="line">   project_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   owner_id int NOT NULL,</span><br><span class="line">   name varchar (255) NOT NULL,</span><br><span class="line">   creation_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">   update_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">   deleted tinyint (1) DEFAULT 0 NOT NULL,</span><br><span class="line">   primary key (project_id),</span><br><span class="line">   FOREIGN KEY (owner_id) REFERENCES user(user_id),</span><br><span class="line">   UNIQUE (name)</span><br><span class="line">  );</span><br><span class="line">insert into project (owner_id, name, creation_time, update_time) values</span><br><span class="line"> (1, <span class="string">&#x27;library&#x27;</span>, NOW(), NOW());</span><br><span class="line"></span><br><span class="line">create table project_member (</span><br><span class="line">  project_id int NOT NULL,</span><br><span class="line">  user_id int NOT NULL,</span><br><span class="line">  role int NOT NULL,</span><br><span class="line">  creation_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY (project_id, user_id),</span><br><span class="line">  FOREIGN KEY (role) REFERENCES role(role_id),</span><br><span class="line">  FOREIGN KEY (project_id) REFERENCES project(project_id),</span><br><span class="line">  FOREIGN KEY (user_id) REFERENCES user(user_id)</span><br><span class="line">);</span><br><span class="line">insert into project_member (project_id, user_id, role, creation_time, update_time) values(1, 1, 1, NOW(), NOW());</span><br><span class="line"></span><br><span class="line">create table project_metadata (</span><br><span class="line">  <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  project_id int NOT NULL,</span><br><span class="line">  name varchar(255) NOT NULL,</span><br><span class="line">  value varchar(255),</span><br><span class="line">  creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">  deleted tinyint (1) DEFAULT 0 NOT NULL,</span><br><span class="line">  PRIMARY KEY (<span class="built_in">id</span>),</span><br><span class="line">  CONSTRAINT unique_project_id_and_name UNIQUE (project_id,name),</span><br><span class="line">  FOREIGN KEY (project_id) REFERENCES project(project_id)</span><br><span class="line">);</span><br><span class="line">insert into project_metadata (<span class="built_in">id</span>, project_id, name, value, creation_time, update_time, deleted) values</span><br><span class="line">(1, 1, <span class="string">&#x27;public&#x27;</span>, <span class="string">&#x27;true&#x27;</span>, NOW(), NOW(), 0);</span><br><span class="line"></span><br><span class="line">create table access_log (</span><br><span class="line">   log_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   username varchar (255) NOT NULL,</span><br><span class="line">   project_id int NOT NULL,</span><br><span class="line">   repo_name varchar (256),</span><br><span class="line">   repo_tag varchar (128),</span><br><span class="line">   GUID varchar(64),</span><br><span class="line">   operation varchar(20) NOT NULL,</span><br><span class="line">   op_time timestamp NOT NULL default CURRENT_TIMESTAMP,</span><br><span class="line">   primary key (log_id),</span><br><span class="line">   INDEX pid_optime (project_id, op_time)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table repository (</span><br><span class="line">  repository_id int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  name varchar(255) NOT NULL,</span><br><span class="line">  project_id int NOT NULL,</span><br><span class="line">  description text,</span><br><span class="line">  pull_count int DEFAULT 0 NOT NULL,</span><br><span class="line">  star_count int DEFAULT 0 NOT NULL,</span><br><span class="line">  creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">  primary key (repository_id),</span><br><span class="line">  UNIQUE (name)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table replication_policy (</span><br><span class="line">   <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   name varchar(256),</span><br><span class="line">   project_id int NOT NULL,</span><br><span class="line">   target_id int NOT NULL,</span><br><span class="line">   enabled tinyint(1) NOT NULL DEFAULT 1,</span><br><span class="line">   description text,</span><br><span class="line">   deleted tinyint (1) DEFAULT 0 NOT NULL,</span><br><span class="line">   cron_str varchar(256),</span><br><span class="line">   filters varchar(1024),</span><br><span class="line">   replicate_deletion tinyint (1) DEFAULT 0 NOT NULL,</span><br><span class="line">   start_time timestamp NULL,</span><br><span class="line">   creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">   update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">   PRIMARY KEY (<span class="built_in">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table replication_target (</span><br><span class="line">   <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   name varchar(64),</span><br><span class="line">   url varchar(64),</span><br><span class="line">   username varchar(255),</span><br><span class="line">   password varchar(128),</span><br><span class="line">   target_type tinyint(1) NOT NULL DEFAULT 0,</span><br><span class="line">   insecure tinyint(1) NOT NULL DEFAULT 0,</span><br><span class="line">   creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">   update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">   PRIMARY KEY (<span class="built_in">id</span>)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line"> create table replication_job (</span><br><span class="line">   <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   status varchar(64) NOT NULL,</span><br><span class="line">   policy_id int NOT NULL,</span><br><span class="line">   repository varchar(256) NOT NULL,</span><br><span class="line">   operation  varchar(64) NOT NULL,</span><br><span class="line">   tags   varchar(16384),</span><br><span class="line">   creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">   update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">   PRIMARY KEY (<span class="built_in">id</span>),</span><br><span class="line">   INDEX policy (policy_id),</span><br><span class="line">   INDEX poid_uptime (policy_id, update_time)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">create table replication_immediate_trigger (</span><br><span class="line">   <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   policy_id int NOT NULL,</span><br><span class="line">   namespace varchar(256) NOT NULL,</span><br><span class="line">   on_push tinyint(1) NOT NULL DEFAULT 0,</span><br><span class="line">   on_deletion tinyint(1) NOT NULL DEFAULT 0,</span><br><span class="line">   creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">   update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">   PRIMARY KEY (<span class="built_in">id</span>)</span><br><span class="line"> );</span><br><span class="line"></span><br><span class="line">create table img_scan_job (</span><br><span class="line">  <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  status varchar(64) NOT NULL,</span><br><span class="line">  repository varchar(256) NOT NULL,</span><br><span class="line">  tag   varchar(128) NOT NULL,</span><br><span class="line">  digest varchar(128),</span><br><span class="line">  creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY (<span class="built_in">id</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table img_scan_overview (</span><br><span class="line">  <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  image_digest varchar(128) NOT NULL,</span><br><span class="line">  scan_job_id int NOT NULL,</span><br><span class="line">  severity int NOT NULL default 0,</span><br><span class="line">  components_overview varchar(2048),</span><br><span class="line">  details_key varchar(128),</span><br><span class="line">  creation_time timestamp default CURRENT_TIMESTAMP,</span><br><span class="line">  update_time timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,</span><br><span class="line">  PRIMARY KEY(<span class="built_in">id</span>),</span><br><span class="line">  UNIQUE(image_digest)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table clair_vuln_timestamp (</span><br><span class="line">  <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  namespace varchar(128) NOT NULL,</span><br><span class="line">  last_update timestamp NOT NULL,</span><br><span class="line">  PRIMARY KEY(<span class="built_in">id</span>),</span><br><span class="line">  UNIQUE(namespace)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table properties (</span><br><span class="line">   <span class="built_in">id</span> int NOT NULL AUTO_INCREMENT,</span><br><span class="line">   k varchar(64) NOT NULL,</span><br><span class="line">   v varchar(128) NOT NULL,</span><br><span class="line">   PRIMARY KEY(<span class="built_in">id</span>),</span><br><span class="line">   UNIQUE (k)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">CREATE TABLE IF NOT EXISTS `alembic_version` (</span><br><span class="line">`version_num` varchar(32) NOT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line">insert into alembic_version values (<span class="string">&#x27;1.4.0&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>2)修改harbor配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim harbor.cfg</span><br><span class="line">./db_host 搜索数据库配置项</span><br></pre></td></tr></table></figure>
+<p> <img src="/img/harbor_database.png" alt="image"><br>3)重启harbor服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br><span class="line">./prepare</span><br><span class="line">./install --ha</span><br></pre></td></tr></table></figure>
+<p>4)验证<br> <img src="/img/harbor_validation1.png" alt="image"><br> <img src="/img/harbor_validation2.png" alt="image"><br> <img src="/img/harbor_validation3.png" alt="image"><br> <img src="/img/harbor_validation4.png" alt="image"></p>
+<h2 id="harbor出现的问题（一）"><a href="#harbor出现的问题（一）" class="headerlink" title="harbor出现的问题（一）"></a>harbor出现的问题（一）</h2><ol>
+<li>当用dcoker ps查看harbor容器的状态时，发现为unheathly,此时用docker-compose down关闭出错<br>先用systemctl restart docker 命令重启docker;<br>若重启docker一直卡住不动，那就需要删除&#x2F;var&#x2F;lib下的docker目录（记住要先备份）;<br>2)若执行删除命令无法删除docker的目录<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master shell]<span class="comment"># rm -rf /var/lib/docker</span></span><br><span class="line"><span class="built_in">rm</span>: 无法删除</span><br><span class="line"><span class="string">&quot;/var/lib/docker/overlay/50f73bfd98368e3d9f47aac7d23ae12b514ade1c283b88013995b12a5f238860/merged&quot;</span>: 设备或资源忙</span><br></pre></td></tr></table></figure>
+3)这是因为网络共享挂载导致无法删除，首先找到挂载的位置，然后取消挂载后，就可以删除。<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master shell]<span class="comment"># cat /proc/mounts |grep &quot;docker&quot;</span></span><br><span class="line">/dev/mapper/centos-root /var/lib/docker/overlay xfs rw,seclabel,relatime,attr2,inode64,noquota 0 0</span><br><span class="line">overlay /var/lib/docker/overlay/50f73bfd98368e3d9f47aac7d23ae12b514ade1c283b88013995b12a5f238860/merged overlay rw,seclabel,relatime,lowerdir=/var/lib/docker/overlay/a764e1d503861296ffe63f9f3e20ccd440b12abbaceb5ba49ddac8640b1aad96/root,upperdir=/var/lib/docker/overlay/50f73bfd98368e3d9f47aac7d23ae12b514ade1c283b88013995b12a5f238860/upper,workdir=/var/lib/docker/overlay/50f73bfd98368e3d9f47aac7d23ae12b514ade1c283b88013995b12a5f238860/work 0 0</span><br></pre></td></tr></table></figure>
+4）取消挂载<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /var/lib/docker/overlay/50f73bfd98368e3d9f47aac7d23ae12b514ade1c283b88013995b12a5f238860/merged</span><br></pre></td></tr></table></figure>
+5）再次查看<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master shell]<span class="comment"># cat /proc/mounts |grep &quot;docker&quot;</span></span><br><span class="line">/dev/mapper/centos-root /var/lib/docker/overlay xfs rw,seclabel,relatime,attr2,inode64,noquota 0 0</span><br></pre></td></tr></table></figure>
+6）取消挂载<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master shell]<span class="comment"># umount /var/lib/docker/overlay</span></span><br></pre></td></tr></table></figure>
+7）现在删除一般可以正常删除。若cat &#x2F;proc&#x2F;mounts |grep “docker” 没有输出挂载信息,且提示&#x2F;var&#x2F;lib&#x2F;docker&#x2F;devicemapper不能删除，device or resource busy ,此时就需要重启机器,强制取消挂载<br>8）重启docker<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master shell]<span class="comment"># systemctl restart docker</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/26/Gitlab%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/26/Gitlab%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">Gitlab安装文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-26 23:13:21" itemprop="dateCreated datePublished" datetime="2019-06-26T23:13:21+08:00">2019-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-10 16:44:44" itemprop="dateModified" datetime="2019-07-10T16:44:44+08:00">2019-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Gitlab%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Gitlab服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>以镜像的方式部署gitlab,并外挂postgresql、redis数据库。环境为centos7(192.168.117.129),在192.168.117.129安装postgresql、redis数据库。<br>(一)拉取镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull twang2218/gitlab-ce-zh:10.6.4</span><br></pre></td></tr></table></figure>
+<p>(二)启动<br>在启动之前需要在postgresql中新建一个数据库gitlab-test1数据库<br>1）以docker run 方式启动gitlab镜像,挂载的数据库,在容器的配置文件中添加:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line"> --hostname <span class="string">&#x27;192.168.117.129&#x27;</span> \</span><br><span class="line"> --publish 443:443 --publish 8080:80 --publish 2222:22 \</span><br><span class="line"> --name dockercompose_gitlab_1 \</span><br><span class="line"> --restart always \</span><br><span class="line"> --volume <span class="string">&#x27;/gitlab/config:/etc/gitlab&#x27;</span> \</span><br><span class="line"> --volume <span class="string">&#x27;/gitlab/logs:/var/log/gitlab&#x27;</span> \</span><br><span class="line"> --volume <span class="string">&#x27;/gitlab/config/gitlab/data:/var/opt/gitlab&#x27;</span> \</span><br><span class="line"> twang2218/gitlab-ce-zh:10.6.4</span><br></pre></td></tr></table></figure>
+<p>2)以docker-compose 方式启动gitlab镜像:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">&#x27;2&#x27;</span></span><br><span class="line">services:</span><br><span class="line">    gitlab:</span><br><span class="line">        image: <span class="string">&#x27;twang2218/gitlab-ce-zh:10.6.4&#x27;</span></span><br><span class="line">        restart: unless-stopped</span><br><span class="line">        hostname: <span class="string">&#x27;192.168.117.129&#x27;</span></span><br><span class="line">        environment:</span><br><span class="line">          TZ: <span class="string">&#x27;Asia/Shanghai&#x27;</span></span><br><span class="line">          GITLAB_OMNIBUS_CONFIG: |</span><br><span class="line">            external_url <span class="string">&#x27;http://192.168.117.129&#x27;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;time_zone&#x27;</span>] = <span class="string">&#x27;Asia/Shanghai&#x27;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;gitlab_shell_ssh_port&#x27;</span>] = 54322</span><br><span class="line">            postgresql[<span class="string">&#x27;enable&#x27;</span>] = <span class="literal">false</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_adapter&#x27;</span>] = <span class="string">&quot;postgresql&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_encoding&#x27;</span>] = <span class="string">&quot;utf8&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_database&#x27;</span>] = <span class="string">&quot;gitlab-test1&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_username&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_password&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_host&#x27;</span>] = <span class="string">&quot;192.168.117.129&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_port&#x27;</span>] = 5432</span><br><span class="line">            <span class="comment">#redis[&#x27;enable&#x27;] = false</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_host&#x27;] = &quot;192.168.117.129&quot;</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_port&#x27;] = 6379</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_password&#x27;] = &quot;123456&quot;</span></span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">&#x27;8080:80&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;441:443&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;54322:22&#x27;</span></span><br><span class="line">        volumes:</span><br><span class="line">            - <span class="string">&#x27;/gitlab/config:/etc/gitlab&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;/gitlab/logs:/var/log/gitlab&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;/gitlab/config/gitlab/data:/var/opt/gitlab&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>以上两种启动方式,可能出现类似下面的错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">There was an error running gitlab-ctl reconfigure:</span><br><span class="line">bash[migrate gitlab-rails database] (gitlab::database_migrations line 49) had an       error: Mixlib::ShellOut::ShellCommandFailed: Expected process to <span class="built_in">exit</span> with [0],       but received <span class="string">&#x27;1&#x27;</span></span><br><span class="line">---- Begin output of <span class="string">&quot;bash&quot;</span>  <span class="string">&quot;/tmp/chef-script20190430-11860-4waqei&quot;</span> ----</span><br><span class="line">STDOUT: bundler: failed to load <span class="built_in">command</span>: rake (/opt/gitlab/embedded/bin/rake)</span><br><span class="line">Bundler::GemNotFound: Could not find mysql2-0.4.10 <span class="keyword">in</span> any of the sources</span><br><span class="line">/opt/gitlab/embedded/lib/ruby/gems/2.4.0/gems/bundler-                                 1.16.2/lib/bundler/spec_set.rb:91:<span class="keyword">in</span> `block <span class="keyword">in</span> materialize<span class="string">&#x27;</span></span><br><span class="line"><span class="string">/opt/gitlab/embedded/lib/ruby/gems/2.4.0/gems/bundler-                                 1.16.2/lib/bundler/spec_set.rb:85:in `map!&#x27;</span></span><br><span class="line">STDERR:</span><br><span class="line">---- End output of <span class="string">&quot;bash&quot;</span>  <span class="string">&quot;/tmp/chef-script20190430-11860-4waqei&quot;</span> ----</span><br><span class="line">Ran <span class="string">&quot;bash&quot;</span>  <span class="string">&quot;/tmp/chef-script20190430-11860-4waqei&quot;</span> returned 1</span><br></pre></td></tr></table></figure>
+<p>解决方案：在192.168.117.129上安装postgresql的extension插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进入目录：/home/deployer/postgresql-10.1/contrib</span><br><span class="line">make &amp;&amp; make  install</span><br></pre></td></tr></table></figure>
+
+<p>(三)数据迁移<br>   参考文档：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wenwei-blog/p/6362829.html">https://www.cnblogs.com/wenwei-blog/p/6362829.html</a></p>
+<p>1.迁移准备工作和思路:从a服务器迁移到b服务器,由于Gitlab自身的兼容性问题，高版本的Gitlab无法恢复低版本备份的数据,需要注意在b服务器部署和a服   务器一样版本的gitlab,部署好环境后开始备份和数据迁移。<br>查看gitlab版本的命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-rake gitlab:<span class="built_in">env</span>:info(容器中运行)</span><br></pre></td></tr></table></figure>
+<p>2.备份原a服务器上的的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-rake gitlab:backup:create RAILS_ENV=production(容器中运行)</span><br></pre></td></tr></table></figure>
+<p>PS: 备份后的文件一般是位于&#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;backups(容器中目录）下, 自动生成文件名,文件名如1481529483_gitlab_backup.tar<br>3.将步骤2生成的tar文件拷贝到b服务器上相应的backups目录下<br>4.在b服务器恢复数据<br>将备份文件权限修改为777,不然可能恢复的时候会出现权限不够，不能解压的问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 777 1502357536_2017_08_10_9.4.3_gitlab_backup.tar</span><br><span class="line">gitlab-rake gitlab:backup:restore RAILS_ENV=production BACKUP=1502357536_2017_08_10_9.4.3</span><br></pre></td></tr></table></figure>
+
+<p>PS：BACKUP的时间点必须与原服务器备份后的文件名一致</p>
+<p>(四) gitlab升级并进行数据迁移<br>如果要升级的gitlab和当前的gitlab不在同一台服务器上,按照3）进行数据的迁移,若在同一台服务器上，则直接按照下述命令操作即可：</p>
+<ol>
+<li>修改docker-compose文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">&#x27;2&#x27;</span></span><br><span class="line">services:</span><br><span class="line">    gitlab:</span><br><span class="line">        image: <span class="string">&#x27;twang2218/gitlab-ce-zh:11.1.4&#x27;</span></span><br><span class="line">        restart: unless-stopped</span><br><span class="line">        hostname: <span class="string">&#x27;192.168.117.129&#x27;</span></span><br><span class="line">        environment:</span><br><span class="line">          TZ: <span class="string">&#x27;Asia/Shanghai&#x27;</span></span><br><span class="line">          GITLAB_OMNIBUS_CONFIG: |</span><br><span class="line">            external_url <span class="string">&#x27;http://192.168.117.129&#x27;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;time_zone&#x27;</span>] = <span class="string">&#x27;Asia/Shanghai&#x27;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;gitlab_shell_ssh_port&#x27;</span>] = 54322</span><br><span class="line">            postgresql[<span class="string">&#x27;enable&#x27;</span>] = <span class="literal">false</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_adapter&#x27;</span>] = <span class="string">&quot;postgresql&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_encoding&#x27;</span>] = <span class="string">&quot;utf8&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_database&#x27;</span>] = <span class="string">&quot;gitlab-test1&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_username&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_password&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_host&#x27;</span>] = <span class="string">&quot;192.168.117.129&quot;</span></span><br><span class="line">            gitlab_rails[<span class="string">&#x27;db_port&#x27;</span>] = 5432</span><br><span class="line">            <span class="comment">#redis[&#x27;enable&#x27;] = false</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_host&#x27;] = &quot;192.168.117.129&quot;</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_port&#x27;] = 6379</span></span><br><span class="line">            <span class="comment">#gitlab_rails[&#x27;redis_password&#x27;] = &quot;123456&quot;</span></span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">&#x27;8080:80&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;441:443&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;54322:22&#x27;</span></span><br><span class="line">        volumes:</span><br><span class="line">            - <span class="string">&#x27;/gitlab/config:/etc/gitlab&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;/gitlab/logs:/var/log/gitlab&#x27;</span></span><br><span class="line">            - <span class="string">&#x27;/gitlab/config/gitlab/data:/var/opt/gitlab&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li>启动<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>(五)调试<br>如果容器启动不成功,可进入容器进行调试<br> 1)查看并修改GitLab 配置。若postgresql在本机，则不设置此项，但须在数据库中新建一个数据库名为gitlabhq_production的数据库，若要外挂的postgresql数据库不在本机，则按下述步骤查看并修改相关配置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -t -i dockercompose_gitlab_1 bash</span><br><span class="line">vim /etc/gitlab/gitlab.rb</span><br><span class="line">在该文件中搜索 /db ,在这一栏修改下述语句，若果一致则不修改</span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_adapter&#x27;</span>] = <span class="string">&quot;postgresql&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_encoding&#x27;</span>] = <span class="string">&quot;utf8&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_database&#x27;</span>] = <span class="string">&quot;gitlab-test1&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_username&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_password&#x27;</span>] = <span class="string">&quot;postgres&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_host&#x27;</span>] = <span class="string">&quot;192.168.117.129&quot;</span></span><br><span class="line">    gitlab_rails[<span class="string">&#x27;db_port&#x27;</span>] = 5432</span><br><span class="line">保存退出</span><br><span class="line">运行 gitlab-rake gitlab:check ,若不出错，即可进行下一步,若报错，解决问题</span><br><span class="line">重新配置gitlab: gitlab-ctl reconfigure 若不报错，则gitlab正常启动，并连接到postgresql数据库。</span><br><span class="line">注：每次删除容器，重新启动镜像时，需删除根目录下的/gitlab目录</span><br></pre></td></tr></table></figure>
+<p>2)如果gitlab启动的端口不是80,还需修改HTTP连接方式中的端口,该端口默认为80端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -t -i dockercompose_gitlab_1 bash</span><br><span class="line">vim /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml</span><br></pre></td></tr></table></figure>
+<p>   <img src="/img/gitlab.png" alt="image"><br>   如上图所示,本文中的gitlab是以8080端口启动的，需修改为8080端口，执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/26/Postgresql%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">Postgresql安装文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-26 16:47:58" itemprop="dateCreated datePublished" datetime="2019-06-26T16:47:58+08:00">2019-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-16 01:34:22" itemprop="dateModified" datetime="2019-07-16T01:34:22+08:00">2019-07-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">服务配置文档</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E6%A1%A3/Postgresql%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">Postgresql服务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>PostgreSQL安装包官网下载地址：<a target="_blank" rel="noopener" href="https://www.postgresql.org/ftp/source/v10.1/">https://www.postgresql.org/ftp/source/v10.1/</a></p>
+<p>(一) 安装</p>
+<p>1）上传、解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将postgresql-10.1.tar.gz上传到/home下</span><br><span class="line">运行解压命令 tar -zxvf postgresql-10.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>2）检查当前系统环境能否安装PG</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="built_in">cd</span> /home/postgresql-10.1/</span><br><span class="line">./configure  --prefix=/usr/local/pgsql/</span><br></pre></td></tr></table></figure>
+<p>若出现下述错误</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">configure: error: readline library not found</span><br><span class="line">If you have readline already installed, see config.log <span class="keyword">for</span> details on the</span><br><span class="line">failure.  It is possible the compiler isn<span class="string">&#x27;t looking in the proper directory.</span></span><br><span class="line"><span class="string">Use --without-readline to disable readline support.</span></span><br></pre></td></tr></table></figure>
+<p>执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install -y readline-devel</span><br></pre></td></tr></table></figure>
+<p>若再次运行.&#x2F;configure命令，出现下述问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">configure: error: zlib library not found</span><br><span class="line">If you have zlib already installed, see config.log <span class="keyword">for</span> details on the</span><br><span class="line">failure.  It is possible the compiler isn<span class="string">&#x27;t looking in the proper directory.</span></span><br><span class="line"><span class="string">Use --without-zlib to disable zlib support.</span></span><br></pre></td></tr></table></figure>
+<p>执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install zlib-devel</span><br></pre></td></tr></table></figure>
+<p>3）编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>4)创建postgresql专有用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adduser postgres</span><br></pre></td></tr></table></figure>
+<p>5)创建postgresql数据目录，并赋予权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /usr/local/pgsql/data</span><br><span class="line"><span class="built_in">chown</span> -R postgres:postgres /usr/local/pgsql/</span><br></pre></td></tr></table></figure>
+<p>(二)启动</p>
+<p>1)切换用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br></pre></td></tr></table></figure>
+<p>2)进入bin目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/local/pgsql/bin/</span><br></pre></td></tr></table></figure>
+<p>3)初始化postgresql数据目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./initdb -D /usr/local/pgsql/data</span><br></pre></td></tr></table></figure>
+<p>4)启动数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./pg_ctl start -D /usr/local/pgsql/data</span><br></pre></td></tr></table></figure>
+
+<p>(三)新建数据库、登录数据库的用户和用户密码</p>
+<p> 1)创建数据库，在&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;目录下执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./createdb mydb</span><br></pre></td></tr></table></figure>
+<p> 2）创建用户（如用户名为lin，密码为LinBug）有两种方式：<br> 方式一：通过默认数据库创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先进入默认的 postgres 数据库: ./psql   默认数据库为postgres</span><br><span class="line">CREATE USER lin WITH PASSWORD <span class="string">&#x27;LinBug&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p> 方式二：直接执行命令，交互式创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./createuser -P lin</span><br></pre></td></tr></table></figure>
+<p>   这会提示你输入新建用户的密码，重复输入密码后，创建成功</p>
+<p>(四)访问数据库(以下操作确保是在&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;目录下)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">以默认用户名访问默认数据库（默认的用户名和数据库名都是postgres）：./psql</span><br><span class="line">以名为lin的角色登录名为mydb的数据库：./psql mydb -U lin</span><br></pre></td></tr></table></figure>
+<p>(五)远程访问数据库设置</p>
+<p>远程访问数据库的认证方式主要有很多方式，我只设置基于TCP&#x2F;IP连接的trust认证方式,需设置两个配置文件，<br>(1)修改配置文件postgresql.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/postgresql.conf</span><br></pre></td></tr></table></figure>
+<p>   修改监听地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#listen_addresses=’localhost’ 改为 listen_addresses=’*’</span></span><br></pre></td></tr></table></figure>
+<p>(2)修改配置文件pg_hba.conf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/local/pgsql/data/pg_hba.conf</span><br></pre></td></tr></table></figure>
+<p>添加一条IP授权记录（如192.168.2.23），可以对一个网段授权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 myhost connections:</span></span><br><span class="line">host    all         all         192.168.117.0/24          trust</span><br></pre></td></tr></table></figure>
+<p>当然，可以设置所有网段IP可以访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IPv4 remote address connections:</span></span><br><span class="line">host    all         all         0.0.0.0/0                 trust</span><br></pre></td></tr></table></figure>
+<p>(六)设置postgresql数据库开机自启动</p>
+<p>PostgreSQL的开机自启动脚本位于PostgreSQL源码目录的contrib&#x2F;start-scripts路径下，linux文件即为linux系统上的启动脚本。<br><img src="/img/postgresql_1.png" alt="image"><br>(1)将Linux文件复制到 &#x2F;etc&#x2F;init.d 目录下，并且将其重名为postgresql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/postgresql-10.1/contrib/start-scripts/linux /etc/init.d/postgresql</span><br></pre></td></tr></table></figure>
+<p>(2)进入&#x2F;etc&#x2F;init.d 目录下，修改postgresql文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/init.d/</span><br><span class="line">vim postgresql</span><br></pre></td></tr></table></figure>
+<p>然后做以下修改：<br>将prefix设置为postgresql的安装路径：&#x2F;usr&#x2F;local&#x2F;postgresql<br>将PGDATA设置为postgresql的数据目录路径：&#x2F;usr&#x2F;local&#x2F;postgresql&#x2F;data<br>将PGUSER设置为postgresql的用户：admin<br>将PGLOG 设置为 postgresql 的数据目录的日志文件夹下：$PGDATA&#x2F;pg_log&#x2F;serverlog<br><img src="/img/postgresql_2.png" alt="image"><br>(3)添加到开机启动<br>修改文件属性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> a+x postgresql</span><br></pre></td></tr></table></figure>
+<p>添加开机启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add postgresql</span><br></pre></td></tr></table></figure>
+<p>(4)测试postgresql的启停</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start postgresql</span><br><span class="line">systemctl status postgresql</span><br><span class="line">systemctl stop postgresql</span><br><span class="line">systemctl status postgresql</span><br></pre></td></tr></table></figure>
+<p><img src="/img/postgresql_3.png" alt="image"><br>(5)远程Navicat连接测试<br><img src="/img/postgresql_4.png" alt="image"><br>(七)若要使用postgresql作为gitlab的外挂数据库，还需要安装postgresql的扩展插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进入目录：/home/deployer/postgresql-10.1/contrib</span><br><span class="line">make &amp;&amp; make  install</span><br></pre></td></tr></table></figure>
+<p>注意：若出现下述问题，请检查防火墙是否开放5432端口权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Unable to connect to server:</span><br><span class="line">could not connect to server: Connection timed out (0x0000274C/10060)</span><br><span class="line">Is the server running on host <span class="string">&quot;192.168.1.205&quot;</span> and accepting</span><br><span class="line">TCP/IP connections on port 5432</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/25/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/25/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-25 15:03:40" itemprop="dateCreated datePublished" datetime="2019-06-25T15:03:40+08:00">2019-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-10 16:46:12" itemprop="dateModified" datetime="2019-07-10T16:46:12+08:00">2019-07-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">随手笔记</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/My-First-Blog/" itemprop="url" rel="index"><span itemprop="name">My First Blog</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">部署流程：</span><br><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br><span class="line">调试流程:</span><br><span class="line">hexo clean</span><br><span class="line">hexo s</span><br><span class="line">http://localhost:4000</span><br><span class="line">创建新的博客：</span><br><span class="line">hexo new <span class="string">&quot;博客名称&quot;</span>  在\hexo\<span class="built_in">source</span>\_posts目录中生成</span><br><span class="line">创建新的页面：</span><br><span class="line">hexo new page <span class="string">&quot;页面名称&quot;</span> 在\hexo\<span class="built_in">source</span>目录中生成</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/25/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="post-title-link" itemprop="url">在线考试系统部署文档</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2019-06-25 15:03:40" itemprop="dateCreated datePublished" datetime="2019-06-25T15:03:40+08:00">2019-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2019-07-17 23:24:06" itemprop="dateModified" datetime="2019-07-17T23:24:06+08:00">2019-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">开源项目学习</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/%E5%9C%A8%E7%BA%BF%E8%80%83%E8%AF%95%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">在线考试系统部署文档</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>主要介绍如何在本地运行项目，包括下载、导入、修改配置、运行项目</p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>开发环境：</p>
+<ul>
+<li>jdk：1.8</li>
+<li>MySQL：5.7+</li>
+<li>redis</li>
+<li>rabbitMq</li>
+<li>node.js</li>
+<li>consul</li>
+<li>fastDfs（推荐基于docker安装，安装步骤网上很多）</li>
+</ul>
+<p>开发工具：<code>IntelliJ IDEA</code>、<code>WebStorm</code></p>
+<h4 id="项目下载"><a href="#项目下载" class="headerlink" title="项目下载"></a>项目下载</h4><ol>
+<li><code>git clone</code>下载<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam.git">spring-microservice-exam</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-ui.git">spring-microservice-exam-ui</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam.git`</span><br><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam-ui.git`</span><br><span class="line">`git <span class="built_in">clone</span> https://gitee.com/wells2333/spring-microservice-exam-web.git`</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h4><ol>
+<li>修改spring-microservice-exam的config-service的&#x2F;config文件夹下各服务的配置，主要是数据库、redis和fastDfs，其它配置基本不用动</li>
+</ol>
+<p><img src="/img/config.png" alt="image"></p>
+<p>redis的IP和端口号:</p>
+<p><img src="/img/config_redis.png" alt="image"></p>
+<p>fastDfs的IP和端口号：</p>
+<p><img src="/img/config_fdfs.png" alt="image"></p>
+<ol start="2">
+<li>运行数据库初始化脚本：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">`/doc/deploy/mysql/microservice-user.sql`</span><br><span class="line">`/doc/deploy/mysql/microservice-exam.sql`</span><br><span class="line">`/doc/deploy/mysql/microservice-auth.sql`</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="启动后端项目"><a href="#启动后端项目" class="headerlink" title="启动后端项目"></a>启动后端项目</h4><p>启动项目前要<strong>先确认consul、MySQL、redis、rabbitMq是否已经启动</strong></p>
+<p>按顺序启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. config-service</span><br><span class="line">2. auth-service</span><br><span class="line">3. user-service</span><br><span class="line">4. exam-service</span><br><span class="line">5. gateway-service</span><br><span class="line">6. monitor-service 需要监控功能再启动：</span><br></pre></td></tr></table></figure>
+<p>内存不足的可以限制每个服务的内存：<code>config-service</code>可以分配64M（-Xmx64m -Xms64m）、其它服务分配128M（-Xmx128m -Xms128m）<br><img src="/img/config_xml.png" alt="image"></p>
+<h4 id="启动前端项目"><a href="#启动前端项目" class="headerlink" title="启动前端项目"></a>启动前端项目</h4><p>分别在<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-ui.git">spring-microservice-exam-ui</a>、<a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>目录下，命令行运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p><img src="/img/npm_install.png" alt="image"></p>
+<p><img src="/img/npm_run.png" alt="image"><br><code>WebStorm</code>导入项目：</p>
+<p><img src="/img/import_exam_ui.png" alt="image"></p>
+<p>运行：</p>
+<p><img src="/img/import_exam_ui_run.png" alt="image"></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wells2333/spring-microservice-exam-web.git">spring-microservice-exam-web</a>项目WebStorm导入操作类似</p>
+<p>启动成功后访问：</p>
+<pre><code>前台：localhost:8080
+
+后台：localhost:9527
+</code></pre>
+<p>默认账号：</p>
+<ol>
+<li><p>管理员：admin&#x2F;123456</p>
+</li>
+<li><p>学生：student&#x2F;123456</p>
+</li>
+<li><p>教师：teacher&#x2F;123456</p>
+</li>
+</ol>
+<h4 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rabbitMq监控</td>
+<td>localhost:15672</td>
+</tr>
+<tr>
+<td>spring boot admin服务监控</td>
+<td>localhost:8085</td>
+</tr>
+<tr>
+<td>zipkin链路跟踪</td>
+<td>localhost:9411</td>
+</tr>
+<tr>
+<td>consul</td>
+<td>localhost:8500</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="الصفحة السابقة" aria-label="الصفحة السابقة" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

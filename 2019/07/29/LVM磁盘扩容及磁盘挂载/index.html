@@ -1,37 +1,367 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="LVM是逻辑盘卷管理（Logical Volume Manager）的简称，他是磁盘管理的另一种工具，目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。 磁盘扩容•	PV（Phsical Volume，物理卷），PV是VG的组成部分，有分区构成，多块盘的时候，可以把一块盘格式化成一个主分区，然后用这个分区做成一个PV，只有一块盘的时候，可以这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVM磁盘扩容及磁盘挂载">
+<meta property="og:url" content="https://wangdj104.github.io/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="LVM是逻辑盘卷管理（Logical Volume Manager）的简称，他是磁盘管理的另一种工具，目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。 磁盘扩容•	PV（Phsical Volume，物理卷），PV是VG的组成部分，有分区构成，多块盘的时候，可以把一块盘格式化成一个主分区，然后用这个分区做成一个PV，只有一块盘的时候，可以这">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_1.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_2.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_3.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_4.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_5.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_6.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_7.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_8.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_9.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_10.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_11.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_12.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_13.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_14.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_15.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_16.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_17.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/LVM_18.png">
+<meta property="article:published_time" content="2019-07-29T06:13:25.000Z">
+<meta property="article:modified_time" content="2019-07-29T08:58:32.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="LVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/LVM_1.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/","path":"2019/07/29/LVM磁盘扩容及磁盘挂载/","title":"LVM磁盘扩容及磁盘挂载"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LVM磁盘扩容及磁盘挂载 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">磁盘扩容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">磁盘挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%80%BB%E8%BE%91%E7%9B%98%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B%E5%8F%8A%E9%87%8D%E6%96%B0%E6%8C%82%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">修改逻辑盘文件系统类型及重新挂载</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2019/07/29/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LVM磁盘扩容及磁盘挂载 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LVM磁盘扩容及磁盘挂载
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+      
+
+      <time title="أُنشأ: 2019-07-29 14:13:25 / عُدل: 16:58:32" itemprop="dateCreated datePublished" datetime="2019-07-29T14:13:25+08:00">2019-07-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">随手笔记</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/LVM%E7%A3%81%E7%9B%98%E6%89%A9%E5%AE%B9%E5%8F%8A%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD/" itemprop="url" rel="index"><span itemprop="name">LVM磁盘扩容及磁盘挂载</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>   LVM是逻辑盘卷管理（Logical Volume Manager）的简称，他是磁盘管理的另一种工具，目前基本上所有操作系统均支持，LVM是建立在硬盘和分区之上的一个逻辑层，来提高磁盘分区管理的灵活性。<br><img src="/img/LVM_1.png" alt="image"></p>
+<h3 id="磁盘扩容"><a href="#磁盘扩容" class="headerlink" title="磁盘扩容"></a>磁盘扩容</h3><p>•	PV（Phsical Volume，物理卷），PV是VG的组成部分，有分区构成，多块盘的时候，可以把一块盘格式化成一个主分区，然后用这个分区做成一个PV，只有一块盘的时候，可以这块盘的某一个分区做成一个PV，实际上一个PV就一个分区。<br>•	VG（Volume Group， 卷组），有若干个PV组成，作用就是将PV组成到以前，然后再重新划分空间。<br>•	LV（Logical Volume，逻辑卷），LV就是从VG中划分出来的卷，LV的使用要比PV灵活的多，可以在空间不够的情况下，增加空间。<br>(1) 创建磁盘分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fdisk /dev/sda</span><br></pre></td></tr></table></figure>
+<p>选择 n 创建分区 （默认值）<br>选择 t 修改分区类型 8e  （note:8e为Linux LVM）<br>选择 w 写入分区表</p>
+<p>(2) 请求操作系统重新加载分区表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo partprobe</span><br></pre></td></tr></table></figure>
+
+<p>(3) 创建物理卷PV</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pvcreate /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>(4) 扩展卷组VG</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vgscan</span><br><span class="line">sudo vgextend VolGroup00 /dev/sda3</span><br><span class="line">Sudo vgdisplay</span><br></pre></td></tr></table></figure>
+
+<p>(5) 扩展逻辑卷LV</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo lvextend -l +100%free /dev/VolGroup00/LogVol01</span><br><span class="line">或者sudo lvextend –L +50G /dev/VolGroup00/LogVol01</span><br><span class="line">sudo lvdisplay /dev/VolGroup00/LogVol01</span><br></pre></td></tr></table></figure>
+
+<p>(6) 扩展文件系统容量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo xfs_growfs /dev/VolGroup00/LogVol01</span><br></pre></td></tr></table></figure>
+<h3 id="磁盘挂载"><a href="#磁盘挂载" class="headerlink" title="磁盘挂载"></a>磁盘挂载</h3><p>(1) 查看操作系统有几块硬盘</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo fdisk -l</span><br></pre></td></tr></table></figure>
+<p><img src="/img/LVM_2.png" alt="image"><br>(2) 创建pv</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pvcreate /dev/sdb</span><br><span class="line">sudo pvdisplay</span><br></pre></td></tr></table></figure>
+<p><img src="/img/LVM_3.png" alt="image"><br>(3) 创建vg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vgcreate vg_k8s /dev/sdb</span><br><span class="line">sudo vgdisplay vg_k8s</span><br></pre></td></tr></table></figure>
+<p><img src="/img/LVM_4.png" alt="image"><br>(4) 创建lv，并挂载</p>
+<ol>
+<li>创建lv<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo lvcreate -n lv_k8s -l 100%FREE vg_k8s</span><br><span class="line">sudo lvscan</span><br></pre></td></tr></table></figure>
+<img src="/img/LVM_5.png" alt="image"></li>
+<li>在根目录下创建目录k8s<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> /k8s</span><br></pre></td></tr></table></figure>
+3）对逻辑卷进行格式化：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkfs -t xfs -n ftype=1 /dev/vg_k8s/lv_k8s</span><br></pre></td></tr></table></figure>
+<img src="/img/LVM_6.png" alt="image"></li>
+<li>将逻辑卷&#x2F;dev&#x2F;vg_k8s&#x2F;lv_k8s挂载到&#x2F;k8s目录下:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mount /dev/vg_k8s/lv_k8s /k8s</span><br><span class="line">sudo <span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
+<img src="/img/LVM_7.png" alt="image"><br>5)修改&#x2F;etc&#x2F;fstab，添加挂载信息，实现开机自动挂载<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/fstab</span><br></pre></td></tr></table></figure>
+<img src="/img/LVM_8.png" alt="image"></li>
+<li>重新挂载<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount -a</span><br></pre></td></tr></table></figure></li>
+<li>重启服务器生效</li>
+</ol>
+<p>注意：创建pv时，可能出现&#x2F;dev&#x2F;sdb明明存在并且没被使用，但却无法使用&#x2F;dev&#x2F;sdb创建pv。<br>解决办法：执行 dd if&#x3D;&#x2F;dev&#x2F;urandom of&#x3D;&#x2F;dev&#x2F;sdb bs&#x3D;512 count&#x3D;64 然后尝试创建pv成功。<br>具体原因见  <a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_701300bc0100xmr4.html">http://blog.sina.com.cn/s/blog_701300bc0100xmr4.html</a></p>
+<h3 id="修改逻辑盘文件系统类型及重新挂载"><a href="#修改逻辑盘文件系统类型及重新挂载" class="headerlink" title="修改逻辑盘文件系统类型及重新挂载"></a>修改逻辑盘文件系统类型及重新挂载</h3><p>(1)df -Th  查看的是file system, 也就是文件系统层的磁盘大小<br>df查看的是文件系统层的磁盘大小,-T 文件系统类型,-h 方便阅读方式显示<br><img src="/img/LVM_9.png" alt="image"><br>(2)mount 查看挂载<br><img src="/img/LVM_10.png" alt="image"><br>(3)umount &amp;&amp; mount<br><img src="/img/LVM_11.png" alt="image"><br>(4)fdisk -l  查看当前的磁盘分区信息<br><img src="/img/LVM_12.png" alt="image"><br>(5)lsblk 查看的是block device,也就是逻辑磁盘大小。<br><img src="/img/LVM_13.png" alt="image"><br>(6)修改文件系统格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs -t xfs -n ftype=1 -f /dev/mapper/VG4736-lv_32</span><br></pre></td></tr></table></figure>
+<p><img src="/img/LVM_14.png" alt="image"><br>(7)重新挂载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/mapper/VG4736-lv_32 /data01</span><br></pre></td></tr></table></figure>
+<p><img src="/img/LVM_15.png" alt="image"><br>(8)lsblk<br><img src="/img/LVM_16.png" alt="image"><br>(9)<br><img src="/img/LVM_17.png" alt="image"><br><img src="/img/LVM_18.png" alt="image"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LVM/" rel="tag"># LVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/21/Glusterfs%E6%9C%8D%E5%8A%A1/" rel="prev" title="Glusterfs服务">
+                  <i class="fa fa-angle-left"></i> Glusterfs服务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/30/Ceph%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="next" title="Ceph文件系统">
+                  Ceph文件系统 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

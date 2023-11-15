@@ -1,37 +1,556 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wangdj104.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"بحث...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java中的自增是线程安全的吗，如何实现线程安全的自增 自增会带来线程安全问题吗？为什么？是线程不安全的1.i++在字节码层面分为三步：保存当前值，执行添加操作，更新新值2.多线程操作时，可能会同时获取到旧值（假设为1），添加操作后为2，第一个线程刷新新值为3，第二个刷新还是3。  volatile可以保证线程安全吗？不可以！volatile只能保证可见性，以及顺序性但是不能保证多个线程同时操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA基础">
+<meta property="og:url" content="https://wangdj104.github.io/2021/11/05/Java%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="wdj&#39;s blog">
+<meta property="og:description" content="Java中的自增是线程安全的吗，如何实现线程安全的自增 自增会带来线程安全问题吗？为什么？是线程不安全的1.i++在字节码层面分为三步：保存当前值，执行添加操作，更新新值2.多线程操作时，可能会同时获取到旧值（假设为1），添加操作后为2，第一个线程刷新新值为3，第二个刷新还是3。  volatile可以保证线程安全吗？不可以！volatile只能保证可见性，以及顺序性但是不能保证多个线程同时操作">
+<meta property="og:locale">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/20211105110923.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/20211105110815.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/20211115.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/clip_image006.jpg">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/clip_image003.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/clip_image002-1615278523435.jpg">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-38-48.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-40-04.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-40-38.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-41-14.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-41-57.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-44-43.png">
+<meta property="og:image" content="https://wangdj104.github.io/img/media/Snipaste_2021-03-10_13-46-29.png">
+<meta property="article:published_time" content="2021-11-05T01:43:21.000Z">
+<meta property="article:modified_time" content="2021-11-15T09:10:14.000Z">
+<meta property="article:author" content="wangdj">
+<meta property="article:tag" content="gitlab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangdj104.github.io/img/media/20211105110923.png">
 
 
-{% block content %}
+<link rel="canonical" href="https://wangdj104.github.io/2021/11/05/Java%E5%9F%BA%E7%A1%80/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://wangdj104.github.io/2021/11/05/Java%E5%9F%BA%E7%A1%80/","path":"2021/11/05/Java基础/","title":"JAVA基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JAVA基础 | wdj's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح" role="button">
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">wdj's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录生活中的点点滴滴</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="بحث" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E8%87%AA%E5%A2%9E%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%97%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E8%87%AA%E5%A2%9E"><span class="nav-number">1.</span> <span class="nav-text">Java中的自增是线程安全的吗，如何实现线程安全的自增</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jdk1-8%E4%B8%AD%E7%9A%84stream%E6%9C%89%E7%94%A8%E8%BF%87%E5%90%97%EF%BC%8C%E8%AF%A6%E8%BF%B0%E4%B8%80%E4%B8%8Bstream%E7%9A%84%E5%B9%B6%E8%A1%8C%E6%93%8D%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%8Cstream%E5%B9%B6%E8%A1%8C%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%98%AF%E4%BB%8E%E5%93%AA%E9%87%8C%E6%9D%A5%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">Jdk1.8中的stream有用过吗，详述一下stream的并行操作原理，stream并行的线程池是从哪里来的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E8%81%8A%E4%B8%80%E4%B8%8Bjava%E7%9A%84%E9%9B%86%E5%90%88%E7%B1%BB-%E4%BB%A5%E5%8F%8A%E5%9C%A8%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%A0%E6%98%AF%E5%A6%82%E4%BD%95%E7%94%A8%E7%9A%84"><span class="nav-number">3.</span> <span class="nav-text">请聊一下java的集合类,以及在实际项目中你是如何用的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hashmap%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">Hashmap为什么要使用红黑树？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E7%B1%BB%E6%98%AF%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E9%AB%98%E5%B9%B6%E5%8F%91%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">集合类是怎么解决高并发中的问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E4%B8%80%E4%B8%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">简述一下自定义异常的应用场景？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E4%B8%80%E4%B8%8BObject%E7%B1%BB%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">描述一下Object类中常用的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object%E7%B1%BB%E4%B8%AD%E7%9A%84toString-%E6%96%B9%E6%B3%95"><span class="nav-number">7.1.</span> <span class="nav-text">Object类中的toString()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Object%E7%B1%BB%E4%B8%AD%E7%9A%84equals-%E6%96%B9%E6%B3%95"><span class="nav-number">7.2.</span> <span class="nav-text">Object类中的equals()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Object"><span class="nav-number">7.3.</span> <span class="nav-text">Object()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clone"><span class="nav-number">7.4.</span> <span class="nav-text">clone()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#finalize"><span class="nav-number">7.5.</span> <span class="nav-text">finalize()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getClass"><span class="nav-number">7.6.</span> <span class="nav-text">getClass()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hashCode"><span class="nav-number">7.7.</span> <span class="nav-text">hashCode()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88wait-notify%E4%BC%9A%E6%94%BE%E5%9C%A8Object%E9%87%8C%E8%BE%B9%EF%BC%9F"><span class="nav-number">7.8.</span> <span class="nav-text">为什么wait notify会放在Object里边？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-sleep-%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">7.9.</span> <span class="nav-text">wait(),sleep()区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notify"><span class="nav-number">7.10.</span> <span class="nav-text">notify()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notifyAll"><span class="nav-number">7.11.</span> <span class="nav-text">notifyAll()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait"><span class="nav-number">7.12.</span> <span class="nav-text">wait()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-long-timeout"><span class="nav-number">7.13.</span> <span class="nav-text">wait(long timeout)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-long-timeout-int-nanos"><span class="nav-number">7.14.</span> <span class="nav-text">wait(long timeout, int nanos)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7%E6%9C%89%E4%BA%86%E8%A7%A3%E8%BF%87%E5%90%97%EF%BC%9F-%E6%B3%A8%E6%84%8F%E4%BA%86%E8%A7%A3%E5%85%B6%E4%BB%96%E7%89%88%E6%9C%AC%E6%96%B0%E7%89%B9%E5%BE%81-JDK%E6%9B%B4%E6%96%B0%E8%AE%A4%E8%AF%86"><span class="nav-number">8.</span> <span class="nav-text">1.8的新特性有了解过吗？   (注意了解其他版本新特征) +JDK更新认识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E4%B8%80%E4%B8%8BJava%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81%EF%BC%8C%E7%BB%A7%E6%89%BF%E3%80%81%E5%B0%81%E8%A3%85%E4%B8%8E%E5%A4%9A%E6%80%81%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">简述一下Java面向对象的基本特征，继承、封装与多态，以及你自己的应用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E9%87%8D%E5%86%99%E5%92%8C%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">Java中重写和重载的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E5%A3%B0%E6%98%8E%E4%B8%80%E4%B8%AA%E7%B1%BB%E4%B8%8D%E4%BC%9A%E8%A2%AB%E7%BB%A7%E6%89%BF%EF%BC%8C%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BC%9A%E7%94%A8%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">怎样声明一个类不会被继承，什么场景下会用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFForkJoin%E6%A1%86%E6%9E%B6-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">12.</span> <span class="nav-text">什么是ForkJoin框架 适用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E7%A7%8D%E7%9A%84%E4%BB%A3%E7%90%86%E6%9C%89%E5%87%A0%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">Java种的代理有几种实现方式？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#happens-before%E8%A7%84%E5%88%99"><span class="nav-number">14.</span> <span class="nav-text">happens-before规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A%E4%BA%A7%E7%94%9F%E7%9A%84%E5%BD%B1%E5%93%8D%E8%83%BD%E5%A4%9F%E8%A2%AB%E6%93%8D%E4%BD%9CB%E8%A7%82%E5%AF%9F%E5%88%B0%E3%80%82"><span class="nav-number">14.1.</span> <span class="nav-text">A产生的影响能够被操作B观察到。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84happen-before%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.</span> <span class="nav-text">常见的happen-before规则：</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-%E7%A8%8B%E5%BA%8F%E9%A1%BA%E5%BA%8F%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.1.</span> <span class="nav-text">1.程序顺序规则：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-%E9%94%81%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.2.</span> <span class="nav-text">2.锁规则：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-volatile%E5%8F%98%E9%87%8F%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.3.</span> <span class="nav-text">3.volatile变量规则：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-%E4%BC%A0%E9%80%92%E6%80%A7%EF%BC%9A"><span class="nav-number">15.0.0.4.</span> <span class="nav-text">4.传递性：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#5-%E7%BA%BF%E7%A8%8B%E5%90%AF%E5%8A%A8%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.5.</span> <span class="nav-text">5.线程启动规则：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#6-%E7%BA%BF%E7%A8%8B%E7%BB%88%E6%AD%A2%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.6.</span> <span class="nav-text">6.线程终止规则：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#7-%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%96%AD%E8%A7%84%E5%88%99%EF%BC%9A"><span class="nav-number">15.0.0.7.</span> <span class="nav-text">7.线程中断规则：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jvm%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F%E6%98%AF%E9%80%9A%E8%BF%87jmx%E5%81%9A%E7%9A%84%E4%B9%88%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">jvm监控系统是通过jmx做的么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jvm%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">17.</span> <span class="nav-text">jvm有哪些垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%8C%E5%B9%B6%E8%A1%8C%EF%BC%88Parallel%EF%BC%89%EF%BC%9A%E5%A4%9A%E4%B8%AA%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%BA%BF%E7%A8%8B%E5%B9%B6%E8%A1%8C%E5%B7%A5%E4%BD%9C%EF%BC%8C%E6%AD%A4%E6%97%B6%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%A4%84%E4%BA%8E%E7%AD%89%E5%BE%85%E7%8A%B6%E6%80%81"><span class="nav-number">17.1.</span> <span class="nav-text">1，并行（Parallel）：多个垃圾收集线程并行工作，此时用户线程处于等待状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%8C%E5%B9%B6%E5%8F%91%EF%BC%88Concurrent%EF%BC%89%EF%BC%9A%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%97%B6%E6%89%A7%E8%A1%8C"><span class="nav-number">17.2.</span> <span class="nav-text">2，并发（Concurrent）：用户线程和垃圾收集线程同时执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%8C%E5%90%9E%E5%90%90%E9%87%8F%EF%BC%9A%E8%BF%90%E8%A1%8C%E7%94%A8%E6%88%B7%E4%BB%A3%E7%A0%81%E6%97%B6%E9%97%B4%EF%BC%8F%EF%BC%88%E8%BF%90%E8%A1%8C%E7%94%A8%E6%88%B7%E4%BB%A3%E7%A0%81%E6%97%B6%E9%97%B4%EF%BC%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%97%B6%E9%97%B4%EF%BC%89"><span class="nav-number">17.3.</span> <span class="nav-text">3，吞吐量：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Serial%E6%94%B6%E9%9B%86%E5%99%A8%E6%98%AF%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%80%81%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2%E6%9C%80%E6%82%A0%E4%B9%85%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8%E3%80%82"><span class="nav-number"></span> <span class="nav-text">1.Serial收集器是最基本的、发展历史最悠久的收集器。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Serial-Serial-Old%E6%94%B6%E9%9B%86%E5%99%A8%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="nav-number">0.1.</span> <span class="nav-text">Serial &#x2F; Serial Old收集器运行示意图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ParNew%E6%94%B6%E9%9B%86%E5%99%A8%E5%85%B6%E5%AE%9E%E5%B0%B1%E6%98%AFSerial%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%89%88%E6%9C%AC%E3%80%82"><span class="nav-number"></span> <span class="nav-text">2.ParNew收集器其实就是Serial收集器的多线程版本。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Parallel-Scavenge-%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%90%9E%E5%90%90%E9%87%8F%E5%85%B3%E7%B3%BB%E5%AF%86%E5%88%87%EF%BC%8C%E6%95%85%E4%B9%9F%E7%A7%B0%E4%B8%BA%E5%90%9E%E5%90%90%E9%87%8F%E4%BC%98%E5%85%88%E6%94%B6%E9%9B%86%E5%99%A8%E3%80%82"><span class="nav-number"></span> <span class="nav-text">3.Parallel Scavenge 收集器与吞吐量关系密切，故也称为吞吐量优先收集器。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Parallel-Scavenge%E6%94%B6%E9%9B%86%E5%99%A8%E4%BD%BF%E7%94%A8%E4%B8%A4%E4%B8%AA%E5%8F%82%E6%95%B0%E6%8E%A7%E5%88%B6%E5%90%9E%E5%90%90%E9%87%8F%EF%BC%9A"><span class="nav-number">0.0.1.</span> <span class="nav-text">Parallel Scavenge收集器使用两个参数控制吞吐量：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Serial-Old%E6%98%AFSerial%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E8%80%81%E5%B9%B4%E4%BB%A3%E7%89%88%E6%9C%AC%E3%80%82"><span class="nav-number"></span> <span class="nav-text">4.Serial Old是Serial收集器的老年代版本。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Parallel-Old%E6%98%AFParallel-Scavenge%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E8%80%81%E5%B9%B4%E4%BB%A3%E7%89%88%E6%9C%AC%E3%80%82"><span class="nav-number"></span> <span class="nav-text">5.Parallel Old是Parallel Scavenge收集器的老年代版本。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-CMS%E6%94%B6%E9%9B%86%E5%99%A8%E6%98%AF%E4%B8%80%E7%A7%8D%E4%BB%A5%E8%8E%B7%E5%8F%96%E6%9C%80%E7%9F%AD%E5%9B%9E%E6%94%B6%E5%81%9C%E9%A1%BF%E6%97%B6%E9%97%B4%E4%B8%BA%E7%9B%AE%E6%A0%87%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8%E3%80%82"><span class="nav-number"></span> <span class="nav-text">6.CMS收集器是一种以获取最短回收停顿时间为目标的收集器。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CMS%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="nav-number">0.0.1.</span> <span class="nav-text">CMS收集器的缺点：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-G1%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%80%E6%AC%BE%E9%9D%A2%E5%90%91%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%BA%94%E7%94%A8%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E3%80%82"><span class="nav-number"></span> <span class="nav-text">7.G1收集器一款面向服务端应用的垃圾收集器。</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Egc%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">0.0.1.</span> <span class="nav-text">关于gc的选择</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pc%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">pc计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">介绍一下垃圾回收算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%80%81%E5%B9%B4%E4%BB%A3%E5%92%8C%E6%96%B0%E7%94%9F%E4%BB%A3"><span class="nav-number">3.</span> <span class="nav-text">老年代和新生代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">4.</span> <span class="nav-text">内存溢出的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E4%B8%8AGc%E9%A2%91%E7%B9%81"><span class="nav-number">5.</span> <span class="nav-text">线上Gc频繁</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wangdj</p>
+  <div class="site-description" itemprop="description">记录生活中的点点滴滴</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wangdj104.github.io/2021/11/05/Java%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wangdj">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wdj's blog">
+      <meta itemprop="description" content="记录生活中的点点滴滴">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JAVA基础 | wdj's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JAVA基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">نُشر في</span>
+
+      <time title="أُنشأ: 2021-11-05 09:43:21" itemprop="dateCreated datePublished" datetime="2021-11-05T09:43:21+08:00">2021-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">عُدل في</span>
+      <time title="عُدل: 2021-11-15 17:10:14" itemprop="dateModified" datetime="2021-11-15T17:10:14+08:00">2021-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">في</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/" itemprop="url" rel="index"><span itemprop="name">技术栈</span></a>
+        </span>
+          ، 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%A0%88/JAVA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">JAVA基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Java中的自增是线程安全的吗，如何实现线程安全的自增"><a href="#Java中的自增是线程安全的吗，如何实现线程安全的自增" class="headerlink" title="Java中的自增是线程安全的吗，如何实现线程安全的自增"></a>Java中的自增是线程安全的吗，如何实现线程安全的自增</h3><ul>
+<li><p>自增会带来线程安全问题吗？为什么？<br>是线程不安全的<br>1.i++在字节码层面分为三步：保存当前值，执行添加操作，更新新值<br>2.多线程操作时，可能会同时获取到旧值（假设为1），添加操作后为2，第一个线程刷新新值为3，第二个刷新还是3。</p>
+</li>
+<li><p>volatile可以保证线程安全吗？<br>不可以！<br>volatile只能保证可见性，以及顺序性<br>但是不能保证多个线程同时操作</p>
+</li>
+<li><p>如何保证线程安全？<br>1.增加synchronized进行线程同步<br>2.使用lock、unlock处理Reetrantent 锁进行锁定<br>3.使用JVM封装类AtomicInteger<br>AtomicInteger &gt;&gt;&gt; Unsafe &gt;&gt;&gt; cas &gt;&gt;&gt; aba<br>   首先说明，此处 AtomicInteger，一个提供原子操作的 Integer 的类，常见的还有AtomicBoolean、AtomicInteger、AtomicLong、AtomicReference 等，他们的实现原理相同，区别在与运算对象类型的不同。令人兴奋地，还可以通过 AtomicReference<V>将一个对象的所有操作转化成原子操作。</p>
+<p>  我们知道，在多线程程序中，诸如+i 或 i++等运算不具有原子性，是不安全的线程操作之一。通常我们会使用 synchronized 将该操作变成一个原子操作，但 JVM 为此类操作特意提供了一些同步类，使得使用更方便，且使程序运行效率变得更高。通过相关资料显示，通常AtomicInteger 的性能是 ReentantLock 的好几倍。</p>
+</li>
+</ul>
+<h3 id="Jdk1-8中的stream有用过吗，详述一下stream的并行操作原理，stream并行的线程池是从哪里来的"><a href="#Jdk1-8中的stream有用过吗，详述一下stream的并行操作原理，stream并行的线程池是从哪里来的" class="headerlink" title="Jdk1.8中的stream有用过吗，详述一下stream的并行操作原理，stream并行的线程池是从哪里来的"></a>Jdk1.8中的stream有用过吗，详述一下stream的并行操作原理，stream并行的线程池是从哪里来的</h3><p>Stream作为Java8的一大亮点，它与java.io包里的InputStream和OutputStream是完全不同的概念。它是对容器对象功能的增强，它专注于对容器对象进行各种非常便利、高效的聚合操作或者大批量数据操作。</p>
+<p>Stream API借助于同样新出现的Lambda表达式，极大的提高编程效率和程序可读性。同时，它提供串行和并行两种模式进行汇聚操作，并发模式能够充分利用多核处理器的优势，使用fork&#x2F;join并行方式来拆分任务和加速处理过程。所以说，Java8中首次出现的 java.util.stream是一个函数式语言+多核时代综合影响的产物。</p>
+<p>Stream有如下三个操作步骤：</p>
+<p>一、创建Stream：从一个数据源，如集合、数组中获取流。</p>
+<p>二、中间操作：一个操作的中间链，对数据源的数据进行操作。</p>
+<p>三、终止操作：一个终止操作，执行中间操作链，并产生结果。<br><img src="/img/media/20211105110923.png"><br><img src="/img/media/20211105110815.png"></p>
+<ul>
+<li>Stream流的入门<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class StreamDemo1 &#123;</span><br><span class="line">    public static void main(String[]args)&#123;</span><br><span class="line">        //外部迭代</span><br><span class="line">        int [] nums = &#123;1,2,3&#125;;</span><br><span class="line">        int <span class="built_in">sum</span> = 0;</span><br><span class="line">        <span class="keyword">for</span> (int num : nums) &#123;</span><br><span class="line">            <span class="built_in">sum</span> += num;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;结果是:&quot;</span> + <span class="built_in">sum</span>);</span><br><span class="line"></span><br><span class="line">        //使用Strem进行内部迭代</span><br><span class="line">        int sum2 = IntStream.of(nums).map( i -&gt; i *2).<span class="built_in">sum</span>();</span><br><span class="line">        System.out.println(<span class="string">&quot;结果为:&quot;</span> + sum2);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;惰性求值是终止没有调用的情况下,中间的操作不会执行&quot;</span>);</span><br><span class="line"></span><br><span class="line">        IntStream.of(nums).map(StreamDemo1::doubNum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public  static int doubNum(int i)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;执行了乘以二&quot;</span>);</span><br><span class="line">        <span class="built_in">return</span> i * 2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Stream流的创建<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class StremDemo2 &#123;</span><br><span class="line">    public static void main(String[]args)&#123;</span><br><span class="line">        List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        //从集合中创建</span><br><span class="line">        list.stream();</span><br><span class="line">        list.parallelStream();</span><br><span class="line"></span><br><span class="line">        //从数组中创建</span><br><span class="line">        Arrays.stream(new int [] &#123;1,2,3&#125;);</span><br><span class="line"></span><br><span class="line">        //使用rondom创建无线流</span><br><span class="line">        new Random().ints().<span class="built_in">limit</span>(10);</span><br><span class="line"></span><br><span class="line">        //创建数字流</span><br><span class="line">        IntStream.of(1,2,3);</span><br><span class="line">        IntStream.rangeClosed(1,10);</span><br><span class="line">        Random r = new Random();</span><br><span class="line"></span><br><span class="line">        //自己产生流</span><br><span class="line">        Stream.generate(()-&gt; r.nextInt()).<span class="built_in">limit</span>(20).forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Strem流中常用的几个方法<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class StreamDemo3 &#123;</span><br><span class="line">    public static void main(String[]args)&#123;</span><br><span class="line">        String str = <span class="string">&quot;i want to be a software enginner&quot;</span>;</span><br><span class="line"></span><br><span class="line">        Stream.of(str.split(<span class="string">&quot; &quot;</span>)).map( s -&gt; s.length()).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        Stream.of(str.split(<span class="string">&quot; &quot;</span>)).filter(s -&gt; s.contains(<span class="string">&quot;a&quot;</span>)).map(s -&gt; s.length()).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        Stream.of(str.split(<span class="string">&quot; &quot;</span>)).flatMap(s -&gt; str.chars().boxed()).forEach(i -&gt; System.out.println((char)i.intValue()));</span><br><span class="line"></span><br><span class="line">        Stream.of(str.split(<span class="string">&quot; &quot;</span>)).peek(System.out::println).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">        //limit 使用 ,主要用于无线流</span><br><span class="line">        new Random().ints().filter(i -&gt; i &gt; 100 &amp;&amp; i &lt; 1000).<span class="built_in">limit</span>(10).forEach(System.out::println) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>流的操作二<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public class StreamDemo4 &#123;</span><br><span class="line">    public static void main(String[]args)&#123;</span><br><span class="line">        String str = <span class="string">&quot;hello lambda hello&quot;</span>;</span><br><span class="line"></span><br><span class="line">        //使用并行流</span><br><span class="line">        str.chars().parallel().forEach( s -&gt; System.out.println((char)s));</span><br><span class="line">        //保证顺序</span><br><span class="line">        str.chars().parallel().forEachOrdered(i -&gt; System.out.println((char)i));</span><br><span class="line"></span><br><span class="line">        //收集器</span><br><span class="line">        List&lt;String&gt; list = Stream.of(str.split(<span class="string">&quot; &quot;</span>)).collect(Collectors.toList());</span><br><span class="line">        System.out.println(<span class="string">&quot;这是一个list:&quot;</span> + list);</span><br><span class="line"></span><br><span class="line">        //使用reduce拼接字符串</span><br><span class="line">        Optional&lt;String&gt; letters = Stream.of(str.split(<span class="string">&quot; &quot;</span>)).reduce((s1,s2) -&gt; s1 + &quot;|&quot; + s2);</span><br><span class="line"></span><br><span class="line">        System.out.println(letters.orElse(&quot;&quot;));</span><br><span class="line"></span><br><span class="line">        //计算所有单词总长度</span><br><span class="line">        Integer lent = Stream.of(str.split(<span class="string">&quot; &quot;</span>)).map(s -&gt; s.length()).reduce(0,(s1,s2) -&gt; s1 + s2);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;单词的总长度是:&quot;</span> + lent);</span><br><span class="line"></span><br><span class="line">        //max</span><br><span class="line">        Optional&lt;String&gt; max = Stream.of(str.split(<span class="string">&quot; &quot;</span>)).max((s1,s2) -&gt; s1.length() - s2.length());</span><br><span class="line">        System.out.println(<span class="string">&quot;单词最长的是:&quot;</span> + max.get());</span><br><span class="line"></span><br><span class="line">        OptionalInt findFirst =  new Random().ints().findFirst();</span><br><span class="line">        System.out.println(<span class="string">&quot;短路操作&quot;</span> + findFirst.getAsInt());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li>串行流和并行流以及线程池<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">   public class StreamDemo5 &#123;</span><br><span class="line">     public static void main(String[]args)&#123;</span><br><span class="line"></span><br><span class="line">        IntStream.range(1,100).parallel().peek(StreamDemo5::debug).count();</span><br><span class="line"></span><br><span class="line">        //parallel 并行流</span><br><span class="line">        IntStream.range(1,100).parallel().peek(StreamDemo5::debug).</span><br><span class="line">                //sequential串行流</span><br><span class="line">                sequential().peek(StreamDemo5::debug2).count();</span><br><span class="line"></span><br><span class="line">        ForkJoinPool pool = new ForkJoinPool(20);</span><br><span class="line">        pool.submit(() -&gt; IntStream.range(<span class="number">1</span>,<span class="number">100</span>).parallel().peek(StreamDemo5::debug).count());</span><br><span class="line">        pool.shutdown();</span><br><span class="line"></span><br><span class="line">        synchronized (pool)&#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                pool.wait();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void debug(int i)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;debug&quot;</span> + i);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程&quot;</span> + Thread.currentThread().getName()  + <span class="string">&quot;：&quot;</span> + i);</span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.<span class="built_in">sleep</span>(3);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void debug2(int i)&#123;</span><br><span class="line">        System.err.println(<span class="string">&quot;debug&quot;</span> + i);</span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.<span class="built_in">sleep</span>(3);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="请聊一下java的集合类-以及在实际项目中你是如何用的"><a href="#请聊一下java的集合类-以及在实际项目中你是如何用的" class="headerlink" title="请聊一下java的集合类,以及在实际项目中你是如何用的"></a>请聊一下java的集合类,以及在实际项目中你是如何用的</h3><p>参照java集合一章</p>
+<p>注意说出集合体系,常用类 接口 实现类</p>
+<p>加上你所知道的高并发集合类,JUC	参照集合增强内容</p>
+<p>在实际项目中引用, 照实说就好了</p>
+<p>问集合的引子… …</p>
+<p><img src="/img/media/20211115.png"><br>集合类型主要有3种：set(集）、list(列表）和map(映射)。</p>
+<p>集合接口分为：Collection和Map，list、set实现了Collection接口</p>
+<ul>
+<li>List总结：</li>
+</ul>
+<p>可以重复，通过索引取出加入数据，顺序与插入顺序一致，可以含有null元素</p>
+<p>ArrayList:底层数据结构是数组结构array，查询速度快，增删改慢，因为是一种类似数组的形式进行存储，因此它的随机访问速度极快；</p>
+<p>Vector：底层是数组结构array，与ArrayList相同，查询速度快，增删改慢；</p>
+<p>LinkedList:底层使用链表结构，增删速度快，查询稍慢；</p>
+<p>ArrayList与Vector的区别：</p>
+<p>1.如果集合中的元素数量大于当前集合数组的长度时，Vector的增长率是目前数组长度的100%，而ArryaList增长率为目前数组长度的50%。所以，如果集合中使用数据量比较大的数据，用Vector有一定优势</p>
+<p>2.线程同步ArrayList是线程不同步，所以Vector线程安全，但是因为每个方法都加上了synchronized，所以在效率上小于ArrayList</p>
+<ul>
+<li>Set总结：<br>数据无序且唯一,实现类都不是线程安全的类，解决方案：Set set &#x3D; Collections.sysnchronizedSet(Set对象);</li>
+</ul>
+<p>HashSet：是Set接口（Set接口是继承了Collection接口的）最常用的实现类，顾名思义，底层是用了哈希表（散列&#x2F;hash）算法。其底层其实也是一个数组，存在的意义是提供查询速度，插入的速度也是比较快，但是适用于少量数据的插入操作。</p>
+<p>LinkedHashSet：继承了HashSet类，所以它的底层用的也是哈希表的数据结构，但因为保持数据的先后添加顺序，所以又加了链表结构，但因为多加了一种数据结构，所以效率较低，不建议使用，如果要求一个集合急要保证元素不重复，也需要记录元素的先后添加顺序，才选择使用LinkedHashSet</p>
+<p>TreeSet：Set接口的实现类，也拥有set接口的一般特性，但是不同的是他也实现了SortSet接口，它底层采用的是红黑树算法（红黑树就是满足一下红黑性质的二叉搜索树：①每个节点是黑色或者红色②根节点是黑色的③每个叶子结点是黑色的④如果一个节点是红色的，那么他的两个子节点是黑色的⑤对每个节点，从该节点到其所有的后代叶子结点的简单路径上，仅包含相同数目的黑色结点，红黑树是许多“平衡”搜索树的一种，可以保证在最坏情况下的基本操作集合的时间复杂度为O(lgn)。</p>
+<ul>
+<li>Map总结：<br>java的Map(映射)是一种把键对象和值对象进行映射的集合，其中每一个元素都包含了键对象和值对象，其中值对象也可以是Map类型的数据，因此，Map支持多级映射，Map中的键是唯一的，但值可以不唯一，Map集合有两种实现，一种是利用哈希表来完成的叫做HashMap，它和HashSet都是利用哈希表来完成的，区别其实就是在哈希表的每个桶中，HashSet只有key，而HashMap在每个key上挂了一个value；另一种就是TreeMap，它实现了SortMap接口，也就是使用了红黑树的数据结构，和TreeSet一样也能实现自然排序和客户化排序两种排序方式，而哈希表不提供排序。</li>
+</ul>
+<p>HashMap：哈希表的实现原理中，先采用一个数组表示位桶，每个位桶的实现在1.8之前都是使用链表，但当每个位桶的数据较多的时候，链表查询的效率就会不高，因此在1.8之后，当位桶的数据超过阈值（8）的时候，就会采用红黑树来存储该位桶的数据（在阈值之前还是使用链表来进行存储），所以，哈希表的实现包括数组+链表+红黑树，在使用哈希表的集合中我们都认为他们的增删改查操作的时间复杂度都是O(1)的，不过常数项很大，因为哈希函数在进行计算的代价比较高,HashMap和Hashtable类似，不同之处在于HashMap是非同步的，并且允许null，即null value和null key。，但是将HashMap视为Collection时（values()方法可返回Collection），其迭代子操作时间开销和HashMap 的容量成比例。因此，如果迭代操作的性能相当重要的话，不要将HashMap的初始化容量设得过高，或者load factor过低。</p>
+<p>TreeMap：TreeMap 是一个有序的key-value集合，它是通过红黑树实现的。TreeMap 继承于AbstractMap，所以它是一个Map，即一个key-value集合。TreeMap 实现了NavigableMap接口，意味着它支持一系列的导航方法。比如返回有序的key集合。TreeMap 实现了Cloneable接口，意味着它能被克隆。TreeMap 实现了java.io.Serializable接口，意味着它支持序列化。</p>
+<p>TreeMap基于红黑树（Red-Black tree）实现。该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的 Comparator 进行排序，具体取决于使用的构造方法。TreeMap的基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n) 。另外，TreeMap是非同步的。 它的iterator 方法返回的迭代器是fail-fastl的。</p>
+<p>HashTable:Hashtable继承Map接口，实现一个key-value映射的哈希表。任何非空（non-null）的对象都可作为key或者value，线程安全。</p>
+<h3 id="Hashmap为什么要使用红黑树？"><a href="#Hashmap为什么要使用红黑树？" class="headerlink" title="Hashmap为什么要使用红黑树？"></a>Hashmap为什么要使用红黑树？</h3><p>在jdk1.8版本后，java对HashMap做了改进，在链表长度大于8的时候，将后面的数据存在红黑树中，以加快检索速度</p>
+<p>红黑树虽然本质上是一棵二叉查找树，但它在二叉查找树的基础上增加了着色和相关的性质使得红黑树相对平衡，从而保证了红黑树的查找、插入、删除的时间复杂度最坏为O(log n)。加快检索速率。</p>
+<h3 id="集合类是怎么解决高并发中的问题？"><a href="#集合类是怎么解决高并发中的问题？" class="headerlink" title="集合类是怎么解决高并发中的问题？"></a>集合类是怎么解决高并发中的问题？</h3><p>思路 先说一下那些是非安全</p>
+<p>​      普通的安全的集合类</p>
+<p>​      JUC中高并发的集合类</p>
+<p>线程非安全的集合类 ArrayList LinkedList HashSet TreeSet HashMap TreeMap 实际开发中我们自己用这样的集合最多,因为一般我们自己写的业务代码中,不太涉及到多线程共享同一个集合的问题</p>
+<p>线程安全的集合类 Vector HashTable 虽然效率没有JUC中的高性能集合高,但是也能够适应大部分环境</p>
+<p>高性能线程安全的集合类</p>
+<p> 1.ConcurrentHashMap</p>
+<p> 2.ConcurrentHashMap和HashTable的区别</p>
+<p> 3.ConcurrentHashMap线程安全的具体实现方式&#x2F;底层具体实现</p>
+<p> 4.说说CopyOnWriteArrayList</p>
+<p>ConcurrentHashMap 在JDK1.7的时候，ConcurrentHashMap（分段锁）对整个桶数组进行了分割分段(Segment)，每一把锁只锁容器其中一部分数据，多线程访问容器里不同数据段的数据，就不会存在锁竞争 JDK1.8 ConcurrentHashMap取消了Segment分段锁，采用CAS和synchronized来保证并发安全。数据结构跟HashMap1.8的结构类似，数组+链表&#x2F;红黑二叉树。Java 8在链表长度超过一定阈值时将链表（寻址时间复杂度为O(N)）转换为红黑树（寻址时间复杂度为O(log(N))） synchronized只锁定当前链表或红黑二叉树的首节点，这样只 要hash不冲突，就不会产生并发，效率又提升N倍。</p>
+<p>ConcurrentSkipListMap是<strong>线程安全的有序的哈希表(相当于线程安全的TreeMap)</strong>; 它<strong>继承于AbstractMap类，并且实现ConcurrentNavigableMap接口</strong>。ConcurrentSkipListMap是<strong>通过“跳表”来实现的</strong>，</p>
+<p>ConcurrentSkipListSet是<strong>线程安全的有序的集合(相当于线程安全的TreeSet)<strong>；</strong>它继承于AbstractSet，并实现了NavigableSet接口</strong>。ConcurrentSkipListSet是通过ConcurrentSkipListMap实现的，它也支持并发。</p>
+<p> CopyOnWriteArraySet addIfAbsent和 CopyOnWriteArrayList（写入并复制）也是juc里面的，它解决了并发修改异常，每当有写入的时候，就在底层重新复制一个新容器写入，最后把新容器的引用地址赋给旧的容器，在别人写入的时候，其他线程读数据，依然是旧容器的线程。这样是开销很大的，所以不适合频繁写入的操作。适合并发迭代操作多的场景。只能保证数据的最终一致性</p>
+<h3 id="简述一下自定义异常的应用场景？"><a href="#简述一下自定义异常的应用场景？" class="headerlink" title="简述一下自定义异常的应用场景？"></a>简述一下自定义异常的应用场景？</h3><p>借助异常机制,我们可以省略很多业务逻辑上的判断处理,直接借助java的异常机制可以简化业务逻辑判断代码的编写</p>
+<p>1当你不想把你的错误直接暴露给前端或者你想让前端从业务角度判断后台的异常，这个时候自定义异常类是你的不二选择</p>
+<p>2 虽然JAVA给我们提供了丰富的异常类型,但是在实际的业务上,还有很多情况JAVA提供的异常类型不能准确的表述出我们业务上的含义</p>
+<p>3 控制项目的后期服务 … …</p>
+<h3 id="描述一下Object类中常用的方法"><a href="#描述一下Object类中常用的方法" class="headerlink" title="描述一下Object类中常用的方法"></a>描述一下Object类中常用的方法</h3><h4 id="Object类中的toString-方法"><a href="#Object类中的toString-方法" class="headerlink" title="Object类中的toString()方法"></a>Object类中的toString()方法</h4><p>   1.object 默认方法toString方法，toString() 输出一个对象的地址字符串（哈希code码）！<br>   2.可以通过重写toString方法，获取对象的属性！</p>
+<h4 id="Object类中的equals-方法"><a href="#Object类中的equals-方法" class="headerlink" title="Object类中的equals()方法"></a>Object类中的equals()方法</h4><p>   1.Object类equals()比较的是对象的引用是否指向同一块内存地址！<br>   2.重写equals()方法比较俩对象的属性值是否相同</p>
+<h4 id="Object"><a href="#Object" class="headerlink" title="Object()"></a>Object()</h4><p>默认构造方法</p>
+<h4 id="clone"><a href="#clone" class="headerlink" title="clone()"></a>clone()</h4><p>创建并返回此对象的一个副本。</p>
+<h4 id="finalize"><a href="#finalize" class="headerlink" title="finalize()"></a>finalize()</h4><p>当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。</p>
+<h4 id="getClass"><a href="#getClass" class="headerlink" title="getClass()"></a>getClass()</h4><p>返回一个对象的运行时类。</p>
+<h4 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode()"></a>hashCode()</h4><p>返回该对象的哈希码值。</p>
+<h4 id="为什么wait-notify会放在Object里边？"><a href="#为什么wait-notify会放在Object里边？" class="headerlink" title="为什么wait notify会放在Object里边？"></a>为什么wait notify会放在Object里边？</h4><p>wait(),notify(),notifyAll()用来操作线程为什么定义在Object类中？<br>1、这些方法存在于同步中；<br>2、使用这些方法必须标识同步所属的锁；<br>3、锁可以是任意对象，所以任意对象调用方法一定定义在Object类中。</p>
+<h4 id="wait-sleep-区别？"><a href="#wait-sleep-区别？" class="headerlink" title="wait(),sleep()区别？"></a>wait(),sleep()区别？</h4><p>wait():释放资源，释放锁<br>sleep():释放资源，不释放锁</p>
+<h4 id="notify"><a href="#notify" class="headerlink" title="notify()"></a>notify()</h4><p>唤醒在此对象监视器上等待的单个线程。</p>
+<h4 id="notifyAll"><a href="#notifyAll" class="headerlink" title="notifyAll()"></a>notifyAll()</h4><p>唤醒在此对象监视器上等待的所有线程。</p>
+<h4 id="wait"><a href="#wait" class="headerlink" title="wait()"></a>wait()</h4><p>导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法。</p>
+<h4 id="wait-long-timeout"><a href="#wait-long-timeout" class="headerlink" title="wait(long timeout)"></a>wait(long timeout)</h4><p>导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量。</p>
+<h4 id="wait-long-timeout-int-nanos"><a href="#wait-long-timeout-int-nanos" class="headerlink" title="wait(long timeout, int nanos)"></a>wait(long timeout, int nanos)</h4><p>导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者其他某个线程中断当前线程，或者已超过某个实际时间量。</p>
+<h3 id="1-8的新特性有了解过吗？-注意了解其他版本新特征-JDK更新认识"><a href="#1-8的新特性有了解过吗？-注意了解其他版本新特征-JDK更新认识" class="headerlink" title="1.8的新特性有了解过吗？   (注意了解其他版本新特征) +JDK更新认识"></a>1.8的新特性有了解过吗？   (注意了解其他版本新特征) +JDK更新认识</h3><p>·    <strong>Lambda表达式</strong></p>
+<p>·    <strong>函数式接口 函数式编程</strong></p>
+<p>·    <strong>方法引用和构造器调用</strong></p>
+<p>·    <strong>Stream API</strong></p>
+<p>·    <strong>接口中的默认方法和静态方法</strong></p>
+<p>·    <strong>新时间日期API</strong></p>
+<p>新的日期类</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instant</strong></td>
+<td>代表的是时间戳</td>
+</tr>
+<tr>
+<td><strong>LocalDate</strong></td>
+<td>代表日期，比如2020-01-14</td>
+</tr>
+<tr>
+<td><strong>LocalTime</strong></td>
+<td>代表时刻，比如12:59:59</td>
+</tr>
+<tr>
+<td><strong>LocalDateTime</strong></td>
+<td>代表具体时间 2020-01-12 12:22:26</td>
+</tr>
+<tr>
+<td><strong>ZonedDateTime</strong></td>
+<td>代表一个包含时区的完整的日期时间，偏移量是以UTC&#x2F; 格林威治时间为基准的</td>
+</tr>
+<tr>
+<td><strong>Period</strong></td>
+<td>代表时间段</td>
+</tr>
+<tr>
+<td><strong>ZoneOffset</strong></td>
+<td>代表时区偏移量，比如：+8:00</td>
+</tr>
+<tr>
+<td><strong>Clock</strong></td>
+<td>代表时钟，比如获取目前美国纽约的时间</td>
+</tr>
+</tbody></table>
+<h3 id="简述一下Java面向对象的基本特征，继承、封装与多态，以及你自己的应用？"><a href="#简述一下Java面向对象的基本特征，继承、封装与多态，以及你自己的应用？" class="headerlink" title="简述一下Java面向对象的基本特征，继承、封装与多态，以及你自己的应用？"></a>简述一下Java面向对象的基本特征，继承、封装与多态，以及你自己的应用？</h3><p>知识参照面向对象章节</p>
+<p>注意单独解释 继承 封装 多态的概念</p>
+<p>继承 基本概念解释 后面多态的条件</p>
+<p>封装 基本概念解释 隐藏实现细节,公开使用方式 </p>
+<p>多态 基本概念解释 就是处理参数 提接口 打破单继承 </p>
+<p>设计模式 设计原则</p>
+<h3 id="Java中重写和重载的区别？"><a href="#Java中重写和重载的区别？" class="headerlink" title="Java中重写和重载的区别？"></a>Java中重写和重载的区别？</h3><p>联系: 名字相似 都是多个同名方法</p>
+<p>重载  在同一个类之中发生的</p>
+<p>重写 继承中,子类重写父类方法</p>
+<p>1 目的差别</p>
+<p>2 语法差别</p>
+<h3 id="怎样声明一个类不会被继承，什么场景下会用？"><a href="#怎样声明一个类不会被继承，什么场景下会用？" class="headerlink" title="怎样声明一个类不会被继承，什么场景下会用？"></a>怎样声明一个类不会被继承，什么场景下会用？</h3><p>final修饰的类不能有子类 大部分都是出于安全考虑</p>
+<p>String举例</p>
+<h3 id="什么是ForkJoin框架-适用场景"><a href="#什么是ForkJoin框架-适用场景" class="headerlink" title="什么是ForkJoin框架 适用场景"></a>什么是ForkJoin框架 适用场景</h3><p>虽然目前处理器核心数已经发展到很大数目，但是按任务并发处理并不能完全充分的利用处理器资源，因为一般的应用程序没有那么多的并发处理任务。基于这种现状，考虑把一个任务拆分成多个单元，每个单元分别得到执行，最后合并每个单元的结果。 </p>
+<p>Fork&#x2F;Join框架是JAVA7提供的一个用于并行执行任务的框架，是一个把大任务分割成若干小任务，最终汇总每个小任务结果得到大任务结果的框架。 </p>
+<p><img src="/img/media/clip_image006.jpg" alt="img"></p>
+<p><img src="/img/media/clip_image003.png" alt="img"></p>
+<p><strong>2. 工作窃取算法（work-stealing）</strong> </p>
+<p>一个大任务拆分成多个小任务，为了减少线程间的竞争，把这些子任务分别放到不同的队列中，并且每个队列都有单独的线程来执行队列里的任务，线程和队列一一对应。 </p>
+<p>但是会出现这样一种情况：A线程处理完了自己队列的任务，B线程的队列里还有很多任务要处理。 </p>
+<p>A是一个很热情的线程，想过去帮忙，但是如果两个线程访问同一个队列，会产生竞争，所以A想了一个办法，从双端队列的尾部拿任务执行。而B线程永远是从双端队列的头部拿任务执行。 </p>
+<p><img src="/img/media/clip_image002-1615278523435.jpg" alt="img"></p>
+<p>注意：线程池中的每个线程都有自己的工作队列（PS，这一点和ThreadPoolExecutor不同，ThreadPoolExecutor是所有线程公用一个工作队列，所有线程都从这个工作队列中取任务），当自己队列中的任务都完成以后，会从其它线程的工作队列中偷一个任务执行，这样可以充分利用资源。 </p>
+<p><strong>工作窃取算法的优点：</strong> </p>
+<p>​     利用了线程进行并行计算，减少了线程间的竞争。 </p>
+<p><strong>工作窃取算法的缺点：</strong> </p>
+<p>​     任务争夺问题</p>
+<h3 id="Java种的代理有几种实现方式？"><a href="#Java种的代理有几种实现方式？" class="headerlink" title="Java种的代理有几种实现方式？"></a>Java种的代理有几种实现方式？</h3><p>动态代理</p>
+<p>JDK &gt;&gt;&gt; Proxy  </p>
+<p>​    1 面向接口的动态代理  代理一个对象去增强面向某个接口中定义的方法</p>
+<p>​    2 没有接口不可用 </p>
+<p>​    3 只能读取到接口上的一些注解</p>
+<p>MyBatis</p>
+<p>DeptMapper dm&#x3D;sqlSession.getMapper(DeptMapper.class)</p>
+<p>第三方  CGlib</p>
+<p>​    1 面向父类的动态代理</p>
+<p>​    2 有没有接口都可以使用</p>
+<p>​    3 可以读取类上的注解</p>
+<p>​     AOP 日志 性能检测 事务</p>
+<p>MyBatis 源码  spring源码</p>
+<h3 id="happens-before规则"><a href="#happens-before规则" class="headerlink" title="happens-before规则"></a>happens-before规则</h3><p>​		先行发生原则（Happens-Before）是判断数据是否存在竞争、线程是否安全的主要依据。<br>​		先行发生是Java内存，模型中定义的两项操作之间的偏序关系，如果操作A先行发生于操作B，那么操作</p>
+<h4 id="A产生的影响能够被操作B观察到。"><a href="#A产生的影响能够被操作B观察到。" class="headerlink" title="A产生的影响能够被操作B观察到。"></a>A产生的影响能够被操作B观察到。</h4><p>口诀：如果两个操作之间具有happen-before关系，那么前一个操作的结果就会对后面的一个操作可<br>见。是Java内存模型中定义的两个操作之间的偏序关系。</p>
+<h3 id="常见的happen-before规则："><a href="#常见的happen-before规则：" class="headerlink" title="常见的happen-before规则："></a>常见的happen-before规则：</h3><h6 id="1-程序顺序规则："><a href="#1-程序顺序规则：" class="headerlink" title="1.程序顺序规则："></a>1.程序顺序规则：</h6><p>一个线程中的每个操作，happen-before在该线程中的任意后续操作。(注解：如果只有一个线程的操<br>作，那么前一个操作的结果肯定会对后续的操作可见。)<br>程序顺序规则中所说的每个操作happen-before于该线程中的任意后续操作并不是说前一个操作必须要<br>在后一个操作之前执行，而是指前一个操作的执行结果必须对后一个操作可见，如果不满足这个要求那就不允许这两个操作进行重排序</p>
+<h6 id="2-锁规则："><a href="#2-锁规则：" class="headerlink" title="2.锁规则："></a>2.锁规则：</h6><p>对一个锁的解锁，happen-before在随后对这个锁加锁。(注解：这个最常见的就是synchronized方法和<br>syncronized块)</p>
+<h6 id="3-volatile变量规则："><a href="#3-volatile变量规则：" class="headerlink" title="3.volatile变量规则："></a>3.volatile变量规则：</h6><p>对一个volatile域的写，happen-before在任意后续对这个volatile域的读。该规则在CurrentHashMap<br>的读操作中不需要加锁有很好的体现。</p>
+<h6 id="4-传递性："><a href="#4-传递性：" class="headerlink" title="4.传递性："></a>4.传递性：</h6><p>如果A happen-before B，且B happen-before C，那么A happen - before C.</p>
+<h6 id="5-线程启动规则："><a href="#5-线程启动规则：" class="headerlink" title="5.线程启动规则："></a>5.线程启动规则：</h6><p>Thread对象的start()方法happen-before此线程的每一个动作。</p>
+<h6 id="6-线程终止规则："><a href="#6-线程终止规则：" class="headerlink" title="6.线程终止规则："></a>6.线程终止规则：</h6><p>线程的所有操作都happen-before对此线程的终止检测，可以通过Thread.join()方法结束，<br>Thread.isAlive()的返回值等手段检测到线程已经终止执行。</p>
+<h6 id="7-线程中断规则："><a href="#7-线程中断规则：" class="headerlink" title="7.线程中断规则："></a>7.线程中断规则：</h6><p>对线程interrupt()方法的调用happen-before发生于被中断线程的代码检测到中断时事件的发生。</p>
+<h3 id="jvm监控系统是通过jmx做的么？"><a href="#jvm监控系统是通过jmx做的么？" class="headerlink" title="jvm监控系统是通过jmx做的么？"></a>jvm监控系统是通过jmx做的么？</h3><p>​		一般都是，但是要是记录比较详细的性能定位指标，都会导致进入 safepoint，从而降低了线上应用性<br>能<br>​		例如 jstack，jmap打印堆栈，打印内存使用情况，都会让 jvm 进入safepoint，才能获取线程稳定状态<br>从而采集信息。<br>​		同时，JMX暴露向外的接口采集信息，例如使用jvisualvm，还会涉及rpc和网络消耗，以及JVM忙时，无<br>法采集到信息从而有指标断点。这些都是基于 JMX 的外部监控很难解决的问题。<br>​		所以，推荐使用JVM内部采集 JFR，这样即使在JVM很忙时，也能采集到有用的信息</p>
+<h3 id="jvm有哪些垃圾回收器"><a href="#jvm有哪些垃圾回收器" class="headerlink" title="jvm有哪些垃圾回收器"></a>jvm有哪些垃圾回收器</h3><p><img src="/img/media/Snipaste_2021-03-10_13-38-48.png" alt="img"></p>
+<p>图中展示了7种作用于不同分代的收集器，如果两个收集器之间存在连线，则说明它们可以搭配使用。虚<br>拟机所处的区域则表示它是属于新生代还是老年代收集器。<br>新生代收集器（全部的都是复制算法）：Serial、ParNew、Parallel Scavenge<br>    老年代收集器：CMS（标记-清理）、Serial Old（标记-整理）、Parallel Old（标记整理）<br>    整堆收集器： G1（一个Region中是标记-清除算法，2个Region之间是复制算法）<br>同时，先解释几个名词：</p>
+<h4 id="1，并行（Parallel）：多个垃圾收集线程并行工作，此时用户线程处于等待状态"><a href="#1，并行（Parallel）：多个垃圾收集线程并行工作，此时用户线程处于等待状态" class="headerlink" title="1，并行（Parallel）：多个垃圾收集线程并行工作，此时用户线程处于等待状态"></a>1，并行（Parallel）：多个垃圾收集线程并行工作，此时用户线程处于等待状态</h4><h4 id="2，并发（Concurrent）：用户线程和垃圾收集线程同时执行"><a href="#2，并发（Concurrent）：用户线程和垃圾收集线程同时执行" class="headerlink" title="2，并发（Concurrent）：用户线程和垃圾收集线程同时执行"></a>2，并发（Concurrent）：用户线程和垃圾收集线程同时执行</h4><h4 id="3，吞吐量：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）"><a href="#3，吞吐量：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）" class="headerlink" title="3，吞吐量：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）"></a>3，吞吐量：运行用户代码时间／（运行用户代码时间＋垃圾回收时间）</h4><h2 id="1-Serial收集器是最基本的、发展历史最悠久的收集器。"><a href="#1-Serial收集器是最基本的、发展历史最悠久的收集器。" class="headerlink" title="1.Serial收集器是最基本的、发展历史最悠久的收集器。"></a>1.<strong>Serial收集器是最基本的、发展历史最悠久的收集器。</strong></h2><p>特点：单线程、简单高效（与其他收集器的单线程相比），对于限定单个CPU的环境来说，Serial收集器<br>由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程手机效率。收集器进行垃圾回收<br>时，必须暂停其他所有的工作线程，直到它结束（Stop The World）。<br>应用场景：适用于Client模式下的虚拟机。</p>
+<h4 id="Serial-Serial-Old收集器运行示意图"><a href="#Serial-Serial-Old收集器运行示意图" class="headerlink" title="Serial &#x2F; Serial Old收集器运行示意图"></a>Serial &#x2F; Serial Old收集器运行示意图</h4><p><img src="/img/media/Snipaste_2021-03-10_13-40-04.png" alt="img"></p>
+<h2 id="2-ParNew收集器其实就是Serial收集器的多线程版本。"><a href="#2-ParNew收集器其实就是Serial收集器的多线程版本。" class="headerlink" title="2.ParNew收集器其实就是Serial收集器的多线程版本。"></a>2.<strong>ParNew收集器其实就是Serial收集器的多线程版本。</strong></h2><p>除了使用多线程外其余行为均和Serial收集器一模一样（参数控制、收集算法、Stop The World、对象<br>分配规则、回收策略等）。<br>    特点：多线程、ParNew收集器默认开启的收集线程数与CPU的数量相同，在CPU非常多的环境中，可以<br>使用-XX:ParallelGCThreads参数来限制垃圾收集的线程数。<br>    和Serial收集器一样存在Stop The World问题<br>应用场景：ParNew收集器是许多运行在Server模式下的虚拟机中首选的新生代收集器，因为它是除了<br>    Serial收集器外，唯一一个能与CMS收集器配合工作的。<br>ParNew&#x2F;Serial Old组合收集器运行示意图如下：</p>
+<p><img src="/img/media/Snipaste_2021-03-10_13-40-38.png" alt="img"></p>
+<h2 id="3-Parallel-Scavenge-收集器与吞吐量关系密切，故也称为吞吐量优先收集器。"><a href="#3-Parallel-Scavenge-收集器与吞吐量关系密切，故也称为吞吐量优先收集器。" class="headerlink" title="3.Parallel Scavenge 收集器与吞吐量关系密切，故也称为吞吐量优先收集器。"></a>3.<strong>Parallel Scavenge 收集器与吞吐量关系密切，故也称为吞吐量优先收集器。</strong></h2><p>特点：属于新生代收集器也是采用复制算法的收集器，又是并行的多线程收集器（与ParNew收集器类<br>似）。<br>    该收集器的目标是达到一个可控制的吞吐量。还有一个值得关注的点是：GC自适应调节策略（与<br>ParNew收集器最重要的一个区别）<br>        GC自适应调节策略：Parallel Scavenge收集器可设置-XX:+UseAdptiveSizePolicy参数。当开关打开时不<br>需要手动指定新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRation）、晋升老年代<br>的对象年龄（-XX:PretenureSizeThreshold）等，虚拟机会根据系统的运行状况收集性能监控信息，动<br>态设置这些参数以提供最优的停顿时间和最高的吞吐量，这种调节方式称为GC的自适应调节策略。</p>
+<h5 id="Parallel-Scavenge收集器使用两个参数控制吞吐量："><a href="#Parallel-Scavenge收集器使用两个参数控制吞吐量：" class="headerlink" title="Parallel Scavenge收集器使用两个参数控制吞吐量："></a>Parallel Scavenge收集器使用两个参数控制吞吐量：</h5><p>​		XX:MaxGCPauseMillis 控制最大的垃圾收集停顿时间<br>​		XX:GCRatio 直接设置吞吐量的大小。</p>
+<h2 id="4-Serial-Old是Serial收集器的老年代版本。"><a href="#4-Serial-Old是Serial收集器的老年代版本。" class="headerlink" title="4.Serial Old是Serial收集器的老年代版本。"></a>4.<strong>Serial Old是Serial收集器的老年代版本。</strong></h2><p>特点：同样是单线程收集器，采用标记-整理算法。<br>应用场景：主要也是使用在Client模式下的虚拟机中。也可在Server模式下使用。<br>Server模式下主要的两大用途（在后续中详细讲解···）：</p>
+<ol>
+<li>在JDK1.5以及以前的版本中与Parallel Scavenge收集器搭配使用。</li>
+<li>作为CMS收集器的后备方案，在并发收集Concurent Mode Failure时使用。<br>Serial &#x2F; Serial Old收集器工作过程图（Serial收集器图示相同）：</li>
+</ol>
+<p><img src="/img/media/Snipaste_2021-03-10_13-41-14.png" alt="img"></p>
+<h2 id="5-Parallel-Old是Parallel-Scavenge收集器的老年代版本。"><a href="#5-Parallel-Old是Parallel-Scavenge收集器的老年代版本。" class="headerlink" title="5.Parallel Old是Parallel Scavenge收集器的老年代版本。"></a>5.<strong>Parallel Old是Parallel Scavenge收集器的老年代版本。</strong></h2><p>特点：多线程，采用标记-整理算法。<br>    应用场景：注重高吞吐量以及CPU资源敏感的场合，都可以优先考虑Parallel Scavenge+Parallel Old 收<br>集器。<br>    Parallel Scavenge&#x2F;Parallel Old收集器工作过程图：</p>
+<h2 id="6-CMS收集器是一种以获取最短回收停顿时间为目标的收集器。"><a href="#6-CMS收集器是一种以获取最短回收停顿时间为目标的收集器。" class="headerlink" title="6.CMS收集器是一种以获取最短回收停顿时间为目标的收集器。"></a>6.<strong>CMS收集器是一种以获取最短回收停顿时间为目标的收集器。</strong></h2><p>特点：基于标记-清除算法实现。并发收集、低停顿。<br>应用场景：适用于注重服务的响应速度，希望系统停顿时间最短，给用户带来更好的体验等场景下。如<br>    web程序、b&#x2F;s服务。<br>CMS收集器的运行过程分为下列4步：<br>    初始标记：标记GC Roots能直接到的对象。速度很快但是仍存在Stop The World问题。<br>    并发标记：进行GC Roots Tracing 的过程，找出存活对象且用户线程可并发执行。<br>    重新标记：为了修正并发标记期间因用户程序继续运行而导致标记产生变动的那一部分对象的标记记<br>录。仍然存在Stop The World问题。<br>并发清除：对标记的对象进行清除回收。<br>CMS收集器的内存回收过程是与用户线程一起并发执行的。<br> CMS收集器的工作过程图：</p>
+<p><img src="/img/media/Snipaste_2021-03-10_13-41-57.png" alt="img"></p>
+<h5 id="CMS收集器的缺点："><a href="#CMS收集器的缺点：" class="headerlink" title="CMS收集器的缺点："></a>CMS收集器的缺点：</h5><p>​	对CPU资源非常敏感。</p>
+<p>​	无法处理浮动垃圾，可能出现Concurrent Model Failure失败而导致另一次Full GC的产生。<br>​		因为采用标记-清除算法所以会存在空间碎片的问题，导致大对象无法分配空间，不得不提前触发<br>一次Full GC。</p>
+<p>​	</p>
+<p><img src="/img/media/Snipaste_2021-03-10_13-44-43.png" alt="img"></p>
+<h2 id="7-G1收集器一款面向服务端应用的垃圾收集器。"><a href="#7-G1收集器一款面向服务端应用的垃圾收集器。" class="headerlink" title="7.G1收集器一款面向服务端应用的垃圾收集器。"></a>7.<strong>G1收集器一款面向服务端应用的垃圾收集器。</strong></h2><p>特点如下：<br>        并行与并发：</p>
+<p>​			G1能充分利用多CPU、多核环境下的硬件优势，使用多个CPU来缩短Stop-The-World停顿<br>时间。部分收集器原本需要停顿Java线程来执行GC动作，G1收集器仍然可以通过并发的方式让Java程序<br>继续运行。</p>
+<p>​		分代收集：</p>
+<p>​			G1能够独自管理整个Java堆，并且采用不同的方式去处理新创建的对象和已经存活了一段时间、熬过多次GC的旧对象以获取更好的收集效果</p>
+<p>​		空间整合：</p>
+<p>​				G1运作期间不会产生空间碎片，收集后能提供规整的可用内存。</p>
+<p>​		可预测的停顿：</p>
+<pre><code>            G1除了追求低停顿外，还能建立可预测的停顿时间模型。能让使用者明确指定在一个长
+</code></pre>
+<p>度为M毫秒的时间段内，消耗在垃圾收集上的时间不得超过N毫秒。</p>
+<p>G1收集器运行示意图：</p>
+<p>​	<img src="/img/media/Snipaste_2021-03-10_13-46-29.png" alt="img"></p>
+<h5 id="关于gc的选择"><a href="#关于gc的选择" class="headerlink" title="关于gc的选择"></a>关于gc的选择</h5><p>​		除非应用程序有非常严格的暂停时间要求，否则请先运行应用程序并允许VM选择收集器（如果没有特别<br>要求。使用VM提供给的默认GC就好）。<br>​		如有必要，调整堆大小以提高性能。 如果性能仍然不能满足目标，请使用以下准则作为选择收集器的起<br>点：</p>
+<p>​		</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">	如果应用程序的数据集较小（最大约<span class="number">100</span> MB），则选择带有选项-XX：+ UseSerialGC的串行</span><br><span class="line">收集器。</span><br><span class="line">		如果应用程序将在单个处理器上运行，并且没有暂停时间要求，则选择带有选项-XX：+</span><br><span class="line">UseSerialGC的串行收集器。</span><br><span class="line">		如果（a）峰值应用程序性能是第一要务，并且（<span class="keyword">b）没有暂停时间要求或可接受一秒或更长</span></span><br><span class="line"><span class="keyword"></span>时间的暂停，则让VM选择收集器或使用-XX：+ UseParallelGC选择并行收集器 。</span><br><span class="line">		如果响应时间比整体吞吐量更重要，并且垃圾收集暂停时间必须保持在大约一秒钟以内，则选</span><br><span class="line">择具有-XX：+ UseG1GC。（值得注意的是<span class="keyword">JDK9中CMS已经被Deprecated，不可使用！移除</span></span><br><span class="line"><span class="keyword"></span>该选项）</span><br><span class="line">		如果使用的是<span class="keyword">jdk8，并且堆内存达到了16G，那么推荐使用G1收集器，来控制每次垃圾收集</span></span><br><span class="line"><span class="keyword"></span>的时间。</span><br><span class="line">		如果响应时间是高优先级，或使用的堆非常大，请使用-XX：UseZGC选择完全并发的收集</span><br><span class="line">器。（值得注意的是<span class="keyword">JDK11开始可以启动ZGC，但是此时ZGC具有实验性质，在JDK15中</span></span><br><span class="line"><span class="keyword"></span>[<span class="number">202009</span>发布]才取消实验性质的标签，可以直接显示启用，但是<span class="keyword">JDK15默认GC仍然是G1）</span></span><br></pre></td></tr></table></figure>
+
+<p>​		这些准则仅提供选择收集器的起点，因为性能取决于堆的大小，应用程序维护的实时数据量以及可用处<br>理器的数量和速度。<br>​		如果推荐的收集器没有达到所需的性能，则首先尝试调整堆和新生代大小以达到所需的目标。 如果性能<br>仍然不足，尝试使用其他收集器<br>​		总体原则：减少STOP THE WORD时间，使用并发收集器（比如CMS+ParNew，G1）来减少暂停时间，<br>加快响应时间，并使用并行收集器来增加多处理器硬件上的总体吞吐量。</p>
+<h3 id="pc计数器"><a href="#pc计数器" class="headerlink" title="pc计数器"></a>pc计数器</h3><p>​	pc计数器是一种指针，也叫bcp（bytecode pointer）字节码指针 ，当栈帧成立，读取字节码文件时，你需要知道它读取到哪里了，pc计数器就有着这么一个作用，用来标记读取字节码的当前位置。</p>
+<h3 id="介绍一下垃圾回收算法"><a href="#介绍一下垃圾回收算法" class="headerlink" title="介绍一下垃圾回收算法"></a>介绍一下垃圾回收算法</h3><h3 id="老年代和新生代"><a href="#老年代和新生代" class="headerlink" title="老年代和新生代"></a>老年代和新生代</h3><h3 id="内存溢出的原因"><a href="#内存溢出的原因" class="headerlink" title="内存溢出的原因"></a>内存溢出的原因</h3><p>内存溢出的原因<br>java.lang.OutOfMemoryError: ……java heap space….. 堆栈溢出，代码问题的可能性极大<br>java.lang.OutOfMemoryError: GC over head limit exceeded 系统处于高频的GC状态，而且<br>回收的效果依然不佳的情况，就会开始报这个错误，这种情况一般是产生了很多不可以被释放<br>的对象，有可能是引用使用不当导致，或申请大对象导致，但是java heap space的内存溢出<br>有可能提前不会报这个错误，也就是可能内存就直接不够导致，而不是高频GC.<br>java.lang.OutOfMemoryError: PermGen space jdk1.7之前才会出现的问题 ，原因是系统的<br>代码非常多或引用的第三方包非常多、或代码中使用了大量的常量、或通过intern注入常量、<br>或者通过动态代码加载等方法，导致常量池的膨胀<br>java.lang.OutOfMemoryError: Direct buffer memory 直接内存不足，因为jvm垃圾回收不<br>会回收掉直接内存这部分的内存，所以可能原因是直接或间接使用了ByteBuffer中的<br>allocateDirect方法的时候，而没有做clear<br>java.lang.StackOverflowError - Xss设置的太小了<br>java.lang.OutOfMemoryError: unable to create new native thread 堆外内存不足，无法为<br>线程分配内存区域<br>java.lang.OutOfMemoryError: request {} byte for {}out of swap 地址空间不够</p>
+<h3 id="线上Gc频繁"><a href="#线上Gc频繁" class="headerlink" title="线上Gc频繁"></a>线上Gc频繁</h3><ol>
+<li>查看监控，以了解出现问题的时间点以及当前FGC的频率（可对比正常情况看频率是否正常）</li>
+<li>了解该时间点之前有没有程序上线、基础组件升级等情况。</li>
+<li>了解JVM的参数设置，包括：堆空间各个区域的大小设置，新生代和老年代分别采用了哪些垃<br>圾收集器，然后分析JVM参数设置是否合理。</li>
+<li>再对步骤1中列出的可能原因做排除法，其中元空间被打满、内存泄漏、代码显式调用gc方法<br>比较容易排查。</li>
+<li>针对大对象或者长生命周期对象导致的FGC，可通过 jmap -histo 命令并结合dump堆内存文<br>件作进一步分析，需要先定位到可疑对象。</li>
+<li>通过可疑对象定位到具体代码再次分析，这时候要结合GC原理和JVM参数设置，弄清楚可疑</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/10/rpm%E5%AE%89%E8%A3%85ldap/" rel="prev" title="rpm包安装Idap">
+                  <i class="fa fa-angle-left"></i> rpm包安装Idap
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/05/31/%E8%87%AA%E7%AD%BEnginx%E7%9A%84https%E8%AE%BF%E9%97%AE%E8%AF%81%E4%B9%A6/" rel="next" title="创建SSL证书">
+                  创建SSL证书 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">wangdj</span>
+  </div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
